@@ -1,0 +1,19 @@
+# Godot 4 editor/import cache
+.godot/
+game/.godot/
+*.import.tmp
+export_presets.cfg.bak
+
+# OS / editor cruft
+Thumbs.db
+desktop.ini
+.DS_Store
+*.tmp
+*.swp
+
+# Local scratch
+game/preview.png
+
+# Design documents stay local, not published
+*.docx
+*.pdf
