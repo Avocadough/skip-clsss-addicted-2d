@@ -20,7 +20,48 @@ const T_GRASS := 9
 const T_DIRT := 10
 const T_FENCE := 11
 
+## What each setting looks like. `layers` are parallax strips drawn behind the
+## world, slowest first; `factor` is how much of the camera's motion they take.
+## Indoor stages leave their upper wall unpainted so the strip shows through.
+const THEMES := {
+	"hallway": {
+		"outdoor": false, "base": "2b2440",
+		"layers": [{"tex": "bg_hallway_deco", "y": 14.0, "factor": 0.30, "h": 160.0}],
+		"motes": 26, "mote_tex": "fx_mote", "mote_tint": Color(1.0, 0.95, 0.8, 0.5),
+	},
+	"cafeteria": {
+		"outdoor": false, "base": "35291f",
+		"layers": [{"tex": "bg_cafeteria_deco", "y": 8.0, "factor": 0.30, "h": 160.0}],
+		"motes": 20, "mote_tex": "fx_mote", "mote_tint": Color(1.0, 0.85, 0.6, 0.45),
+	},
+	"library": {
+		"outdoor": false, "base": "241f18",
+		"layers": [{"tex": "bg_library_deco", "y": 6.0, "factor": 0.30, "h": 160.0}],
+		"motes": 34, "mote_tex": "fx_mote", "mote_tint": Color(1.0, 0.9, 0.65, 0.55),
+	},
+	"field": {
+		"outdoor": true, "base": "8cc4e0",
+		"layers": [
+			{"tex": "bg_field_sky", "y": 0.0, "factor": 0.04, "h": 270.0},
+			{"tex": "bg_field_far", "y": 56.0, "factor": 0.24, "h": 140.0},
+			{"tex": "bg_field_trees", "y": 146.0, "factor": 0.52, "h": 70.0},
+		],
+		"clouds": 5, "motes": 14, "mote_tex": "fx_leaf", "mote_tint": Color(1, 1, 1, 0.9),
+	},
+	"gate": {
+		"outdoor": true, "base": "6b4a7a",
+		"layers": [
+			{"tex": "bg_gate_sky", "y": 0.0, "factor": 0.04, "h": 270.0},
+			{"tex": "bg_gate_far", "y": 56.0, "factor": 0.24, "h": 140.0},
+			{"tex": "bg_gate_trees", "y": 146.0, "factor": 0.52, "h": 70.0},
+		],
+		"clouds": 4, "motes": 16, "mote_tex": "fx_leaf", "mote_tint": Color(0.9, 0.8, 0.6, 0.85),
+	},
+}
+
 var data: Dictionary
+var theme: Dictionary
+var outdoor := false
 var phase: Phase = Phase.PLAY
 
 var player: Player
@@ -40,6 +81,10 @@ var _bg_layer: TileMapLayer
 var _entities: Node2D
 var _bg_nodes: Array[Control] = []
 var _bg_canvas: CanvasLayer
+var _fx_canvas: CanvasLayer
+var _clouds: Array[Sprite2D] = []
+var _motes: Array[Sprite2D] = []
+var _amb_t := 0.0
 var _overlay: CanvasLayer
 var _dialogue_cd := 0.0
 var _bell_played := false
@@ -47,6 +92,8 @@ var _bell_played := false
 # ===========================================================================
 func _ready() -> void:
 	data = LevelData.get_level(Game.current_level)
+	theme = THEMES.get(data["theme"], THEMES["hallway"])
+	outdoor = theme["outdoor"]
 	time_total = data["time"]
 	time_left = time_total
 	Game.reset_run()
@@ -76,7 +123,7 @@ func _make_tileset() -> TileSet:
 	ts.set_physics_layer_collision_layer(0, 1)
 
 	var src := TileSetAtlasSource.new()
-	src.texture = load("res://assets/sprites/tiles.png")
+	src.texture = load("res://assets/sprites/tiles_%s.png" % data["theme"])
 	src.texture_region_size = Vector2i(TILE, TILE)
 	for i in 12:
 		src.create_tile(Vector2i(i, 0))
@@ -100,7 +147,6 @@ func _make_tileset() -> TileSet:
 
 func _build_tiles() -> void:
 	var ts := _make_tileset()
-	var outdoor: bool = data["theme"] == "outdoor"
 	var W: int = data["width"]
 	var H: int = data["height"]
 
@@ -116,15 +162,15 @@ func _build_tiles() -> void:
 	_solid_layer.z_index = -2
 	add_child(_solid_layer)
 
-	# Indoor stages get a painted corridor wall: plaster up top, tiled
-	# wainscot along the bottom, so there is one clean band instead of a
-	# stripe repeating on every tile row.
+	# Indoor stages tile only the wainscot band along the bottom. The wall
+	# above it is left bare on purpose so the parallax strip behind the world
+	# — bookcases, a serving counter, a row of classroom doors — shows through
+	# and each interior reads as its own room.
 	if not outdoor:
-		var wainscot: int = H - 8
-		for y in range(2, H):
+		var wainscot: int = H - 6      # a low dado, so most of the backdrop shows
+		for y in range(wainscot, H):
 			for x in range(1, W - 1):
-				var art := T_BG_WALL if y < wainscot else T_BG_TILE
-				_bg_layer.set_cell(Vector2i(x, y), 0, Vector2i(art, 0))
+				_bg_layer.set_cell(Vector2i(x, y), 0, Vector2i(T_BG_TILE, 0))
 		for w in data.get("windows", []):
 			for y in range(w[1], w[1] + w[3]):
 				for x in range(w[0], w[0] + w[2]):
@@ -184,17 +230,10 @@ func _build_background() -> void:
 
 	var backdrop := ColorRect.new()
 	backdrop.set_anchors_preset(Control.PRESET_FULL_RECT)
-	backdrop.color = Color("1a1526") if data["theme"] != "outdoor" else Color("3a2f55")
+	backdrop.color = Color(theme["base"])
 	_bg_canvas.add_child(backdrop)
 
-	if data["theme"] != "outdoor":
-		return
-
-	for spec in [
-		{"tex": "bg_sky", "y": 0.0, "factor": 0.05, "h": 270.0},
-		{"tex": "bg_school", "y": 60.0, "factor": 0.30, "h": 140.0},
-		{"tex": "bg_trees", "y": 142.0, "factor": 0.58, "h": 70.0},
-	]:
+	for spec in theme["layers"]:
 		var tr := TextureRect.new()
 		tr.texture = load("res://assets/sprites/%s.png" % spec["tex"])
 		tr.stretch_mode = TextureRect.STRETCH_TILE
@@ -206,7 +245,40 @@ func _build_background() -> void:
 		_bg_canvas.add_child(tr)
 		_bg_nodes.append(tr)
 
-func _update_background() -> void:
+	_build_ambient()
+
+## Clouds drifting across the sky outdoors, dust turning in the light indoors.
+## Both live in canvas space and simply wrap, which costs nothing and gives the
+## stages a bit of motion even when the player is standing still.
+func _build_ambient() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = data["num"] * 7919
+
+	for i in int(theme.get("clouds", 0)):
+		var c := Sprite2D.new()
+		c.texture = load("res://assets/sprites/cloud_%s.png" % ["a", "b", "c"][i % 3])
+		c.position = Vector2(rng.randf_range(0, 480), rng.randf_range(18, 96))
+		c.modulate = Color(1, 1, 1, rng.randf_range(0.45, 0.8))
+		c.set_meta("speed", rng.randf_range(3.0, 9.0))
+		_bg_canvas.add_child(c)
+		_clouds.append(c)
+
+	_fx_canvas = CanvasLayer.new()
+	_fx_canvas.layer = 5                    # over the world, under the HUD
+	add_child(_fx_canvas)
+	var tex: Texture2D = load("res://assets/sprites/%s.png" % theme.get("mote_tex", "fx_mote"))
+	for i in int(theme.get("motes", 0)):
+		var m := Sprite2D.new()
+		m.texture = tex
+		m.position = Vector2(rng.randf_range(0, 480), rng.randf_range(0, 270))
+		m.modulate = theme.get("mote_tint", Color(1, 1, 1, 0.5))
+		m.set_meta("vx", rng.randf_range(-9.0, 9.0) if not outdoor else rng.randf_range(-26.0, -9.0))
+		m.set_meta("vy", rng.randf_range(3.0, 11.0))
+		m.set_meta("phase", rng.randf_range(0.0, TAU))
+		_fx_canvas.add_child(m)
+		_motes.append(m)
+
+func _update_background(delta: float) -> void:
 	if camera == null:
 		return
 	var cam := camera.get_screen_center_position()
@@ -214,6 +286,24 @@ func _update_background() -> void:
 		var f: float = n.get_meta("factor")
 		n.position.x = -480 - fmod(cam.x * f, 480.0)
 		n.position.y = float(n.get_meta("base_y")) - (cam.y - 135.0) * f * 0.5
+
+	_amb_t += delta
+	for c in _clouds:
+		c.position.x -= float(c.get_meta("speed")) * delta
+		if c.position.x < -90.0:
+			c.position.x = 500.0
+	for m in _motes:
+		m.position.x += float(m.get_meta("vx")) * delta
+		m.position.y += float(m.get_meta("vy")) * delta
+		# a slow sideways sway so they drift rather than fall in straight lines
+		m.position.x += sin(_amb_t * 0.8 + float(m.get_meta("phase"))) * 6.0 * delta
+		if m.position.y > 278.0:
+			m.position.y = -8.0
+			m.position.x = randf_range(0.0, 480.0)
+		if m.position.x < -8.0:
+			m.position.x = 486.0
+		elif m.position.x > 486.0:
+			m.position.x = -8.0
 
 # ----------------------------------------------------------------- spawns --
 func _spawn_player() -> void:
@@ -318,7 +408,7 @@ func _center_pos(t) -> Vector2:
 #  Game loop
 # ===========================================================================
 func _process(delta: float) -> void:
-	_update_background()
+	_update_background(delta)
 	if phase != Phase.PLAY:
 		return
 	if in_dialogue:

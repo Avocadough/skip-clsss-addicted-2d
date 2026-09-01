@@ -55,10 +55,13 @@ class Pickup extends Area2D:
 ## ------------------------------------------------------------- hide spot ---
 class HideSpot extends Area2D:
 	const ART := {
-		"locker": "prop_locker",
-		"desk":   "prop_desk",
-		"bush":   "prop_bush",
-		"table":  "prop_table",
+		"locker":  "prop_locker",
+		"desk":    "prop_desk",
+		"bush":    "prop_bush",
+		"table":   "prop_table",
+		"shelf":   "prop_bookshelf",
+		"vending": "prop_vending",
+		"crate":   "prop_crate",
 	}
 	var kind := "locker"
 	var occupied := false
@@ -96,10 +99,13 @@ class HideSpot extends Area2D:
 
 	func label() -> String:
 		match kind:
-			"locker": return "ซ่อนในตู้ล็อกเกอร์"
-			"desk":   return "มุดใต้โต๊ะ"
-			"bush":   return "ซ่อนในพุ่มไม้"
-			_:        return "ซ่อนใต้โต๊ะอาหาร"
+			"locker":  return "ซ่อนในตู้ล็อกเกอร์"
+			"desk":    return "มุดใต้โต๊ะ"
+			"bush":    return "ซ่อนในพุ่มไม้"
+			"shelf":   return "หลบหลังชั้นหนังสือ"
+			"vending": return "หลบหลังตู้กดน้ำ"
+			"crate":   return "หลบหลังลัง"
+			_:         return "ซ่อนใต้โต๊ะอาหาร"
 
 
 ## ------------------------------------------------------------------ door ---
