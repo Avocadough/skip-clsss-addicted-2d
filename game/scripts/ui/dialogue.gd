@@ -15,6 +15,13 @@ func _ready() -> void:
 	layer = 40
 	process_mode = Node.PROCESS_MODE_ALWAYS
 
+func _exit_tree() -> void:
+	# The dialogue pauses the tree while it is open. If it ever goes away
+	# without being answered — a restart, a scene change — make sure the game
+	# does not stay frozen behind it.
+	if not _answered and is_inside_tree():
+		get_tree().paused = false
+
 func open(npc_name: String, entry: Dictionary, inventory: Array[String]) -> void:
 	var dim := ColorRect.new()
 	dim.color = Color(0.05, 0.04, 0.08, 0.72)
@@ -53,13 +60,13 @@ func open(npc_name: String, entry: Dictionary, inventory: Array[String]) -> void
 
 	# item shortcuts
 	if inventory.has("notebook"):
-		var b2 := UI.button("★  ยื่นสมุดการบ้านปลอม \"เอางานไปส่งครับ\"", 14)
+		var b2 := UI.button("•  ยื่นสมุดการบ้านปลอม \"เอางานไปส่งครับ\"", 14)
 		b2.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		b2.add_theme_color_override("font_color", UI.YELLOW)
 		b2.pressed.connect(func(): _answer(true, "notebook"))
 		_vbox.add_child(b2)
 	if inventory.has("nursecard"):
-		var b3 := UI.button("★  ยื่นบัตรห้องพยาบาล \"ครูให้ไปห้องพยาบาล\"", 14)
+		var b3 := UI.button("•  ยื่นบัตรห้องพยาบาล \"ครูให้ไปห้องพยาบาล\"", 14)
 		b3.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		b3.add_theme_color_override("font_color", UI.YELLOW)
 		b3.pressed.connect(func(): _answer(true, "nursecard"))
@@ -67,7 +74,7 @@ func open(npc_name: String, entry: Dictionary, inventory: Array[String]) -> void
 
 	for c in _vbox.get_children():
 		if c is Button:
-			(c as Button).grab_focus()
+			(c as Button).call_deferred("grab_focus")
 			break
 
 	get_tree().paused = true

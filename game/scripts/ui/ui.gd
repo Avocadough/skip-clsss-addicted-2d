@@ -40,12 +40,19 @@ static func panel(bg: Color = Color(0.09, 0.075, 0.13, 0.92), border: Color = CR
 	p.add_theme_stylebox_override("panel", panel_style(bg, border))
 	return p
 
-static func panel_style(bg: Color, border: Color, width: int = 2) -> StyleBoxFlat:
+## The game is laid out for a 480x270 design viewport, so panel padding is
+## deliberately tight — `mv` in particular, since vertical space is what runs
+## out first on the menu screens.
+static func panel_style(bg: Color, border: Color, width: int = 2,
+		mh: int = 10, mv: int = 10) -> StyleBoxFlat:
 	var sb := StyleBoxFlat.new()
 	sb.bg_color = bg
 	sb.border_color = border
 	sb.set_border_width_all(width)
-	sb.set_content_margin_all(10)
+	sb.content_margin_left = mh
+	sb.content_margin_right = mh
+	sb.content_margin_top = mv
+	sb.content_margin_bottom = mv
 	return sb
 
 static func button(text: String, size: int = 15) -> Button:
@@ -58,12 +65,12 @@ static func button(text: String, size: int = 15) -> Button:
 	b.add_theme_color_override("font_pressed_color", PURPLE)
 	b.add_theme_color_override("font_focus_color", Color.WHITE)
 	b.add_theme_color_override("font_disabled_color", Color(0.45, 0.42, 0.52))
-	b.add_theme_stylebox_override("normal", panel_style(Color(0.13, 0.11, 0.19, 0.95), Color(0.45, 0.40, 0.58)))
-	b.add_theme_stylebox_override("hover", panel_style(Color(0.22, 0.18, 0.31, 0.98), CREAM))
-	b.add_theme_stylebox_override("pressed", panel_style(Color(0.10, 0.09, 0.15, 1.0), PURPLE))
-	b.add_theme_stylebox_override("focus", panel_style(Color(0, 0, 0, 0), CREAM))
-	b.add_theme_stylebox_override("disabled", panel_style(Color(0.11, 0.10, 0.14, 0.8), Color(0.30, 0.28, 0.35)))
-	b.custom_minimum_size.y = 34
+	b.add_theme_stylebox_override("normal", panel_style(Color(0.13, 0.11, 0.19, 0.95), Color(0.45, 0.40, 0.58), 2, 10, 3))
+	b.add_theme_stylebox_override("hover", panel_style(Color(0.22, 0.18, 0.31, 0.98), CREAM, 2, 10, 3))
+	b.add_theme_stylebox_override("pressed", panel_style(Color(0.10, 0.09, 0.15, 1.0), PURPLE, 2, 10, 3))
+	b.add_theme_stylebox_override("focus", panel_style(Color(0, 0, 0, 0), CREAM, 2, 10, 3))
+	b.add_theme_stylebox_override("disabled", panel_style(Color(0.11, 0.10, 0.14, 0.8), Color(0.30, 0.28, 0.35), 2, 10, 3))
+	b.custom_minimum_size.y = size + 13
 	b.mouse_entered.connect(func(): Sfx.play("move"))
 	b.pressed.connect(func(): Sfx.play("click"))
 	return b

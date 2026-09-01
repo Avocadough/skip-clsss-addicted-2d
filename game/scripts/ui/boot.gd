@@ -8,10 +8,13 @@ var _went := false
 
 func _ready() -> void:
 	set_anchors_preset(Control.PRESET_FULL_RECT)
+	# let clicks fall through to _unhandled_input so tapping anywhere starts the game
+	mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 	var bg := ColorRect.new()
 	bg.color = Color("14101f")
 	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
+	bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(bg)
 
 	var v := VBoxContainer.new()

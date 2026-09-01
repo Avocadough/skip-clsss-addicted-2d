@@ -38,7 +38,7 @@ func _ready() -> void:
 	hb.add_child(_time_label)
 	# The stage name rides along in the same bar, which keeps it clear of the
 	# suspicion meter on the right at the game's 480px design width.
-	var divider := UI.label("│", 15, Color(0.45, 0.41, 0.55))
+	var divider := UI.label("|", 15, Color(0.45, 0.41, 0.55))
 	hb.add_child(divider)
 	_name_label = UI.label("", 13, UI.WHITE, true)
 	hb.add_child(_name_label)

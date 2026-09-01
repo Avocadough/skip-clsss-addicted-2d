@@ -14,9 +14,11 @@ func _initialize() -> void:
 	_queue = [
 		{"scene": "res://scenes/main_menu.tscn", "out": "shot_menu.png", "wait": 0.7, "hold": false},
 		{"scene": "res://scenes/level_select.tscn", "out": "shot_select.png", "wait": 0.7, "hold": false},
+		{"scene": "res://scenes/main_menu.tscn", "out": "shot_howto.png", "wait": 0.7, "hold": false, "call": "_show_how_to"},
+		{"scene": "res://scenes/main_menu.tscn", "out": "shot_credits.png", "wait": 0.7, "hold": false, "call": "_show_credits"},
 		{"scene": "res://scenes/level.tscn", "out": "shot_lv1.png", "wait": 6.0, "hold": true, "level": 1},
 		{"scene": "res://scenes/level.tscn", "out": "shot_lv2.png", "wait": 6.0, "hold": true, "level": 2},
-		{"scene": "res://scenes/level.tscn", "out": "shot_lv3.png", "wait": 6.0, "hold": true, "level": 3},
+		{"scene": "res://scenes/level.tscn", "out": "shot_lv3.png", "wait": 5.0, "hold": false, "level": 3},
 		{"scene": "res://scenes/level.tscn", "out": "shot_lv4.png", "wait": 6.0, "hold": true, "level": 4},
 		{"scene": "res://scenes/level.tscn", "out": "shot_lv5.png", "wait": 6.0, "hold": true, "level": 5},
 	]
@@ -37,6 +39,8 @@ func _next() -> void:
 		root.get_node("Game").current_level = job["level"]
 	_current = load(job["scene"]).instantiate()
 	root.add_child(_current)
+	if job.has("call"):
+		_current.call(job["call"])
 	_out = job["out"]
 	_wait = job["wait"]
 	_hold = job["hold"]

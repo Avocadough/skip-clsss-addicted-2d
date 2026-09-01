@@ -10,11 +10,12 @@ func _ready() -> void:
 
 	var v := VBoxContainer.new()
 	v.set_anchors_preset(Control.PRESET_FULL_RECT)
+	v.offset_bottom = -24        # leave the footer strip clear
 	v.alignment = BoxContainer.ALIGNMENT_CENTER
-	v.add_theme_constant_override("separation", 3)
+	v.add_theme_constant_override("separation", 1)
 	add_child(v)
 
-	var title := UI.label("เสพติดการโดดเรียน!", 40, UI.CREAM, true)
+	var title := UI.label("เสพติดการโดดเรียน!", 28, UI.CREAM, true)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.add_theme_constant_override("outline_size", 9)
 	v.add_child(title)
@@ -27,16 +28,16 @@ func _ready() -> void:
 		12, Color(0.86, 0.83, 0.92))
 	tag.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	v.add_child(tag)
-	v.add_child(UI.spacer(14))
+	v.add_child(UI.spacer(5))
 
 	var col := VBoxContainer.new()
 	col.custom_minimum_size.x = 220
 	col.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	col.add_theme_constant_override("separation", 5)
+	col.add_theme_constant_override("separation", 4)
 	v.add_child(col)
 
 	var next_level: int = clampi(Game.unlocked, 1, LevelData.count())
-	var play := UI.button("▶  เริ่มเล่น  (ด่าน %d)" % next_level, 16)
+	var play := UI.button("เริ่มเล่น  (ด่าน %d)" % next_level, 16)
 	play.pressed.connect(func():
 		Game.current_level = next_level
 		Fader.goto("res://scenes/level.tscn"))
@@ -60,18 +61,25 @@ func _ready() -> void:
 		music.text = "เพลง: %s" % ("เปิด" if Game.music_on else "ปิด"))
 	col.add_child(music)
 
-	v.add_child(UI.spacer(10))
+	# Pinned to the bottom edge rather than sitting in the centred stack, so
+	# the title and buttons get the full height to themselves.
 	var foot := UI.label("CP410844 Computer Game Development · กลุ่มที่ 19", 11,
 		Color(0.72, 0.69, 0.80))
+	foot.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
+	foot.offset_left = -220
+	foot.offset_right = 220
+	foot.offset_top = -20
+	foot.offset_bottom = -4
 	foot.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	v.add_child(foot)
+	foot.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(foot)
 
 	_panel_holder = Control.new()
 	_panel_holder.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_panel_holder.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_panel_holder)
 
-	play.grab_focus()
+	play.call_deferred("grab_focus")
 	Sfx.play_music()
 
 # ---------------------------------------------------------------------------
@@ -85,19 +93,24 @@ func _modal(title_text: String, body: Control, width: float = 400.0) -> void:
 	dim.mouse_filter = Control.MOUSE_FILTER_STOP
 	_panel_holder.add_child(dim)
 
-	var box := UI.panel(Color(0.10, 0.085, 0.15, 0.99), UI.CREAM)
-	box.set_anchors_preset(Control.PRESET_CENTER)
-	box.offset_left = -width / 2.0
-	box.offset_right = width / 2.0
-	box.offset_top = -125
-	box.offset_bottom = 125
-	_panel_holder.add_child(box)
+	# A CenterContainer lets the panel take its own minimum height. Pinning the
+	# height instead made tall content spill past the close button.
+	var center := CenterContainer.new()
+	center.set_anchors_preset(Control.PRESET_FULL_RECT)
+	center.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_panel_holder.add_child(center)
+
+	var box := PanelContainer.new()
+	box.add_theme_stylebox_override("panel", UI.panel_style(
+		Color(0.10, 0.085, 0.15, 0.99), UI.CREAM, 2, 12, 6))
+	box.custom_minimum_size.x = width
+	center.add_child(box)
 
 	var v := VBoxContainer.new()
-	v.add_theme_constant_override("separation", 5)
+	v.add_theme_constant_override("separation", 2)
 	box.add_child(v)
 
-	var t := UI.label(title_text, 20, UI.CREAM, true)
+	var t := UI.label(title_text, 18, UI.CREAM, true)
 	t.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	v.add_child(t)
 	v.add_child(body)
@@ -108,17 +121,17 @@ func _modal(title_text: String, body: Control, width: float = 400.0) -> void:
 		for c in _panel_holder.get_children():
 			c.queue_free())
 	v.add_child(close)
-	close.grab_focus()
+	close.call_deferred("grab_focus")
 
 func _show_how_to() -> void:
 	var v := VBoxContainer.new()
-	v.add_theme_constant_override("separation", 2)
+	v.add_theme_constant_override("separation", 1)
 	var rows := [
-		["A / D  หรือ  ← →", "เดินซ้าย-ขวา"],
+		["A / D หรือ ลูกศร ซ้าย-ขวา", "เดินซ้าย-ขวา"],
 		["Shift (ค้าง)", "วิ่ง — เร็วขึ้นแต่เสียงดังมาก"],
 		["Space / W", "กระโดด"],
-		["S / ↓", "ก้มหมอบ — ช้าแต่เงียบและถูกเห็นยากขึ้น"],
-		["W / ↑ ที่บันไดหรือรั้ว", "ปีนขึ้น-ลง"],
+		["S หรือ ลูกศรลง", "ก้มหมอบ — ช้าแต่เงียบและถูกเห็นยากขึ้น"],
+		["W หรือ ลูกศรขึ้น (ที่บันได/รั้ว)", "ปีนขึ้น-ลง"],
 		["E", "ซ่อนตัว / ออกจากที่ซ่อน / เปิดประตูด้วยกุญแจ"],
 		["Q", "ใช้ไอเทมที่เลือกอยู่"],
 		["F", "สลับไอเทมในกระเป๋า"],
@@ -128,18 +141,18 @@ func _show_how_to() -> void:
 	for r in rows:
 		var h := HBoxContainer.new()
 		h.add_theme_constant_override("separation", 8)
-		var k := UI.label(r[0], 12, UI.YELLOW, true)
-		k.custom_minimum_size.x = 150
+		var k := UI.label(r[0], 10, UI.YELLOW, true)
+		k.custom_minimum_size.x = 158
 		h.add_child(k)
-		h.add_child(UI.label(r[1], 12, Color(0.86, 0.84, 0.9)))
+		h.add_child(UI.label(r[1], 10, Color(0.86, 0.84, 0.9)))
 		v.add_child(h)
 	v.add_child(UI.spacer(4))
 	var note := UI.label("เดินไปโดนไอเทมเพื่อเก็บอัตโนมัติ · กรวยสีเหลืองคือระยะสายตา NPC",
-		11, UI.PURPLE)
+		10, UI.PURPLE)
 	note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	note.custom_minimum_size.x = 380
 	v.add_child(note)
-	_modal("วิธีเล่น", v, 430.0)
+	_modal("วิธีเล่น", v, 440.0)
 
 func _show_credits() -> void:
 	var v := VBoxContainer.new()
@@ -155,7 +168,7 @@ func _show_credits() -> void:
 		"แนว: 2D Pixel Art Stealth-Puzzle Platformer",
 		"สร้างด้วย Godot Engine 4.7 · ฟอนต์ Noto Sans Thai (OFL)",
 	]:
-		var l := UI.label(line, 12, Color(0.88, 0.85, 0.93))
+		var l := UI.label(line, 11, Color(0.88, 0.85, 0.93))
 		l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		v.add_child(l)
 	_modal("เกี่ยวกับเกม", v, 420.0)

@@ -193,7 +193,7 @@ func _build_background() -> void:
 	for spec in [
 		{"tex": "bg_sky", "y": 0.0, "factor": 0.05, "h": 270.0},
 		{"tex": "bg_school", "y": 60.0, "factor": 0.30, "h": 140.0},
-		{"tex": "bg_trees", "y": 165.0, "factor": 0.58, "h": 70.0},
+		{"tex": "bg_trees", "y": 142.0, "factor": 0.58, "h": 70.0},
 	]:
 		var tr := TextureRect.new()
 		tr.texture = load("res://assets/sprites/%s.png" % spec["tex"])
@@ -652,7 +652,7 @@ func _show_overlay(title: String, subtitle: String, lines: Array,
 	v.add_child(UI.spacer(6))
 
 	if show_next:
-		var nb := UI.button("ไปด่านต่อไป  ▶", 15)
+		var nb := UI.button("ไปด่านต่อไป »", 15)
 		nb.pressed.connect(func():
 			Game.current_level = data["num"] + 1
 			Fader.goto("res://scenes/level.tscn"))
@@ -668,7 +668,7 @@ func _show_overlay(title: String, subtitle: String, lines: Array,
 
 	for c in v.get_children():
 		if c is Button:
-			(c as Button).grab_focus()
+			(c as Button).call_deferred("grab_focus")
 			break
 
 func _show_pause() -> void:
@@ -730,4 +730,4 @@ func _show_pause() -> void:
 		Fader.goto("res://scenes/level_select.tscn"))
 	v.add_child(back)
 
-	resume.grab_focus()
+	resume.call_deferred("grab_focus")
