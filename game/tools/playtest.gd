@@ -143,6 +143,36 @@ func _run() -> void:
 			_ok(lv.phase == 0, "no loss was triggered while he searched")
 		await _drop(lv)
 
+		# -------- an NPC parked at either end must turn around and carry on ---
+		# The glance animation used to overwrite the walking direction, so an
+		# NPC that reached the end of its beat could aim straight back at the
+		# end it was already standing on and glance there forever.
+		lv = await _load_level(idx)
+		for n in lv.get_tree().get_nodes_in_group("npc"):
+			if n.stats["catch"] == "dialogue":
+				n.queue_free()
+		await _steps(2)
+		lv.player.set_hidden(true)
+		for probe in lv.get_tree().get_nodes_in_group("npc"):
+			for end_name in ["max", "min"]:
+				var at_max: bool = end_name == "max"
+				probe.global_position.x = probe.patrol_max if at_max else probe.patrol_min
+				probe.patrol_dir = 1 if at_max else -1
+				probe.state = 0
+				probe.awareness = 0.0
+				var from_x: float = probe.global_position.x
+				var turned := false
+				for i in 720:
+					lv.time_left = 60.0
+					await physics_frame
+					var moved: float = probe.global_position.x - from_x
+					if (at_max and moved < -28.0) or (not at_max and moved > 28.0):
+						turned = true
+						break
+				_ok(turned, "%s parked at its %s end turns around and walks on"
+					% [probe.kind, end_name])
+		await _drop(lv)
+
 		# -------------------------------------------- losing on the clock ---
 		lv = await _load_level(idx)
 		lv.time_left = 0.02

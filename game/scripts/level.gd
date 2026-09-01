@@ -605,6 +605,7 @@ func _lose(reason: String) -> void:
 
 # ---------------------------------------------------------------- overlays --
 func _clear_overlay() -> void:
+	Fader.clear_toast()
 	if is_instance_valid(_overlay):
 		_overlay.queue_free()
 		_overlay = null

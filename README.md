@@ -113,19 +113,23 @@
 ```
 game/                     โปรเจกต์ Godot 4.7
   assets/sprites/         สไปรต์ทั้งหมด (สร้างด้วยสคริปต์)
+  assets/audio/           เพลง 1 ไฟล์ + เอฟเฟกต์เสียง 16 ไฟล์ (.wav)
   assets/fonts/           Noto Sans Thai (SIL OFL)
   scripts/                ระบบเกมทั้งหมด
     game_state.gd         ความคืบหน้า ไอเทม บทสนทนา (autoload)
-    audio_manager.gd      สังเคราะห์เพลงและเสียงทั้งหมดตอนเปิดเกม (autoload)
+    audio_manager.gd      โหลดและเล่นไฟล์เสียง (autoload)
     level_data.gd         ข้อมูลด่านทั้ง 5
     level.gd              สร้างด่านและคุมลูปเกม
     player.gd  npc.gd  cctv.gd  entities.gd
     ui/                   HUD เมนู บทสนทนา
   tools/                  สคริปต์สำหรับพัฒนา (ไม่รวมในตัวเกม)
     gen_assets.gd         วาดสไปรต์ทุกชิ้นจากกริดพิกเซล
-    validate.gd           ตรวจว่าด่านไม่มีของฝังในกำแพง
+    gen_audio.gd          สังเคราะห์เพลงและเสียงทั้งหมดออกเป็นไฟล์ .wav
+    validate.gd           ตรวจด่าน: ของฝังในกำแพง จุดที่เดินไปไม่ถึง
+                          และเส้นทางเดินตรวจของ NPC ที่ถูกตัดขาด
     playtest.gd           ทดสอบเงื่อนไขชนะ/แพ้ทุกด่านอัตโนมัติ
     shot.gd               จับภาพหน้าจอทุกฉาก
+    fliptest.gd           วัดตำแหน่งสไปรต์ตอนหันซ้าย/ขวา
 docs/                     เว็บบิลด์ที่ GitHub Pages เสิร์ฟ
 ```
 
@@ -136,6 +140,9 @@ docs/                     เว็บบิลด์ที่ GitHub Pages เ�
 ```bash
 # วาดสไปรต์ใหม่ทั้งหมด
 Godot_v4.7-stable_win64.exe --headless --path game --script res://tools/gen_assets.gd
+
+# สร้างไฟล์เสียงใหม่ทั้งหมด
+Godot_v4.7-stable_win64.exe --headless --path game --script res://tools/gen_audio.gd
 
 # ตรวจด่านและทดสอบเงื่อนไขชนะ/แพ้
 Godot_v4.7-stable_win64.exe --headless --path game --script res://tools/validate.gd
@@ -156,8 +163,11 @@ Godot_v4.7-stable_win64.exe --headless --path game --export-release "Web" "../do
 ทำให้ตัวละคร ฉาก ไอเทม และไอคอนทั้งหมดใช้พาเลตต์เดียวกัน
 (ม่วงพาสเทล ฟ้าอมเทา เหลืองนวล ชมพูอ่อน เขียวหม่น ตามที่ระบุในเอกสารออกแบบ)
 
-เพลงและเอฟเฟกต์เสียงทั้งหมดสังเคราะห์ขึ้นตอนเปิดเกม (lo-fi chiptune)
-ตัวเกมจึงไม่มีไฟล์เสียงเลย และเว็บบิลด์มีขนาดข้อมูลเกมเพียง ~300 KB
+เพลงและเอฟเฟกต์เสียงทั้งหมดสังเคราะห์ขึ้นเองด้วยสคริปต์ `tools/gen_audio.gd`
+(lo-fi chiptune: คอร์ด Dm7–G7–Cmaj7–Am7 ที่ 76 BPM พร้อมเบส ลีด ไฮแฮต
+และเสียงแตกแบบแผ่นเสียง) แล้วเรนเดอร์ออกมาเป็นไฟล์ `.wav` เก็บไว้ใน
+`game/assets/audio/` — เพลง 1 ไฟล์ กับเอฟเฟกต์อีก 16 ไฟล์ รวมประมาณ 690 KB
+ถ้าอยากเปลี่ยนเสียง แก้ค่าใน `gen_audio.gd` แล้วรันใหม่ได้เลย
 
 **ฟอนต์:** Noto Sans Thai — © The Noto Project Authors, ใช้ภายใต้ SIL Open Font License 1.1
 (ดู `game/assets/fonts/OFL.txt`)

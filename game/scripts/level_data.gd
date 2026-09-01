@@ -46,7 +46,9 @@ static func _level1() -> Dictionary:
 			[0, 0, W, 2],           # ceiling
 			[0, 2, 1, 11],          # left wall
 			[W - 1, 2, 1, 11],      # right wall
-			[30, 12, 2, 1],         # stacked boxes that block the low route
+			# Boxes shaped as a step from either side. NPCs only hop one tile,
+			# so a 2-tall face would wall their patrol off completely.
+			[29, 12, 3, 1],
 			[30, 11, 1, 1],
 		],
 		"platforms": [
@@ -113,8 +115,10 @@ static func _level2() -> Dictionary:
 			[0, 0, W, 2],
 			[0, 2, 1, 11],
 			[W - 1, 2, 1, 11],
+			# stepped both sides so patrols can cross (see level 1)
 			[38, 12, 1, 1],
 			[39, 11, 1, 2],
+			[40, 12, 1, 1],
 		],
 		"platforms": [
 			[12, 8, 9], [30, 7, 8], [50, 8, 10],
@@ -324,7 +328,8 @@ static func _level5() -> Dictionary:
 			[0, 13, W, 4],
 			[0, 2, 1, 11],
 			[W - 1, 2, 1, 11],
-			[18, 12, 2, 1],
+			# stepped both sides so patrols can cross (see level 1)
+			[18, 12, 3, 1],
 			[19, 11, 1, 1],
 			[40, 12, 2, 1],
 		],

@@ -35,7 +35,9 @@ var patrol_min := 0.0
 var patrol_max := 0.0
 
 var state: State = State.PATROL
-var facing := 1
+var facing := 1                     ## where the eyes point right now
+var patrol_dir := 1                 ## which way along the beat; the glance
+                                    ## animation must never touch this
 var awareness := 0.0                ## 0 = oblivious, 1 = fully alerted
 var can_see_player := false
 var blocked_until := 0.0            ## set by the wet-floor sign
@@ -185,7 +187,7 @@ func _resume_patrol() -> void:
 func _act(delta: float) -> void:
 	match state:
 		State.PATROL:
-			_target.x = patrol_max if facing > 0 else patrol_min
+			_target.x = patrol_max if patrol_dir > 0 else patrol_min
 			if absf(global_position.x - _target.x) < 4.0:
 				state = State.LOOK
 				_look_timer = randf_range(0.9, 1.7)
@@ -207,7 +209,18 @@ func _act(delta: float) -> void:
 					# drains, rather than snapping straight back to patrolling.
 					_look_timer = 0.6
 				else:
-					facing = -facing if absf(global_position.x - _target.x) < 6.0 else facing
+					# Turn around based on which end of the beat we are on.
+					# `facing` cannot be trusted here: the glance animation in
+					# _move rewrites it twice a second, so flipping it could
+					# aim us back at the end we were already standing on and
+					# park the NPC in a permanent look-left-look-right loop.
+					if global_position.x >= patrol_max - 8.0:
+						patrol_dir = -1
+					elif global_position.x <= patrol_min + 8.0:
+						patrol_dir = 1
+					else:
+						patrol_dir = -patrol_dir
+					facing = patrol_dir
 					_resume_patrol()
 
 		State.INVESTIGATE:

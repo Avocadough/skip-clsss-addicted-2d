@@ -270,3 +270,45 @@ func _check_reachable(d: Dictionary) -> void:
 			_bad(d, "platform [%d,%d,%d] is stranded - no way up to it" % [p[0], p[1], p[2]])
 
 	print("    reachable standing tiles: %d" % seen.size())
+	_check_patrols(d, solid, plat)
+
+## NPCs only walk and hop one tile (velocity -230 against gravity 980 clears
+## about 27px). Terrain the player can vault therefore still walls them in, and
+## a beat cut in half by such a block leaves an NPC shoving at it forever.
+func _check_patrols(d: Dictionary, solid: Dictionary, plat: Dictionary) -> void:
+	for n in d.get("npcs", []):
+		# A staircase can be climbable one way and a sheer wall the other, so
+		# both directions have to be walked.
+		for forward in [true, false]:
+			var stuck := _walk_beat(d, solid, plat, n, forward)
+			if stuck >= 0:
+				_bad(d, "npc %s cannot walk %s past x=%d: its beat %s is cut in two"
+					% [n["type"], "right" if forward else "left", stuck, n["patrol"]])
+				break
+
+## Walks a patrol range one tile at a time, allowing a single-tile hop up and
+## a fall of any depth. Returns the x it gets stuck at, or -1 if the beat is
+## walkable end to end.
+func _walk_beat(d: Dictionary, solid: Dictionary, plat: Dictionary,
+		n: Dictionary, forward: bool) -> int:
+	var W: int = d["width"]
+	var H: int = d["height"]
+	var lo: int = n["patrol"][0]
+	var hi: int = n["patrol"][1]
+	var cur: int = n["y"] - 1
+	var xs := range(lo, hi + 1) if forward else range(hi, lo - 1, -1)
+	for x in xs:
+		var found := -1
+		if _standable(solid, plat, W, H, x, cur):
+			found = cur
+		elif _standable(solid, plat, W, H, x, cur - 1):
+			found = cur - 1                      # hop up a single tile
+		else:
+			for below in range(cur + 1, H):      # or drop to whatever is under
+				if _standable(solid, plat, W, H, x, below):
+					found = below
+					break
+		if found < 0:
+			return x
+		cur = found
+	return -1
