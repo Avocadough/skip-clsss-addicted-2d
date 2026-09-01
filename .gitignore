@@ -17,3 +17,6 @@ game/preview.png
 # Design documents stay local, not published
 *.docx
 *.pdf
+
+# Dev screenshots
+game/shots/

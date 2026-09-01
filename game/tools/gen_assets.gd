@@ -407,12 +407,14 @@ func draw_tile(img: Image, ox: int, name: String) -> void:
 			rect(img, ox + 3, 2, 10, 2, METAL_D)
 			rect(img, ox + 3, 10, 10, 2, METAL_D)
 		"bg_wall":
-			var top := Color8(0x4c, 0x44, 0x63)
-			var bot := Color8(0x3a, 0x33, 0x4d)
-			rect(img, ox, 0, TS, 10, top)
-			hline(img, ox, 10, TS, CREAM_D.darkened(0.35))
-			rect(img, ox, 11, TS, 5, bot)
-			speckle(img, ox, 0, TS, 10, top.lightened(0.06), 44, 5)
+			# Flat plaster with a faint vertical seam. Any horizontal detail
+			# here would repeat every 16px and read as stripes across the wall,
+			# so the wainscot line is painted once by the level builder instead.
+			var base := Color8(0x45, 0x3d, 0x5b)
+			rect(img, ox, 0, TS, TS, base)
+			vline(img, ox, 0, TS, base.darkened(0.12))
+			speckle(img, ox, 0, TS, TS, base.lightened(0.05), 44, 6)
+			speckle(img, ox, 0, TS, TS, base.darkened(0.08), 45, 4)
 		"bg_window":
 			rect(img, ox, 0, TS, TS, BLUEGRAY.lightened(0.25))
 			rect(img, ox, 0, TS, 2, WOOD_D)
