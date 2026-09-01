@@ -8,7 +8,7 @@
 
 ### เล่นเกมออนไลน์
 
-### ▶ https://napat-ice.github.io/Project_GameDev_midterm/
+### ▶ https://napat-ice.github.io/Midterm_Project_GameDev/
 
 เล่นได้เลยบนเบราว์เซอร์ ไม่ต้องติดตั้งอะไร (แนะนำ Chrome / Edge / Firefox บนคอมพิวเตอร์)
 
