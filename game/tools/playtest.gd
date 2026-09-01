@@ -106,6 +106,43 @@ func _run() -> void:
 			_ok(lv.phase == 2, "being watched in the open loses the stage")
 		await _drop(lv)
 
+		# ------------------------ a watcher must calm down once you are gone ---
+		lv = await _load_level(idx)
+		var w = null
+		for n in lv.get_tree().get_nodes_in_group("npc"):
+			if n.stats["catch"] == "lose" and w == null:
+				w = n
+			elif n.stats["catch"] == "dialogue":
+				n.queue_free()
+		await _steps(2)
+		if w != null:
+			# let him notice
+			for i in 150:
+				lv.player.global_position = w.global_position + Vector2(w.facing * 40.0, 0)
+				lv.suspicion = 0.0
+				if w.awareness > 0.9:
+					break
+				await physics_frame
+			var noticed: bool = w.awareness > 0.5 or w.state != 0
+			_ok(noticed, "watcher notices the player (awareness %.2f)" % w.awareness)
+
+			# now vanish and let him search, then settle
+			lv.player.set_hidden(true)
+			var calmed := false
+			var took := 0.0
+			for i in 1200:
+				lv.suspicion = 0.0
+				await physics_frame
+				took += 1.0 / 60.0
+				# 0 is Npc.State.PATROL, spelled as a literal so this entry
+				# script never pulls npc.gd into its own compile pass.
+				if w.state == 0 and w.awareness <= 0.15:
+					calmed = true
+					break
+			_ok(calmed, "watcher returns to patrolling after losing him (%.1fs)" % took)
+			_ok(lv.phase == 0, "no loss was triggered while he searched")
+		await _drop(lv)
+
 		# -------------------------------------------- losing on the clock ---
 		lv = await _load_level(idx)
 		lv.time_left = 0.02

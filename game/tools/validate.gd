@@ -115,6 +115,158 @@ func _check(d: Dictionary) -> void:
 			gaps.append(x)
 	if gaps.size() > 0:
 		_bad(d, "columns with no ground at all: %s" % [gaps])
+	_check_reachable(d)
 	print("    npcs=%d cameras=%d items=%d hides=%d" % [
 		d.get("npcs", []).size(), d.get("cameras", []).size(),
 		d.get("items", []).size(), d.get("hides", []).size()])
+
+# ---------------------------------------------------------------------------
+#  Reachability
+#
+#  Walking a rectangle list is not enough: a ledge can be perfectly well formed
+#  and still be impossible to stand on. This floods the level from the spawn
+#  using the moves the player actually has, then checks the goal and every item
+#  against what it found.
+#
+#  The player jumps 272px/s against 980 gravity => ~37px of rise, a shade over
+#  two tiles. The tables below stay a little under that on purpose, so anything
+#  this reports as reachable is comfortably reachable in practice.
+# ---------------------------------------------------------------------------
+
+const JUMP_REACH := {0: 4, 1: 3, 2: 2}     # rise in tiles -> how far across
+const FALL_DRIFT := 3                       # how far you can steer while falling
+
+func _is_solid(m: Dictionary, x: int, y: int) -> bool:
+	return m.has(Vector2i(x, y))
+
+## A cell you can stand in: floor underfoot, and two clear cells for the body.
+func _standable(solid: Dictionary, plat: Dictionary, W: int, H: int, x: int, y: int) -> bool:
+	if x < 0 or x >= W or y < 1 or y >= H:
+		return false
+	if _is_solid(solid, x, y) or _is_solid(solid, x, y - 1):
+		return false
+	return _is_solid(solid, x, y + 1) or plat.has(Vector2i(x, y))or plat.has(Vector2i(x, y + 1))
+
+func _reachable_set(d: Dictionary, solid: Dictionary, plat: Dictionary, lad: Dictionary) -> Dictionary:
+	var W: int = d["width"]
+	var H: int = d["height"]
+	# Level data quotes the tile the feet rest ON, so the body actually occupies
+	# the cell one row above it. That is the cell this flood works in.
+	var start := Vector2i(d["spawn"][0], d["spawn"][1] - 1)
+
+	var seed_cell := start
+	if not _standable(solid, plat, W, H, seed_cell.x, seed_cell.y):
+		for y in range(start.y, H):
+			if _standable(solid, plat, W, H, start.x, y):
+				seed_cell = Vector2i(start.x, y)
+				break
+
+	var seen := {}
+	var queue: Array[Vector2i] = [seed_cell]
+	seen[seed_cell] = true
+
+	while not queue.is_empty():
+		var c: Vector2i = queue.pop_front()
+		var nexts: Array[Vector2i] = []
+
+		# walk
+		for dx in [-1, 1]:
+			nexts.append(Vector2i(c.x + dx, c.y))
+
+		# jump, including a flat gap hop
+		for rise in JUMP_REACH:
+			var span: int = JUMP_REACH[rise]
+			for dx in range(-span, span + 1):
+				nexts.append(Vector2i(c.x + dx, c.y - rise))
+
+		# step off an edge and fall to whatever is underneath
+		for dx in range(-FALL_DRIFT, FALL_DRIFT + 1):
+			var nx: int = c.x + dx
+			for ny in range(c.y + 1, H):
+				if _standable(solid, plat, W, H, nx, ny):
+					nexts.append(Vector2i(nx, ny))
+					break
+				if _is_solid(solid, nx, ny):
+					break
+
+		# ladders and climbable fences are vertical corridors
+		if lad.has(c) or lad.has(Vector2i(c.x, c.y - 1)):
+			for ny in H:
+				if lad.has(Vector2i(c.x, ny)):
+					for dx in [-1, 0, 1]:
+						nexts.append(Vector2i(c.x + dx, ny))
+						nexts.append(Vector2i(c.x + dx, ny + 1))
+		for dx in [-1, 1]:
+			var side := Vector2i(c.x + dx, c.y)
+			if lad.has(side):
+				for ny in H:
+					if lad.has(Vector2i(side.x, ny)):
+						nexts.append(Vector2i(side.x, ny))
+
+		for n in nexts:
+			if seen.has(n):
+				continue
+			if not _standable(solid, plat, W, H, n.x, n.y):
+				continue
+			seen[n] = true
+			queue.append(n)
+	return seen
+
+func _check_reachable(d: Dictionary) -> void:
+	var W: int = d["width"]
+	var H: int = d["height"]
+	var solid := {}
+	for r in d["solids"]:
+		for y in range(r[1], r[1] + r[3]):
+			for x in range(r[0], r[0] + r[2]):
+				solid[Vector2i(x, y)] = true
+	var plat := {}
+	for p in d.get("platforms", []):
+		for x in range(p[0], p[0] + p[2]):
+			plat[Vector2i(x, p[1])] = true
+	var lad := {}
+	for l in d.get("ladders", []):
+		for y in range(l[1], l[1] + l[2]):
+			lad[Vector2i(l[0], y)] = true
+
+	var seen := _reachable_set(d, solid, plat, lad)
+
+	# --- goal ---------------------------------------------------------------
+	var g := Vector2i(d["goal"][0], d["goal"][1] - 1)
+	var goal_ok := false
+	for dx in [-1, 0, 1]:
+		if seen.has(Vector2i(g.x + dx, g.y)):
+			goal_ok = true
+	if not goal_ok:
+		_bad(d, "the goal at (%d,%d) cannot be walked to from the spawn" % [d["goal"][0], d["goal"][1]])
+
+	# --- items --------------------------------------------------------------
+	# You collect an item by touching it, so any standing spot whose body
+	# overlaps the item's tile counts.
+	for it in d.get("items", []):
+		var ix: int = it["x"]
+		var iy: int = it["y"]
+		var ok := false
+		for cell in seen:
+			if absi(cell.x - ix) <= 1 and iy >= cell.y - 2 and iy <= cell.y:
+				ok = true
+				break
+		if not ok and (lad.has(Vector2i(ix, iy)) or lad.has(Vector2i(ix, iy + 1))):
+			for cell in seen:
+				if cell.x == ix:
+					ok = true
+					break
+		if not ok:
+			_bad(d, "item '%s' at (%d,%d) can never be reached" % [it["id"], ix, iy])
+
+	# --- platforms nobody can climb onto -----------------------------------
+	for p in d.get("platforms", []):
+		var any := false
+		for x in range(p[0], p[0] + p[2]):
+			if seen.has(Vector2i(x, p[1])):
+				any = true
+				break
+		if not any:
+			_bad(d, "platform [%d,%d,%d] is stranded - no way up to it" % [p[0], p[1], p[2]])
+
+	print("    reachable standing tiles: %d" % seen.size())

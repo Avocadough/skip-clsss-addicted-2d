@@ -23,6 +23,11 @@ const STATS := {
 const EYE_HEIGHT := -15.0
 const RAY_COUNT := 13
 const CATCH_DIST := 15.0
+## Hard ceiling on a search. Without it an NPC whose target sits behind a wall
+## or outside its beat walks at the obstacle forever and never calms down.
+const GIVE_UP_TIME := 6.0
+## Below this, the NPC considers the matter closed and goes back to its round.
+const CALM_LEVEL := 0.12
 
 var kind := "teacher"
 var stats: Dictionary
@@ -41,6 +46,7 @@ var _cone: Polygon2D
 var _sprite: Sprite2D
 var _bubble: Sprite2D
 var _look_timer := 0.0
+var _give_up := 0.0
 var _lost_timer := 0.0
 var _anim_t := 0.0
 var _target := Vector2.ZERO
@@ -160,8 +166,20 @@ func block_path(duration: float) -> void:
 
 func _go_investigate(pos: Vector2) -> void:
 	state = State.INVESTIGATE
-	_target = Vector2(pos.x, global_position.y)
+	# Clamped to this NPC's own beat: a noise from across the level used to
+	# send them walking into a wall they could never arrive at, which left
+	# them searching forever instead of calming down.
+	_target = Vector2(clampf(pos.x, patrol_min, patrol_max), global_position.y)
 	_look_timer = 2.2
+	_give_up = GIVE_UP_TIME
+
+## Drops all suspicion and returns to the normal back-and-forth round.
+func _resume_patrol() -> void:
+	state = State.PATROL
+	awareness = 0.0
+	_look_timer = 0.0
+	_give_up = 0.0
+	_target.x = clampf(global_position.x, patrol_min, patrol_max)
 
 # ------------------------------------------------------------------- brain --
 func _act(delta: float) -> void:
@@ -184,18 +202,24 @@ func _act(delta: float) -> void:
 			elif _look_timer <= 0.0:
 				if can_see_player:
 					_look_timer = 0.5
+				elif awareness > CALM_LEVEL:
+					# Still uneasy — glance around once more while the feeling
+					# drains, rather than snapping straight back to patrolling.
+					_look_timer = 0.6
 				else:
 					facing = -facing if absf(global_position.x - _target.x) < 6.0 else facing
-					state = State.PATROL
+					_resume_patrol()
 
 		State.INVESTIGATE:
+			_give_up -= delta
 			if awareness >= 1.0:
 				_enter_alert()
+			elif _give_up <= 0.0 or awareness <= CALM_LEVEL:
+				_resume_patrol()
 			elif absf(global_position.x - _target.x) < 6.0:
 				_look_timer -= delta
 				if _look_timer <= 0.0:
-					state = State.PATROL
-					_target.x = clampf(global_position.x, patrol_min, patrol_max)
+					_resume_patrol()
 
 		State.ALERT:
 			if can_see_player:
@@ -283,7 +307,6 @@ func _move(delta: float) -> void:
 
 func _animate(delta: float) -> void:
 	_sprite.flip_h = facing < 0
-	_sprite.offset.x = 8 if _sprite.flip_h else -8
 	if absf(velocity.x) > 8.0:
 		_anim_t += delta * (11.0 if state == State.ALERT else 7.0)
 		_sprite.frame = 2 + (int(_anim_t) % 4)

@@ -189,9 +189,10 @@ func _can_stand() -> bool:
 	return space.intersect_shape(q, 1).is_empty()
 
 func _animate(delta: float, dir: float, running: bool) -> void:
+	# Sprite2D mirrors the frame inside its existing rect, so the offset must
+	# stay put — shifting it here used to teleport him a whole frame sideways
+	# every time he turned around.
 	sprite.flip_h = facing < 0
-	# flip_h pivots around the origin, so nudge the offset to keep him centred
-	sprite.offset.x = 8 if sprite.flip_h else -8
 
 	if not is_on_floor():
 		sprite.frame = 6 if velocity.y < 0.0 else 7
