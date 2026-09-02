@@ -4,7 +4,7 @@ extends SceneTree
 ## The synthesis used to run at start-up inside audio_manager.gd. Baking it to
 ## files instead means the sounds are real assets you can open, inspect or
 ## replace, and the game no longer spends time generating them on every launch.
-##   Godot.exe --headless --path game --script res://tools/gen_audio.gd
+##   Godot.exe --headless --path game --script res://tools/audio.gd
 
 const OUT := "res://assets/audio/"
 const SFX_RATE := 22050
@@ -71,7 +71,7 @@ func _save(stream: AudioStreamWAV, name: String) -> void:
 		print("  %-18s %5.2fs  %6.1f KB" % [name + ".wav", secs, stream.data.size() / 1024.0])
 
 # -------------------------------------------------------------------- sfx ---
-func _gen_sfx() -> void:
+func _render_sfx() -> void:
 	print("sound effects:")
 	var b: PackedFloat32Array
 
@@ -165,7 +165,7 @@ func _gen_sfx() -> void:
 	_save(_to_stream(b, SFX_RATE), "sfx_thud")
 
 # ------------------------------------------------------------------ music ---
-func _gen_music() -> void:
+func _render_music() -> void:
 	print("music:")
 	# ii-V-I-vi in C — warm, slightly wistful, loops seamlessly.
 	var chords := [
@@ -223,7 +223,7 @@ func _initialize() -> void:
 	_rng.seed = 20260901          # fixed, so rebuilding gives identical files
 	print("=== rendering audio for Skip Class Addicted ===")
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT))
-	_gen_sfx()
-	_gen_music()
+	_render_sfx()
+	_render_music()
 	print("=== done ===")
 	quit()

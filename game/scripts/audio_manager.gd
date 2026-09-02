@@ -1,10 +1,10 @@
 extends Node
 ## Plays the game's audio, which ships as real .wav files under assets/audio/.
 ##
-## Those files are rendered by tools/gen_audio.gd — a small synthesiser that
+## Those files are rendered by tools/audio.gd — a small synthesiser that
 ## builds the lo-fi chiptune loop and every effect from oscillators. Re-run it
 ## if you want to change how anything sounds:
-##   Godot.exe --headless --path game --script res://tools/gen_audio.gd
+##   Godot.exe --headless --path game --script res://tools/audio.gd
 
 const AUDIO_DIR := "res://assets/audio/"
 const VOICES := 8
@@ -40,7 +40,7 @@ func _ready() -> void:
 		if ResourceLoader.exists(path):
 			_sfx[name] = load(path)
 		else:
-			push_warning("missing sound: %s (run tools/gen_audio.gd)" % path)
+			push_warning("missing sound: %s (run tools/audio.gd)" % path)
 
 	var music_path := AUDIO_DIR + "music_lofi.wav"
 	if ResourceLoader.exists(music_path):
@@ -53,7 +53,7 @@ func _ready() -> void:
 		music.loop_end = music.data.size() / 2      # 16-bit mono
 		_music_player.stream = music
 	else:
-		push_warning("missing music: %s (run tools/gen_audio.gd)" % music_path)
+		push_warning("missing music: %s (run tools/audio.gd)" % music_path)
 
 # -------------------------------------------------------------------- api ---
 func play(name: String, pitch: float = 1.0, volume_db: float = 0.0) -> void:

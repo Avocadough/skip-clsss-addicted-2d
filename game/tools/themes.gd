@@ -2,7 +2,7 @@ extends SceneTree
 ## Per-stage art: a tile atlas and parallax backdrop for each of the five
 ## settings, so the hallway, cafeteria, library, sports field and back gate
 ## each read as their own place instead of sharing one wall.
-##   Godot.exe --headless --path game --script res://tools/gen_themes.gd
+##   Godot.exe --headless --path game --script res://tools/themes.gd
 
 const OUT := "res://assets/sprites/"
 const TS := 16
@@ -204,7 +204,7 @@ func draw_tile(img: Image, ox: int, role: String, th: Dictionary) -> void:
 			rect(cell, 15, 0, 1, TS, C(th, "fence"))
 			img.blit_rect(cell, Rect2i(0, 0, TS, TS), Vector2i(ox, 0))
 
-func gen_tiles() -> void:
+func draw_tiles() -> void:
 	print("tile atlases:")
 	for name in THEMES:
 		var th: Dictionary = THEMES[name]
@@ -445,7 +445,7 @@ func leaf() -> Image:
 	px(img, 2, 4, Color("5c7a3f"))
 	return img
 
-func gen_backdrops() -> void:
+func draw_backdrops() -> void:
 	print("backdrops:")
 	save_png(deco_hallway(THEMES["hallway"]), "bg_hallway_deco")
 	save_png(deco_cafeteria(THEMES["cafeteria"]), "bg_cafeteria_deco")
@@ -465,7 +465,7 @@ func gen_backdrops() -> void:
 
 func _initialize() -> void:
 	print("=== per-stage art ===")
-	gen_tiles()
-	gen_backdrops()
+	draw_tiles()
+	draw_backdrops()
 	print("=== done ===")
 	quit()

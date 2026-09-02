@@ -125,9 +125,9 @@ game/                     โปรเจกต์ Godot 4.7
     player.gd  npc.gd  cctv.gd  entities.gd
     ui/                   HUD เมนู บทสนทนา
   tools/                  สคริปต์สำหรับพัฒนา (ไม่รวมในตัวเกม)
-    gen_assets.gd         วาดตัวละคร ไอเทม ไอคอน จากกริดพิกเซล
-    gen_themes.gd         วาดกระเบื้องและฉากหลังเฉพาะของแต่ละด่าน
-    gen_audio.gd          สังเคราะห์เพลงและเสียงทั้งหมดออกเป็นไฟล์ .wav
+    assets.gd         วาดตัวละคร ไอเทม ไอคอน จากกริดพิกเซล
+    themes.gd         วาดกระเบื้องและฉากหลังเฉพาะของแต่ละด่าน
+    audio.gd          สังเคราะห์เพลงและเสียงทั้งหมดออกเป็นไฟล์ .wav
     validate.gd           ตรวจด่าน: ของฝังในกำแพง จุดที่เดินไปไม่ถึง
                           และเส้นทางเดินตรวจของ NPC ที่ถูกตัดขาด
     playtest.gd           ทดสอบเงื่อนไขชนะ/แพ้ทุกด่านอัตโนมัติ
@@ -142,11 +142,11 @@ docs/                     เว็บบิลด์ที่ GitHub Pages เ�
 
 ```bash
 # วาดสไปรต์ใหม่ทั้งหมด
-Godot_v4.7-stable_win64.exe --headless --path game --script res://tools/gen_assets.gd
-Godot_v4.7-stable_win64.exe --headless --path game --script res://tools/gen_themes.gd
+Godot_v4.7-stable_win64.exe --headless --path game --script res://tools/assets.gd
+Godot_v4.7-stable_win64.exe --headless --path game --script res://tools/themes.gd
 
 # สร้างไฟล์เสียงใหม่ทั้งหมด
-Godot_v4.7-stable_win64.exe --headless --path game --script res://tools/gen_audio.gd
+Godot_v4.7-stable_win64.exe --headless --path game --script res://tools/audio.gd
 
 # ตรวจด่านและทดสอบเงื่อนไขชนะ/แพ้
 Godot_v4.7-stable_win64.exe --headless --path game --script res://tools/validate.gd
@@ -163,20 +163,20 @@ Godot_v4.7-stable_win64.exe --headless --path game --export-release "Web" "../do
 
 ## หมายเหตุด้านงานภาพและเสียง
 
-สไปรต์ทุกชิ้นในเกมนี้วาดขึ้นเองด้วยสคริปต์ `tools/gen_assets.gd` จากกริดพิกเซล
+สไปรต์ทุกชิ้นในเกมนี้วาดขึ้นเองด้วยสคริปต์ `tools/assets.gd` จากกริดพิกเซล
 ทำให้ตัวละคร ฉาก ไอเทม และไอคอนทั้งหมดใช้พาเลตต์เดียวกัน
 (ม่วงพาสเทล ฟ้าอมเทา เหลืองนวล ชมพูอ่อน เขียวหม่น ตามที่ระบุในเอกสารออกแบบ)
 
-ส่วน `tools/gen_themes.gd` วาดของเฉพาะด่าน — ชุดกระเบื้อง 5 ชุดที่ใช้สีคนละโทน
+ส่วน `tools/themes.gd` วาดของเฉพาะด่าน — ชุดกระเบื้อง 5 ชุดที่ใช้สีคนละโทน
 และฉากหลังแบบพารัลแลกซ์ของแต่ละที่ (ชั้นหนังสือในห้องสมุด เคาน์เตอร์อาหารใน
 โรงอาหาร ประตูห้องเรียนในทางเดิน ท้องฟ้ากลางวันที่สนาม พระอาทิตย์ตกที่ประตูหลัง)
 บวกเมฆลอย ฝุ่นในลำแสง และใบไม้ปลิว
 
-เพลงและเอฟเฟกต์เสียงทั้งหมดสังเคราะห์ขึ้นเองด้วยสคริปต์ `tools/gen_audio.gd`
+เพลงและเอฟเฟกต์เสียงทั้งหมดสังเคราะห์ขึ้นเองด้วยสคริปต์ `tools/audio.gd`
 (lo-fi chiptune: คอร์ด Dm7–G7–Cmaj7–Am7 ที่ 76 BPM พร้อมเบส ลีด ไฮแฮต
 และเสียงแตกแบบแผ่นเสียง) แล้วเรนเดอร์ออกมาเป็นไฟล์ `.wav` เก็บไว้ใน
 `game/assets/audio/` — เพลง 1 ไฟล์ กับเอฟเฟกต์อีก 16 ไฟล์ รวมประมาณ 690 KB
-ถ้าอยากเปลี่ยนเสียง แก้ค่าใน `gen_audio.gd` แล้วรันใหม่ได้เลย
+ถ้าอยากเปลี่ยนเสียง แก้ค่าใน `audio.gd` แล้วรันใหม่ได้เลย
 
 **ฟอนต์:** Noto Sans Thai — © The Noto Project Authors, ใช้ภายใต้ SIL Open Font License 1.1
 (ดู `game/assets/fonts/OFL.txt`)

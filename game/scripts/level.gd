@@ -6,7 +6,7 @@ extends Node2D
 enum Phase { PLAY, WON, LOST }
 
 const TILE := 16
-# atlas column of each tile in assets/sprites/tiles.png
+# atlas column of each tile in assets/sprites/tiles_<theme>.png
 const T_FLOOR_TOP := 0
 const T_FLOOR_FILL := 1
 const T_WALL := 2

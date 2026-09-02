@@ -13,7 +13,7 @@ func _initialize() -> void:
 		out.blit_rect(im, Rect2i(Vector2i.ZERO, im.get_size()), Vector2i(0, y))
 		y += im.get_height()
 	# tiles + a row of items underneath
-	var t := Image.load_from_file(dir + "tiles.png")
+	var t := Image.load_from_file(dir + "tiles_hallway.png")
 	t.resize(t.get_width() * scale, t.get_height() * scale, Image.INTERPOLATE_NEAREST)
 	out.blit_rect(t, Rect2i(Vector2i.ZERO, t.get_size()), Vector2i(0, y))
 	y += t.get_height() + 8

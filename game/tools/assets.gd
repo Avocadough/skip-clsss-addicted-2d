@@ -3,7 +3,7 @@ extends SceneTree
 #  Asset generator for "Skip Class Addicted / เสพติดการโดดเรียน!"
 #  Draws every sprite in the game from compact pixel grids so the whole game
 #  shares one palette and one art style.
-#  Run:  Godot.exe --headless --path game --script res://tools/gen_assets.gd
+#  Run:  Godot.exe --headless --path game --script res://tools/assets.gd
 # ============================================================================
 
 const OUT := "res://assets/sprites/"
@@ -285,7 +285,7 @@ func make_character(pal: Dictionary, hair_style: String = "short") -> Image:
 		sheet.blit_rect(f, Rect2i(0, 0, CELL_W, CELL_H), Vector2i(i * CELL_W, 0))
 	return sheet
 
-func gen_characters() -> void:
+func draw_characters() -> void:
 	print("characters:")
 	# น็อต - the player. Thai school uniform: white shirt, navy shorts.
 	save_png(make_character({
@@ -458,7 +458,7 @@ func draw_tile(img: Image, ox: int, name: String) -> void:
 			rect(cell, 15, 0, 1, TS, METAL)
 			img.blit_rect(cell, Rect2i(0, 0, TS, TS), Vector2i(ox, 0))
 
-func gen_tiles() -> void:
+func draw_tiles() -> void:
 	print("tiles:")
 	var img := new_img(TS * TILE_NAMES.size(), TS)
 	for i in TILE_NAMES.size():
@@ -808,7 +808,7 @@ func fx_dust() -> Image:
 	return sheet
 
 # ------------------------------------------------------------ backgrounds ---
-func gen_backgrounds() -> void:
+func draw_backgrounds() -> void:
 	print("backgrounds:")
 	# Early-morning sky: deep purple up top fading to warm cream at the horizon,
 	# which is the palette the design document calls for.
@@ -864,7 +864,7 @@ func gen_backgrounds() -> void:
 	save_png(trees, "bg_trees")
 
 # ============================================================================
-func gen_props_items() -> void:
+func draw_props_and_items() -> void:
 	print("props:")
 	save_png(prop_locker(), "prop_locker")
 	save_png(prop_desk(), "prop_desk")
@@ -901,9 +901,9 @@ func gen_props_items() -> void:
 func _initialize() -> void:
 	print("=== generating art for Skip Class Addicted ===")
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT))
-	gen_characters()
-	gen_tiles()
-	gen_props_items()
-	gen_backgrounds()
+	draw_characters()
+	draw_tiles()
+	draw_props_and_items()
+	draw_backgrounds()
 	print("=== done ===")
 	quit()
