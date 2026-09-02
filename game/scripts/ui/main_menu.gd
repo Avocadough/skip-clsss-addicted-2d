@@ -40,7 +40,7 @@ func _ready() -> void:
 	var play := UI.button("เริ่มเล่น  (ด่าน %d)" % next_level, 16)
 	play.pressed.connect(func():
 		Game.current_level = next_level
-		Fader.goto("res://scenes/level.tscn"))
+		Fader.goto(LevelData.scene_path(next_level)))
 	col.add_child(play)
 
 	var sel := UI.button("เลือกด่าน", 15)

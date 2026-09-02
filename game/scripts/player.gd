@@ -29,9 +29,10 @@ const NOISE_WALK := 58.0
 const NOISE_LAND := 96.0
 const NOISE_IMPACT := 230.0     ## being knocked flat: heard right across a stage
 
-var sprite: Sprite2D
+@onready var sprite: Sprite2D = $Sprite
+@onready var camera: Camera2D = $Camera
 var _shape: CollisionShape2D
-var _rect_stand := RectangleShape2D.new()
+var _rect_stand: RectangleShape2D
 var _rect_crouch := RectangleShape2D.new()
 
 var facing := 1
@@ -55,23 +56,11 @@ var _frozen := false
 
 func _ready() -> void:
 	add_to_group("player")
-	collision_layer = 2
-	collision_mask = 1
-
-	_rect_stand.size = Vector2(10, 20)
+	# The body, the hit box and the sprite all come from player.tscn; the only
+	# shape built here is the short one swapped in while crouching.
+	_shape = $Shape
+	_rect_stand = _shape.shape as RectangleShape2D
 	_rect_crouch.size = Vector2(10, 11)
-
-	_shape = CollisionShape2D.new()
-	_shape.shape = _rect_stand
-	_shape.position = Vector2(0, -10)
-	add_child(_shape)
-
-	sprite = Sprite2D.new()
-	sprite.texture = load("res://assets/sprites/char_not.png")
-	sprite.hframes = 11
-	sprite.centered = false
-	sprite.offset = Vector2(-8, -22)
-	add_child(sprite)
 
 func freeze() -> void:
 	_frozen = true

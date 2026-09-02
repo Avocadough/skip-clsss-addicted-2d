@@ -1,0 +1,22 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/entities/hide_spot.gd" id="1_3ntgy"]
+[ext_resource type="Texture2D" path="res://assets/sprites/prop_locker.png" id="2_eerro"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tytw2"]
+size = Vector2(16, 28)
+
+[node name="HideSpot" type="Area2D" unique_id=2095681648]
+collision_layer = 8
+collision_mask = 2
+script = ExtResource("1_3ntgy")
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=792817491]
+z_index = -1
+texture = ExtResource("2_eerro")
+centered = false
+offset = Vector2(-8, -28)
+
+[node name="Shape" type="CollisionShape2D" parent="." unique_id=671106558]
+position = Vector2(0, -14)
+shape = SubResource("RectangleShape2D_tytw2")

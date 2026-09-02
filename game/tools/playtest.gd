@@ -25,7 +25,7 @@ func _steps(n: int) -> void:
 func _load_level(idx: int) -> Node:
 	root.get_node("Game").current_level = idx
 	paused = false          # never inherit a pause from the previous case
-	var lv: Node = load("res://scenes/level.tscn").instantiate()
+	var lv: Node = load(LevelData.scene_path(idx)).instantiate()
 	root.add_child(lv)
 	await _steps(4)
 	return lv

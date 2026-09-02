@@ -112,29 +112,59 @@
 
 ## โครงสร้างโปรเจกต์
 
+แต่ละด่านเป็น **ไฟล์ `.tscn` จริง** เปิดในหน้า 2D ของ Godot แล้วเห็นฉากทั้งด่าน
+ลากแก้ได้ทันที ไม่ต้องแตะโค้ด — พื้นเป็น `TileMapLayer` วาดด้วย TileMap editor ได้
+ครูแต่ละคนเป็น node ที่มี `kind` กับระยะเดินตรวจให้ตั้งใน Inspector
+
 ```
 game/                     โปรเจกต์ Godot 4.7
   assets/sprites/         สไปรต์ทั้งหมด (สร้างด้วยสคริปต์)
   assets/audio/           เพลง 1 ไฟล์ + เอฟเฟกต์เสียง 16 ไฟล์ (.wav)
   assets/fonts/           Noto Sans Thai (SIL OFL)
+  resources/              ชุดกระเบื้อง 1 ชุดต่อ 1 ธีมด่าน (.tres)
+  scenes/
+    levels/               ด่านทั้ง 5 — level_01.tscn ... level_05.tscn
+    actors/               ตัวละครสำเร็จรูป: player, npc, cctv
+    props/                ของในด่านสำเร็จรูป: ไอเทม ที่ซ่อน ประตู ลูกบอล
+    main_menu / level_select / boot
   scripts/                ระบบเกมทั้งหมด
     game_state.gd         ความคืบหน้า ไอเทม บทสนทนา (autoload)
     audio_manager.gd      โหลดและเล่นไฟล์เสียง (autoload)
-    level_data.gd         ข้อมูลด่านทั้ง 5
-    level.gd              สร้างด่านและคุมลูปเกม
-    player.gd  npc.gd  cctv.gd  entities.gd
+    level_data.gd         ค่าประจำด่าน (เวลา ชื่อ เป้าหมาย) + ผังตั้งต้นสำหรับ bake
+    level.gd              คุมลูปเกม (ไม่ได้สร้างฉากเอง อ่านจาก .tscn)
+    player.gd  npc.gd  cctv.gd
+    entities/             ไอเทม ที่ซ่อน ประตู เป้าหมาย ลูกบอล โซนต่างๆ
+    fx/                   แถบฉากหลังแบบ parallax
     ui/                   HUD เมนู บทสนทนา
   tools/                  สคริปต์สำหรับพัฒนา (ไม่รวมในตัวเกม)
-    assets.gd         วาดตัวละคร ไอเทม ไอคอน จากกริดพิกเซล
-    themes.gd         วาดกระเบื้องและฉากหลังเฉพาะของแต่ละด่าน
-    audio.gd          สังเคราะห์เพลงและเสียงทั้งหมดออกเป็นไฟล์ .wav
-    validate.gd           ตรวจด่าน: ของฝังในกำแพง จุดที่เดินไปไม่ถึง
-                          และเส้นทางเดินตรวจของ NPC ที่ถูกตัดขาด
+    assets.gd             วาดตัวละคร ไอเทม ไอคอน จากกริดพิกเซล
+    themes.gd             วาดกระเบื้องและฉากหลังเฉพาะของแต่ละด่าน
+    audio.gd              สังเคราะห์เพลงและเสียงทั้งหมดออกเป็นไฟล์ .wav
+    bake.gd               สร้างไฟล์ฉากด่านทั้งหมดจากผังใน level_data.gd
+    validate.gd           ตรวจด่าน (อ่านจากไฟล์ฉากจริง): ของฝังในกำแพง
+                          จุดที่เดินไปไม่ถึง เส้นทางเดินตรวจของ NPC ที่ถูกตัดขาด
     playtest.gd           ทดสอบเงื่อนไขชนะ/แพ้ทุกด่านอัตโนมัติ
     shot.gd               จับภาพหน้าจอทุกฉาก
     fliptest.gd           วัดตำแหน่งสไปรต์ตอนหันซ้าย/ขวา
 docs/                     เว็บบิลด์ที่ GitHub Pages เสิร์ฟ
 ```
+
+### แก้ด่าน
+
+เปิด `game/scenes/levels/level_01.tscn` ใน Godot แล้วแก้ได้เลย:
+
+| อยากทำอะไร | ทำยังไง |
+|---|---|
+| เพิ่ม/ลบพื้น | เลือก `SolidTiles` แล้ววาดด้วย TileMap editor |
+| ย้ายครู | ลาก node ในหน้า 2D และตั้ง `patrol_min` / `patrol_max` ใน Inspector |
+| เปลี่ยนครูเป็น รปภ. | เลือก node แล้วเปลี่ยน `kind` — สไปรต์เปลี่ยนตามเอง |
+| เพิ่มที่ซ่อน | ลาก `scenes/props/hide_spot.tscn` เข้ามา แล้วตั้ง `kind` |
+| เพิ่มไอเทม | ลาก `scenes/props/pickup.tscn` เข้ามา แล้วตั้ง `id` |
+
+แก้เสร็จรัน `validate.gd` เพื่อเช็คว่ายังเก็บของครบและครูยังเดินได้ตลอดเส้นทาง
+
+> `tools/bake.gd` เป็นตัวสร้างไฟล์ฉากพวกนี้ขึ้นมาครั้งแรกจากผังใน `level_data.gd`
+> **รันซ้ำเมื่อไหร่ ไฟล์ฉากจะถูกเขียนทับ** งานที่แก้ด้วยมือจะหายไปด้วย
 
 ### สร้างเกมเอง
 
@@ -147,6 +177,9 @@ Godot_v4.7-stable_win64.exe --headless --path game --script res://tools/themes.g
 
 # สร้างไฟล์เสียงใหม่ทั้งหมด
 Godot_v4.7-stable_win64.exe --headless --path game --script res://tools/audio.gd
+
+# สร้างไฟล์ฉากด่านใหม่ทั้งหมด (เขียนทับของเดิม)
+Godot_v4.7-stable_win64.exe --headless --path game --script res://tools/bake.gd
 
 # ตรวจด่านและทดสอบเงื่อนไขชนะ/แพ้
 Godot_v4.7-stable_win64.exe --headless --path game --script res://tools/validate.gd

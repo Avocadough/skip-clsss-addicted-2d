@@ -7,15 +7,18 @@ signal seeing(delta: float)
 
 const RAY_COUNT := 11
 
-var base_angle := 90.0
-var sweep := 45.0
-var view_range := 92.0
-var period := 4.5
-var phase := 0.0
+## Where the lens points at rest, and how far either side of that it swings.
+@export var base_angle := 90.0
+@export var sweep := 45.0
+@export var view_range := 92.0
+## Seconds for one full sweep, and an offset so a row of cameras can be set
+## out of step with each other.
+@export var period := 4.5
+@export var phase := 0.0
 
 var _player: Player
-var _cone: Polygon2D
-var _lamp: Sprite2D
+@onready var _cone: Polygon2D = $Cone
+@onready var _lamp: Sprite2D = $Lamp
 var _t := 0.0
 var _angle := 90.0
 var _alert_cooldown := 0.0
@@ -30,24 +33,8 @@ func setup(cfg: Dictionary) -> void:
 
 func _ready() -> void:
 	add_to_group("cctv")
+	# Cone, housing and status lamp all come from cctv.tscn.
 	_t = phase
-
-	_cone = Polygon2D.new()
-	_cone.color = Color(1.0, 0.45, 0.45, 0.14)
-	_cone.z_index = -1
-	add_child(_cone)
-
-	var body := Sprite2D.new()
-	body.texture = load("res://assets/sprites/prop_cctv.png")
-	body.centered = true
-	add_child(body)
-
-	# blinking status light so a live camera reads at a glance
-	_lamp = Sprite2D.new()
-	_lamp.texture = load("res://assets/sprites/fx_alert.png")
-	_lamp.position = Vector2(0, -16)
-	_lamp.visible = false
-	add_child(_lamp)
 
 func set_player(p: Player) -> void:
 	_player = p

@@ -1,0 +1,21 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/entities/goal_zone.gd" id="1_5q8hm"]
+[ext_resource type="Texture2D" path="res://assets/sprites/prop_safe_zone.png" id="2_t5uer"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ep8oh"]
+size = Vector2(40, 40)
+
+[node name="Goal" type="Area2D" unique_id=1751911872]
+collision_layer = 8
+collision_mask = 2
+script = ExtResource("1_5q8hm")
+
+[node name="Shape" type="CollisionShape2D" parent="." unique_id=2030903073]
+position = Vector2(0, -20)
+shape = SubResource("RectangleShape2D_ep8oh")
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=2052091414]
+modulate = Color(0.55, 1, 0.7, 0.85)
+position = Vector2(0, -22)
+texture = ExtResource("2_t5uer")

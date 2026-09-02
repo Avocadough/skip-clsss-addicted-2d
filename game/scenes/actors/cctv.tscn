@@ -1,0 +1,20 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/cctv.gd" id="1_6nvxd"]
+[ext_resource type="Texture2D" path="res://assets/sprites/prop_cctv.png" id="2_hial4"]
+[ext_resource type="Texture2D" path="res://assets/sprites/fx_alert.png" id="3_3a7v0"]
+
+[node name="Cctv" type="Node2D" unique_id=1937650571]
+script = ExtResource("1_6nvxd")
+
+[node name="Cone" type="Polygon2D" parent="." unique_id=1265448658]
+z_index = -1
+color = Color(1, 0.45, 0.45, 0.14)
+
+[node name="Body" type="Sprite2D" parent="." unique_id=2114646955]
+texture = ExtResource("2_hial4")
+
+[node name="Lamp" type="Sprite2D" parent="." unique_id=129240366]
+visible = false
+position = Vector2(0, -16)
+texture = ExtResource("3_3a7v0")

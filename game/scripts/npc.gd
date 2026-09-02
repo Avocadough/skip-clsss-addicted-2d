@@ -29,10 +29,19 @@ const GIVE_UP_TIME := 6.0
 ## Below this, the NPC considers the matter closed and goes back to its round.
 const CALM_LEVEL := 0.12
 
-var kind := "teacher"
+## Which watcher this is. Everything else about them — speed, sight range,
+## cone width, what happens when they catch you — is looked up from STATS.
+@export_enum("teacher", "monitor", "guard", "librarian", "coach", "student", "student2")
+var kind := "teacher":
+	set(v):
+		kind = v
+		_apply_kind()
+
+## The beat they walk, in world pixels. Shown as two handles in the Inspector.
+@export var patrol_min := 0.0
+@export var patrol_max := 0.0
+
 var stats: Dictionary
-var patrol_min := 0.0
-var patrol_max := 0.0
 
 var state: State = State.PATROL
 var facing := 1                     ## where the eyes point right now
@@ -44,9 +53,9 @@ var blocked_until := 0.0            ## set by the wet-floor sign
 var distract_pos := Vector2.ZERO
 
 var _player: Player
-var _cone: Polygon2D
-var _sprite: Sprite2D
-var _bubble: Sprite2D
+@onready var _cone: Polygon2D = $Cone
+@onready var _sprite: Sprite2D = $Sprite
+@onready var _bubble: Sprite2D = $Bubble
 var _look_timer := 0.0
 var _give_up := 0.0
 var _lost_timer := 0.0
@@ -63,38 +72,21 @@ func setup(type: String, pmin: float, pmax: float) -> void:
 
 func _ready() -> void:
 	add_to_group("npc")
-	collision_layer = 4
-	collision_mask = 1
-	if stats.is_empty():
-		stats = STATS["teacher"]
-
-	var shape := CollisionShape2D.new()
-	var r := RectangleShape2D.new()
-	r.size = Vector2(10, 20)
-	shape.shape = r
-	shape.position = Vector2(0, -10)
-	add_child(shape)
-
-	_cone = Polygon2D.new()
-	_cone.color = Color(1.0, 0.90, 0.45, 0.16)
-	_cone.z_index = -1
-	add_child(_cone)
-
-	_sprite = Sprite2D.new()
-	_sprite.texture = load("res://assets/sprites/%s.png" % stats["sprite"])
-	_sprite.hframes = 11
-	_sprite.centered = false
-	_sprite.offset = Vector2(-8, -22)
-	add_child(_sprite)
-
+	stats = STATS.get(kind, STATS["teacher"])
+	# The body, cone, sprite and alert bubble are all in npc.tscn. Only the
+	# sprite sheet depends on which watcher this is, so that is set here — a
+	# `kind` changed by hand in the Inspector still gets the right art.
+	_apply_kind()
 	_tex_alert = load("res://assets/sprites/fx_alert.png")
 	_tex_question = load("res://assets/sprites/fx_question.png")
-	_bubble = Sprite2D.new()
-	_bubble.position = Vector2(0, -32)
-	_bubble.visible = false
-	add_child(_bubble)
-
 	_target = global_position
+
+## Puts the right sprite sheet on. Called on load and whenever `kind` changes,
+## so swapping a teacher for a guard in the Inspector swaps the art with it.
+func _apply_kind() -> void:
+	var s := get_node_or_null("Sprite") as Sprite2D
+	if s != null:
+		s.texture = load("res://assets/sprites/%s.png" % STATS.get(kind, STATS["teacher"])["sprite"])
 
 func set_player(p: Player) -> void:
 	_player = p

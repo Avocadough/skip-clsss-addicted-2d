@@ -121,7 +121,7 @@ func _make_card(index: int) -> Control:
 	if not locked:
 		b.pressed.connect(func():
 			Game.current_level = index
-			Fader.goto("res://scenes/level.tscn"))
+			Fader.goto(LevelData.scene_path(index)))
 	v.add_child(b)
 	card.set_meta("button", b)
 	return card

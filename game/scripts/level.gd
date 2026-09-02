@@ -1,73 +1,41 @@
 extends Node2D
-## Builds a stage from LevelData and runs the whole gameplay loop: the
-## countdown to the bell, the suspicion meter, item use, hiding, and the
-## win/lose conditions from section 4.3 of the design document.
+## Runs the gameplay loop of a stage: the countdown to the bell, the suspicion
+## meter, item use, hiding, and the win/lose conditions from section 4.3 of
+## the design document.
+##
+## The stage itself is not built here. Each one is laid out as a real scene in
+## scenes/levels/level_NN.tscn — tiles, teachers, hiding spots and all — and
+## this script picks it up and wires it together. Drag a new hiding spot into
+## the 2D editor and it works with no code change: what this script looks for
+## is the group each entity puts itself in, not a hard-coded list.
 
 enum Phase { PLAY, WON, LOST }
 
 const TILE := 16
-# atlas column of each tile in assets/sprites/tiles_<theme>.png
-const T_FLOOR_TOP := 0
-const T_FLOOR_FILL := 1
-const T_WALL := 2
-const T_WALL_TOP := 3
-const T_PLATFORM := 4
-const T_LADDER := 5
-const T_BG_WALL := 6
-const T_BG_WINDOW := 7
-const T_BG_TILE := 8
-const T_GRASS := 9
-const T_DIRT := 10
-const T_FENCE := 11
 
-## What each setting looks like. `layers` are parallax strips drawn behind the
-## world, slowest first; `factor` is how much of the camera's motion they take.
-## Indoor stages leave their upper wall unpainted so the strip shows through.
-const THEMES := {
-	"hallway": {
-		"outdoor": false, "base": "2b2440",
-		"layers": [{"tex": "bg_hallway_deco", "y": 14.0, "factor": 0.30, "h": 160.0}],
-		"motes": 26, "mote_tex": "fx_mote", "mote_tint": Color(1.0, 0.95, 0.8, 0.5),
-	},
-	"cafeteria": {
-		"outdoor": false, "base": "35291f",
-		"layers": [{"tex": "bg_cafeteria_deco", "y": 8.0, "factor": 0.30, "h": 160.0}],
-		"motes": 20, "mote_tex": "fx_mote", "mote_tint": Color(1.0, 0.85, 0.6, 0.45),
-	},
-	"library": {
-		"outdoor": false, "base": "241f18",
-		"layers": [{"tex": "bg_library_deco", "y": 6.0, "factor": 0.30, "h": 160.0}],
-		"motes": 34, "mote_tex": "fx_mote", "mote_tint": Color(1.0, 0.9, 0.65, 0.55),
-	},
-	"field": {
-		"outdoor": true, "base": "8cc4e0",
-		"layers": [
-			{"tex": "bg_field_sky", "y": 0.0, "factor": 0.04, "h": 270.0},
-			{"tex": "bg_field_far", "y": 56.0, "factor": 0.24, "h": 140.0},
-			{"tex": "bg_field_trees", "y": 146.0, "factor": 0.52, "h": 70.0},
-		],
-		"clouds": 5, "motes": 14, "mote_tex": "fx_leaf", "mote_tint": Color(1, 1, 1, 0.9),
-	},
-	"gate": {
-		"outdoor": true, "base": "6b4a7a",
-		"layers": [
-			{"tex": "bg_gate_sky", "y": 0.0, "factor": 0.04, "h": 270.0},
-			{"tex": "bg_gate_far", "y": 56.0, "factor": 0.24, "h": 140.0},
-			{"tex": "bg_gate_trees", "y": 146.0, "factor": 0.52, "h": 70.0},
-		],
-		"clouds": 4, "motes": 16, "mote_tex": "fx_leaf", "mote_tint": Color(0.9, 0.8, 0.6, 0.85),
-	},
+## What drifts about in each setting. Dust and clouds are spawned at run time
+## rather than baked, so a level scene stays readable in the Scene dock
+## instead of carrying thirty identical mote nodes.
+const AMBIENT := {
+	"hallway":   {"clouds": 0, "motes": 26, "tex": "fx_mote", "tint": Color(1.0, 0.95, 0.80, 0.50)},
+	"cafeteria": {"clouds": 0, "motes": 20, "tex": "fx_mote", "tint": Color(1.0, 0.85, 0.60, 0.45)},
+	"library":   {"clouds": 0, "motes": 34, "tex": "fx_mote", "tint": Color(1.0, 0.90, 0.65, 0.55)},
+	"field":     {"clouds": 5, "motes": 14, "tex": "fx_leaf", "tint": Color(1.0, 1.0, 1.0, 0.90)},
+	"gate":      {"clouds": 4, "motes": 16, "tex": "fx_leaf", "tint": Color(0.9, 0.80, 0.60, 0.85)},
 }
 
+## Which stage this scene is. Everything else about it — the clock, the
+## objective text, the ranking — is looked up from LevelData by this number.
+@export var level_num := 1
+
 var data: Dictionary
-var theme: Dictionary
 var outdoor := false
 var phase: Phase = Phase.PLAY
 
 var player: Player
 var hud: Hud
 var camera: Camera2D
-var goal: Entities.GoalZone
+var goal: GoalZone
 
 var suspicion := 0.0
 var time_left := 0.0
@@ -75,12 +43,9 @@ var time_total := 0.0
 var seen_count := 0
 var in_dialogue := false
 
-var _solid_cells := {}
-var _solid_layer: TileMapLayer
-var _bg_layer: TileMapLayer
 var _entities: Node2D
-var _bg_nodes: Array[Control] = []
 var _bg_canvas: CanvasLayer
+var _strips: Array[ParallaxStrip] = []
 var _fx_canvas: CanvasLayer
 var _clouds: Array[Sprite2D] = []
 var _motes: Array[Sprite2D] = []
@@ -93,21 +58,74 @@ var _bell_played := false
 
 # ===========================================================================
 func _ready() -> void:
-	data = LevelData.get_level(Game.current_level)
-	theme = THEMES.get(data["theme"], THEMES["hallway"])
-	outdoor = theme["outdoor"]
+	data = LevelData.get_level(level_num)
+	Game.current_level = level_num
+	outdoor = LevelData.THEMES.get(data["theme"], {}).get("outdoor", false)
 	time_total = data["time"]
 	time_left = time_total
 	Game.reset_run()
 
-	_build_background()
-	_build_tiles()
-	_entities = Node2D.new()
-	add_child(_entities)
-	_spawn_player()
-	_spawn_world()
-	_build_camera()
+	_collect_scene()
+	_wire_entities()
+	_setup_camera()
+	_build_ambient()
+	_build_hud()
 
+	Sfx.play_music()
+
+## Groups are tree-wide, and the stage being torn down is still in the tree
+## while the next one starts up — so a raw group lookup can hand this level
+## the previous one's teachers. Every lookup is scoped to our own branch.
+func _group(name: String) -> Array:
+	var out: Array = []
+	for n in get_tree().get_nodes_in_group(name):
+		if is_ancestor_of(n):
+			out.append(n)
+	return out
+
+## Picks the laid-out scene apart. The fixed furniture is fetched by path; the
+## things there can be any number of are fetched by group, so hand-placed ones
+## are picked up exactly like baked ones.
+func _collect_scene() -> void:
+	player = $Player
+	_entities = $Entities
+	_bg_canvas = $Background
+	for n in _bg_canvas.get_children():
+		if n is ParallaxStrip:
+			_strips.append(n as ParallaxStrip)
+	var goals := _group("goal")
+	goal = goals[0] as GoalZone if goals.size() > 0 else null
+
+func _wire_entities() -> void:
+	player.noise_mult = data.get("noise_mult", 1.0)
+	player.noise_made.connect(_on_noise)
+	player.item_used.connect(_on_item_used)
+	player.inventory_changed.connect(func(): hud.update_inventory(player.inventory, player.selected))
+	player.stunned.connect(func(): shake(4.5, 0.35))
+
+	for n in _group("npc"):
+		var npc := n as Npc
+		npc.set_player(player)
+		npc.caught.connect(_on_caught)
+		npc.confront.connect(_on_confront)
+
+	for c in _group("cctv"):
+		(c as Cctv).set_player(player)
+
+	for z in _group("classroom"):
+		(z as ClassroomZone).player_entered.connect(func():
+			if phase == Phase.PLAY:
+				_lose("เดินกลับเข้าห้องเรียนก่อนเวลา — แพ้ทันที!"))
+
+func _setup_camera() -> void:
+	camera = player.camera
+	camera.limit_left = 0
+	camera.limit_top = 0
+	camera.limit_right = data["width"] * TILE
+	camera.limit_bottom = data["height"] * TILE
+	camera.make_current()
+
+func _build_hud() -> void:
 	hud = Hud.new()
 	add_child(hud)
 	hud.set_level_info(data["num"], data["name"])
@@ -115,160 +133,16 @@ func _ready() -> void:
 	hud.update_inventory(player.inventory, player.selected)
 	hud.update_suspicion(0.0)
 
-	Sfx.play_music()
-
-# ---------------------------------------------------------------- tileset --
-func _make_tileset() -> TileSet:
-	var ts := TileSet.new()
-	ts.tile_size = Vector2i(TILE, TILE)
-	ts.add_physics_layer(0)
-	ts.set_physics_layer_collision_layer(0, 1)
-
-	var src := TileSetAtlasSource.new()
-	src.texture = load("res://assets/sprites/tiles_%s.png" % data["theme"])
-	src.texture_region_size = Vector2i(TILE, TILE)
-	for i in 12:
-		src.create_tile(Vector2i(i, 0))
-	ts.add_source(src, 0)
-
-	var full := PackedVector2Array([
-		Vector2(-8, -8), Vector2(8, -8), Vector2(8, 8), Vector2(-8, 8)])
-	for i in [T_FLOOR_TOP, T_FLOOR_FILL, T_WALL, T_WALL_TOP, T_GRASS, T_DIRT]:
-		var td := src.get_tile_data(Vector2i(i, 0), 0)
-		td.add_collision_polygon(0)
-		td.set_collision_polygon_points(0, 0, full)
-
-	# one-way ledge: only the top 5px collides, and only from above
-	var thin := PackedVector2Array([
-		Vector2(-8, -8), Vector2(8, -8), Vector2(8, -3), Vector2(-8, -3)])
-	var tdp := src.get_tile_data(Vector2i(T_PLATFORM, 0), 0)
-	tdp.add_collision_polygon(0)
-	tdp.set_collision_polygon_points(0, 0, thin)
-	tdp.set_collision_polygon_one_way(0, 0, true)
-	return ts
-
-func _build_tiles() -> void:
-	var ts := _make_tileset()
-	var W: int = data["width"]
-	var H: int = data["height"]
-
-	_bg_layer = TileMapLayer.new()
-	_bg_layer.tile_set = ts
-	_bg_layer.z_index = -6
-	# Only ever painted with wall / window / ladder / fence tiles, and none of
-	# those define a collision polygon, so this layer is decoration by nature.
-	add_child(_bg_layer)
-
-	_solid_layer = TileMapLayer.new()
-	_solid_layer.tile_set = ts
-	_solid_layer.z_index = -2
-	add_child(_solid_layer)
-
-	# Indoor stages tile only the wainscot band along the bottom. The wall
-	# above it is left bare on purpose so the parallax strip behind the world
-	# — bookcases, a serving counter, a row of classroom doors — shows through
-	# and each interior reads as its own room.
-	if not outdoor:
-		var wainscot: int = H - 6      # a low dado, so most of the backdrop shows
-		for y in range(wainscot, H):
-			for x in range(1, W - 1):
-				_bg_layer.set_cell(Vector2i(x, y), 0, Vector2i(T_BG_TILE, 0))
-		for w in data.get("windows", []):
-			for y in range(w[1], w[1] + w[3]):
-				for x in range(w[0], w[0] + w[2]):
-					_bg_layer.set_cell(Vector2i(x, y), 0, Vector2i(T_BG_WINDOW, 0))
-
-	# collect every solid cell first so the "is this the surface?" test is cheap
-	for r in data["solids"]:
-		for y in range(r[1], r[1] + r[3]):
-			for x in range(r[0], r[0] + r[2]):
-				_solid_cells[Vector2i(x, y)] = true
-
-	# Wall blocks are solid too, but painted as masonry rather than ground —
-	# they are the partitions a locked door sits in, and a column of turf
-	# hanging in mid-air would look absurd outdoors.
-	var wall_cells := {}
-	for r in data.get("wallblocks", []):
-		for y in range(r[1], r[1] + r[3]):
-			for x in range(r[0], r[0] + r[2]):
-				wall_cells[Vector2i(x, y)] = true
-				_solid_cells[Vector2i(x, y)] = true
-
-	for cell in _solid_cells:
-		var above := Vector2i(cell.x, cell.y - 1)
-		var is_surface := not _solid_cells.has(above)
-		var t: int
-		if wall_cells.has(cell):
-			t = T_WALL_TOP if is_surface else T_WALL
-		elif outdoor:
-			t = T_GRASS if is_surface else T_DIRT
-		else:
-			t = T_FLOOR_TOP if is_surface else T_FLOOR_FILL
-		_solid_layer.set_cell(cell, 0, Vector2i(t, 0))
-
-	for p in data.get("platforms", []):
-		for x in range(p[0], p[0] + p[2]):
-			var c := Vector2i(x, p[1])
-			if not _solid_cells.has(c):
-				_solid_layer.set_cell(c, 0, Vector2i(T_PLATFORM, 0))
-
-	for l in data.get("ladders", []):
-		var is_fence: bool = l.size() > 3 and l[3] == "fence"
-		var art := T_FENCE if is_fence else T_LADDER
-		for y in range(l[1], l[1] + l[2]):
-			_bg_layer.set_cell(Vector2i(l[0], y), 0, Vector2i(art, 0))
-		_add_ladder_area(l[0], l[1], l[2])
-
-func _add_ladder_area(tx: int, ty: int, h: int) -> void:
-	var a := Area2D.new()
-	a.collision_layer = 0
-	a.collision_mask = 2
-	a.position = Vector2(tx * TILE + TILE / 2.0, (ty + h / 2.0) * TILE)
-	var s := CollisionShape2D.new()
-	var r := RectangleShape2D.new()
-	r.size = Vector2(TILE - 2, h * TILE)
-	s.shape = r
-	a.add_child(s)
-	a.body_entered.connect(func(b): if b is Player: (b as Player).ladders_touching += 1)
-	a.body_exited.connect(func(b):
-		if b is Player:
-			var p := b as Player
-			p.ladders_touching = maxi(0, p.ladders_touching - 1))
-	add_child(a)
-
 # ------------------------------------------------------------- background --
-func _build_background() -> void:
-	_bg_canvas = CanvasLayer.new()
-	_bg_canvas.layer = -10
-	add_child(_bg_canvas)
-
-	var backdrop := ColorRect.new()
-	backdrop.set_anchors_preset(Control.PRESET_FULL_RECT)
-	backdrop.color = Color(theme["base"])
-	_bg_canvas.add_child(backdrop)
-
-	for spec in theme["layers"]:
-		var tr := TextureRect.new()
-		tr.texture = load("res://assets/sprites/%s.png" % spec["tex"])
-		tr.stretch_mode = TextureRect.STRETCH_TILE
-		tr.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-		tr.size = Vector2(480 * 3, spec["h"])
-		tr.position = Vector2(-480, spec["y"])
-		tr.set_meta("factor", spec["factor"])
-		tr.set_meta("base_y", spec["y"])
-		_bg_canvas.add_child(tr)
-		_bg_nodes.append(tr)
-
-	_build_ambient()
-
 ## Clouds drifting across the sky outdoors, dust turning in the light indoors.
 ## Both live in canvas space and simply wrap, which costs nothing and gives the
 ## stages a bit of motion even when the player is standing still.
 func _build_ambient() -> void:
+	var amb: Dictionary = AMBIENT.get(data["theme"], AMBIENT["hallway"])
 	var rng := RandomNumberGenerator.new()
 	rng.seed = data["num"] * 7919
 
-	for i in int(theme.get("clouds", 0)):
+	for i in int(amb["clouds"]):
 		var c := Sprite2D.new()
 		c.texture = load("res://assets/sprites/cloud_%s.png" % ["a", "b", "c"][i % 3])
 		c.position = Vector2(rng.randf_range(0, 480), rng.randf_range(18, 96))
@@ -278,14 +152,15 @@ func _build_ambient() -> void:
 		_clouds.append(c)
 
 	_fx_canvas = CanvasLayer.new()
+	_fx_canvas.name = "Ambient"
 	_fx_canvas.layer = 5                    # over the world, under the HUD
 	add_child(_fx_canvas)
-	var tex: Texture2D = load("res://assets/sprites/%s.png" % theme.get("mote_tex", "fx_mote"))
-	for i in int(theme.get("motes", 0)):
+	var tex: Texture2D = load("res://assets/sprites/%s.png" % amb["tex"])
+	for i in int(amb["motes"]):
 		var m := Sprite2D.new()
 		m.texture = tex
 		m.position = Vector2(rng.randf_range(0, 480), rng.randf_range(0, 270))
-		m.modulate = theme.get("mote_tint", Color(1, 1, 1, 0.5))
+		m.modulate = amb["tint"]
 		m.set_meta("vx", rng.randf_range(-9.0, 9.0) if not outdoor else rng.randf_range(-26.0, -9.0))
 		m.set_meta("vy", rng.randf_range(3.0, 11.0))
 		m.set_meta("phase", rng.randf_range(0.0, TAU))
@@ -296,10 +171,9 @@ func _update_background(delta: float) -> void:
 	if camera == null:
 		return
 	var cam := camera.get_screen_center_position()
-	for n in _bg_nodes:
-		var f: float = n.get_meta("factor")
-		n.position.x = -480 - fmod(cam.x * f, 480.0)
-		n.position.y = float(n.get_meta("base_y")) - (cam.y - 135.0) * f * 0.5
+	for n in _strips:
+		n.position.x = -480 - fmod(cam.x * n.scroll_factor, 480.0)
+		n.position.y = n.base_y - (cam.y - 135.0) * n.scroll_factor * 0.5
 
 	if _shake_left > 0.0:
 		_shake_left -= delta
@@ -327,110 +201,10 @@ func _update_background(delta: float) -> void:
 		elif m.position.x > 486.0:
 			m.position.x = -8.0
 
-# ----------------------------------------------------------------- spawns --
-func _spawn_player() -> void:
-	player = Player.new()
-	player.position = _tile_pos(data["spawn"])
-	player.noise_mult = data.get("noise_mult", 1.0)
-	player.noise_made.connect(_on_noise)
-	player.item_used.connect(_on_item_used)
-	player.inventory_changed.connect(func(): hud.update_inventory(player.inventory, player.selected))
-	player.stunned.connect(func(): shake(4.5, 0.35))
-	add_child(player)
-
 ## Short camera kick so a hit registers physically, not just as a message.
 func shake(amount: float, duration: float) -> void:
 	_shake = maxf(_shake, amount)
 	_shake_left = maxf(_shake_left, duration)
-
-func _spawn_world() -> void:
-	for cfg in data.get("npcs", []):
-		var n := Npc.new()
-		n.setup(cfg["type"], cfg["patrol"][0] * TILE + 8.0, cfg["patrol"][1] * TILE + 8.0)
-		n.position = _tile_pos([cfg["x"], cfg["y"]])
-		n.set_player(player)
-		n.caught.connect(_on_caught)
-		n.confront.connect(_on_confront)
-		_entities.add_child(n)
-
-	for cfg in data.get("cameras", []):
-		var c := Cctv.new()
-		c.setup(cfg)
-		c.position = _center_pos([cfg["x"], cfg["y"]])
-		c.set_player(player)
-		_entities.add_child(c)
-
-	for cfg in data.get("items", []):
-		var p := Entities.Pickup.new(cfg["id"])
-		p.position = _center_pos([cfg["x"], cfg["y"]])
-		_entities.add_child(p)
-
-	for cfg in data.get("hides", []):
-		var h := Entities.HideSpot.new(cfg["type"])
-		h.position = _tile_pos([cfg["x"], cfg["y"]])
-		_entities.add_child(h)
-
-	for cfg in data.get("doors", []):
-		var d := Entities.Doorway.new(cfg.get("locked", true))
-		d.position = _tile_pos([cfg["x"], cfg["y"]])
-		_entities.add_child(d)
-
-	for cfg in data.get("balls", []):
-		var b := Entities.Ball.new(cfg["range"][0] * TILE, cfg["range"][1] * TILE, cfg["speed"])
-		b.position = _tile_pos([cfg["x"], cfg["y"]])
-		_entities.add_child(b)
-
-	for cfg in data.get("props", []):
-		var tex: Texture2D = load("res://assets/sprites/%s.png" % cfg["name"])
-		var s := Sprite2D.new()
-		s.texture = tex
-		s.centered = false
-		s.offset = Vector2(-tex.get_width() / 2.0, -tex.get_height())
-		s.position = _tile_pos([cfg["x"], cfg["y"]])
-		s.z_index = -3
-		_entities.add_child(s)
-
-	goal = Entities.GoalZone.new()
-	goal.position = _tile_pos(data["goal"])
-	_entities.add_child(goal)
-
-	var cr: Array = data.get("classroom", [])
-	if cr.size() == 4:
-		var a := Area2D.new()
-		a.collision_layer = 0
-		a.collision_mask = 2
-		a.position = Vector2((cr[0] + cr[2] / 2.0) * TILE, (cr[1] + cr[3] / 2.0) * TILE)
-		var s2 := CollisionShape2D.new()
-		var r2 := RectangleShape2D.new()
-		r2.size = Vector2(cr[2] * TILE, cr[3] * TILE)
-		s2.shape = r2
-		a.add_child(s2)
-		a.body_entered.connect(func(b):
-			if b is Player and phase == Phase.PLAY:
-				_lose("เดินกลับเข้าห้องเรียนก่อนเวลา — แพ้ทันที!"))
-		add_child(a)
-
-		var warn := UI.label("ห้องเรียน\n(ห้ามเข้า!)", 11, UI.RED, true)
-		warn.position = Vector2(cr[0] * TILE, (cr[1] - 1) * TILE)
-		warn.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		add_child(warn)
-
-func _build_camera() -> void:
-	camera = Camera2D.new()
-	camera.position_smoothing_enabled = true
-	camera.position_smoothing_speed = 6.0
-	camera.limit_left = 0
-	camera.limit_top = 0
-	camera.limit_right = data["width"] * TILE
-	camera.limit_bottom = data["height"] * TILE
-	player.add_child(camera)
-	camera.make_current()
-
-func _tile_pos(t) -> Vector2:
-	return Vector2(t[0] * TILE + TILE / 2.0, t[1] * TILE)
-
-func _center_pos(t) -> Vector2:
-	return Vector2(t[0] * TILE + TILE / 2.0, t[1] * TILE + TILE / 2.0)
 
 # ===========================================================================
 #  Game loop
@@ -464,7 +238,7 @@ func _process(delta: float) -> void:
 func _update_suspicion(delta: float) -> void:
 	var watched := false
 	var strength := 0.0
-	for n in get_tree().get_nodes_in_group("npc"):
+	for n in _group("npc"):
 		var npc := n as Npc
 		if npc == null:
 			continue
@@ -474,7 +248,7 @@ func _update_suspicion(delta: float) -> void:
 		if npc.state == Npc.State.ALERT:
 			watched = true
 			strength = maxf(strength, 1.0)
-	for c in get_tree().get_nodes_in_group("cctv"):
+	for c in _group("cctv"):
 		if (c as Cctv).sees:
 			watched = true
 			strength = maxf(strength, 0.8)
@@ -513,21 +287,21 @@ func _update_prompt() -> void:
 		return
 	hud.set_prompt("")
 
-func _nearest_hide() -> Entities.HideSpot:
-	var best: Entities.HideSpot = null
+func _nearest_hide() -> HideSpot:
+	var best: HideSpot = null
 	var bd := 26.0
-	for h in get_tree().get_nodes_in_group("hide_spot"):
+	for h in _group("hide_spot"):
 		var d := player.global_position.distance_to((h as Node2D).global_position)
 		if d < bd:
 			bd = d
 			best = h
 	return best
 
-func _nearest_door() -> Entities.Doorway:
-	var best: Entities.Doorway = null
+func _nearest_door() -> Doorway:
+	var best: Doorway = null
 	var bd := 30.0
-	for d in get_tree().get_nodes_in_group("doorway"):
-		var door := d as Entities.Doorway
+	for d in _group("doorway"):
+		var door := d as Doorway
 		if not door.locked:
 			continue
 		var dist := player.global_position.distance_to(door.global_position)
@@ -542,15 +316,15 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 		return
 	if event.is_action_pressed("restart") and phase == Phase.PLAY:
-		Fader.goto("res://scenes/level.tscn")
+		Fader.goto(LevelData.scene_path(level_num))
 		return
 	if not event.is_action_pressed("interact") or phase != Phase.PLAY or in_dialogue:
 		return
 
 	if player.is_hidden:
 		player.set_hidden(false)
-		for h in get_tree().get_nodes_in_group("hide_spot"):
-			(h as Entities.HideSpot).set_occupied(false)
+		for h in _group("hide_spot"):
+			(h as HideSpot).set_occupied(false)
 		Sfx.play("hide", 1.2)
 		return
 	var spot := _nearest_hide()
@@ -606,7 +380,7 @@ func _throw_coin() -> void:
 	tw.tween_callback(func():
 		Sfx.play("click", 1.4)
 		_entities.add_child(_ring(to, 150.0))
-		for n in get_tree().get_nodes_in_group("npc"):
+		for n in _group("npc"):
 			var npc := n as Npc
 			if npc.global_position.distance_to(to) < 190.0:
 				npc.distract(to)
@@ -641,13 +415,14 @@ func _place_wetsign() -> void:
 		if is_instance_valid(area): area.queue_free())
 
 func _ring(pos: Vector2, radius: float) -> Node2D:
-	var r := Entities.NoiseRing.new(radius)
+	var r := NoiseRing.new()
+	r.radius = radius
 	r.position = pos
 	return r
 
 func _on_noise(pos: Vector2, radius: float) -> void:
 	_entities.add_child(_ring(pos, radius))
-	for n in get_tree().get_nodes_in_group("npc"):
+	for n in _group("npc"):
 		(n as Npc).hear(pos, radius)
 
 # ------------------------------------------------------------- resolution --
@@ -773,12 +548,11 @@ func _show_overlay(title: String, subtitle: String, lines: Array,
 	if show_next:
 		var nb := UI.button("ไปด่านต่อไป »", 15)
 		nb.pressed.connect(func():
-			Game.current_level = data["num"] + 1
-			Fader.goto("res://scenes/level.tscn"))
+			Fader.goto(LevelData.scene_path(level_num + 1)))
 		v.add_child(nb)
 
 	var rb := UI.button("เล่นด่านนี้ใหม่", 14)
-	rb.pressed.connect(func(): Fader.goto("res://scenes/level.tscn"))
+	rb.pressed.connect(func(): Fader.goto(LevelData.scene_path(level_num)))
 	v.add_child(rb)
 
 	var mb := UI.button("กลับไปเลือกด่าน", 14)
@@ -834,7 +608,7 @@ func _show_pause() -> void:
 	var restart := UI.button("เริ่มด่านนี้ใหม่", 14)
 	restart.pressed.connect(func():
 		get_tree().paused = false
-		Fader.goto("res://scenes/level.tscn"))
+		Fader.goto(LevelData.scene_path(level_num)))
 	v.add_child(restart)
 
 	var music := UI.button("เพลง: %s" % ("เปิด" if Game.music_on else "ปิด"), 14)

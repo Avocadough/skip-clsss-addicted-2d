@@ -17,13 +17,13 @@ func _initialize() -> void:
 		{"scene": "res://scenes/level_select.tscn", "out": "shot_select.png", "wait": 0.7, "hold": false},
 		{"scene": "res://scenes/main_menu.tscn", "out": "shot_howto.png", "wait": 0.7, "hold": false, "call": "_show_how_to"},
 		{"scene": "res://scenes/main_menu.tscn", "out": "shot_credits.png", "wait": 0.7, "hold": false, "call": "_show_credits"},
-		{"scene": "res://scenes/level.tscn", "out": "shot_lv1.png", "wait": 6.0, "hold": true, "level": 1},
-		{"scene": "res://scenes/level.tscn", "out": "shot_lv2.png", "wait": 6.0, "hold": true, "level": 2},
-		{"scene": "res://scenes/level.tscn", "out": "shot_lv3.png", "wait": 5.0, "hold": false, "level": 3},
-		{"scene": "res://scenes/level.tscn", "out": "shot_lv3_door.png", "wait": 5.0, "hold": false, "level": 3, "at": 55, "peace": true},
-		{"scene": "res://scenes/level.tscn", "out": "shot_lv5_gate.png", "wait": 5.0, "hold": false, "level": 5, "at": 53, "peace": true},
-		{"scene": "res://scenes/level.tscn", "out": "shot_lv4.png", "wait": 6.0, "hold": true, "level": 4},
-		{"scene": "res://scenes/level.tscn", "out": "shot_lv5.png", "wait": 6.0, "hold": true, "level": 5},
+		{"scene": LevelData.scene_path(1), "out": "shot_lv1.png", "wait": 6.0, "hold": true, "level": 1},
+		{"scene": LevelData.scene_path(2), "out": "shot_lv2.png", "wait": 6.0, "hold": true, "level": 2},
+		{"scene": LevelData.scene_path(3), "out": "shot_lv3.png", "wait": 5.0, "hold": false, "level": 3},
+		{"scene": LevelData.scene_path(3), "out": "shot_lv3_door.png", "wait": 5.0, "hold": false, "level": 3, "at": 55, "peace": true},
+		{"scene": LevelData.scene_path(5), "out": "shot_lv5_gate.png", "wait": 5.0, "hold": false, "level": 5, "at": 53, "peace": true},
+		{"scene": LevelData.scene_path(4), "out": "shot_lv4.png", "wait": 6.0, "hold": true, "level": 4},
+		{"scene": LevelData.scene_path(5), "out": "shot_lv5.png", "wait": 6.0, "hold": true, "level": 5},
 	]
 	_next()
 

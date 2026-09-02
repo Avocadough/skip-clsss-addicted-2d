@@ -2,16 +2,62 @@ class_name LevelData
 extends RefCounted
 ## The five stages from section 8 of the design document.
 ##
-## Levels are described as rectangles rather than ASCII art so the geometry
-## stays easy to read and re-tune. Conventions, all in 16px tile units:
+## This file holds two different things, and the split matters:
+##
+##   * Stage settings the game reads every time you play — the clock, the
+##     name, the objective text, the hint, the ranking rules. Live data.
+##   * The original layout each stage was laid out from — solids, platforms,
+##     NPCs, items. That is the input to tools/bake.gd, which writes it out as
+##     scenes/levels/level_NN.tscn. Once baked, the scene is what the game
+##     loads and what you edit; re-running the bake throws hand edits away.
+##
+## Layout conventions, all in 16px tile units:
 ##   solids/platforms/ladders/windows -> [x, y, w, (h)]
 ##   npc / hide / door / goal / spawn -> (x, y) is the tile the feet rest on
 ##   item / camera                    -> (x, y) is the tile the sprite centres on
 
 const TILE := 16
 
+## How each setting looks. `layers` are the parallax strips behind the world,
+## slowest first; `factor` is how much of the camera motion each one takes.
+## Indoor stages leave their upper wall unpainted so the strip shows through.
+const THEMES := {
+	"hallway": {
+		"outdoor": false, "base": "2b2440",
+		"layers": [{"tex": "bg_hallway_deco", "y": 14.0, "factor": 0.30, "h": 160.0}],
+	},
+	"cafeteria": {
+		"outdoor": false, "base": "35291f",
+		"layers": [{"tex": "bg_cafeteria_deco", "y": 8.0, "factor": 0.30, "h": 160.0}],
+	},
+	"library": {
+		"outdoor": false, "base": "241f18",
+		"layers": [{"tex": "bg_library_deco", "y": 6.0, "factor": 0.30, "h": 160.0}],
+	},
+	"field": {
+		"outdoor": true, "base": "8cc4e0",
+		"layers": [
+			{"tex": "bg_field_sky", "y": 0.0, "factor": 0.04, "h": 270.0},
+			{"tex": "bg_field_far", "y": 56.0, "factor": 0.24, "h": 140.0},
+			{"tex": "bg_field_trees", "y": 146.0, "factor": 0.52, "h": 70.0},
+		],
+	},
+	"gate": {
+		"outdoor": true, "base": "6b4a7a",
+		"layers": [
+			{"tex": "bg_gate_sky", "y": 0.0, "factor": 0.04, "h": 270.0},
+			{"tex": "bg_gate_far", "y": 56.0, "factor": 0.24, "h": 140.0},
+			{"tex": "bg_gate_trees", "y": 146.0, "factor": 0.52, "h": 70.0},
+		],
+	},
+}
+
 static func count() -> int:
 	return 5
+
+## Where a stage lives now that each one is its own scene.
+static func scene_path(index: int) -> String:
+	return "res://scenes/levels/level_%02d.tscn" % clampi(index, 1, count())
 
 static func get_level(index: int) -> Dictionary:
 	match index:

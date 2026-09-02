@@ -1,14 +1,38 @@
 extends SceneTree
-## Checks every stage for placement mistakes that are easy to make by hand:
-## entities standing inside walls, spawns with no floor, items buried in
-## geometry, patrol ranges running off the map, unreachable goals.
+## Checks every stage for the placement mistakes that are easy to make when
+## you are dragging things about in the 2D editor: entities standing inside
+## walls, spawns with no floor, items nothing can reach, patrol beats cut in
+## two by a step an NPC cannot climb.
 ##   Godot.exe --headless --path game --script res://tools/validate.gd
+##
+## It reads the level scenes, not level_data.gd, so what it checks is what the
+## game actually loads — move a teacher in the editor and this sees the move.
+
+## Tile columns in the atlas that actually stop you.
+const SOLID_TILES := [0, 1, 2, 3, 9, 10]    # floor top/fill, wall, wall top, grass, dirt
+const PLATFORM_TILE := 4                    # the one-way ledge
+
+const S_NPC := "res://scripts/npc.gd"
+const S_CCTV := "res://scripts/cctv.gd"
+const S_PLAYER := "res://scripts/player.gd"
+const S_PICKUP := "res://scripts/entities/pickup.gd"
+const S_HIDE := "res://scripts/entities/hide_spot.gd"
+const S_DOOR := "res://scripts/entities/doorway.gd"
+const S_BALL := "res://scripts/entities/ball.gd"
+const S_GOAL := "res://scripts/entities/goal_zone.gd"
+const S_LADDER := "res://scripts/entities/ladder_zone.gd"
+const S_CLASSROOM := "res://scripts/entities/classroom_zone.gd"
 
 var _problems := 0
 
+## Deferred so the autoloads exist first: the level scenes pull in scripts
+## that refer to them, and loading a scene before they are up fails.
 func _initialize() -> void:
+	_run.call_deferred()
+
+func _run() -> void:
 	for i in range(1, LevelData.count() + 1):
-		_check(LevelData.get_level(i))
+		_check(_read_scene(i))
 	if _problems == 0:
 		print("\nall %d levels validated clean" % LevelData.count())
 	else:
@@ -19,42 +43,137 @@ func _bad(level: Dictionary, msg: String) -> void:
 	_problems += 1
 	print("  [ด่าน %d] %s" % [level["num"], msg])
 
+# ===========================================================================
+#  Reading a stage back out of its scene
+# ===========================================================================
+## Nodes are identified by the script they carry rather than by class name.
+## Naming the classes here would drag them — and the autoloads they refer to —
+## into the compile pass of this tool, which runs too early for that to work.
+func _script_path(n: Node) -> String:
+	var s: Script = n.get_script()
+	return s.resource_path if s != null else ""
+
+## A stage quotes the tile the feet rest on; the node sits at its centre.
+func _to_tile_feet(p: Vector2) -> Array:
+	return [int(floor(p.x / 16.0)), int(round(p.y / 16.0))]
+
+func _to_tile_centre(p: Vector2) -> Array:
+	return [int(floor(p.x / 16.0)), int(floor(p.y / 16.0))]
+
+func _read_scene(num: int) -> Dictionary:
+	var meta := LevelData.get_level(num)
+	var scene: Node = load(LevelData.scene_path(num)).instantiate()
+
+	var d := {
+		"num": num, "name": meta["name"],
+		"width": meta["width"], "height": meta["height"], "time": meta["time"],
+		"solid": {}, "plat": {}, "lad": {},
+		"spawn": [0, 0], "goal": [0, 0], "classroom": [],
+		"npcs": [], "cameras": [], "items": [], "hides": [], "doors": [], "balls": [],
+	}
+
+	# ------------------------------------------------------------- tiles ---
+	var tiles: TileMapLayer = scene.get_node("SolidTiles")
+	for cell in tiles.get_used_cells():
+		var col := tiles.get_cell_atlas_coords(cell).x
+		if col in SOLID_TILES:
+			d["solid"][cell] = true
+		elif col == PLATFORM_TILE:
+			d["plat"][cell] = true
+
+	# ----------------------------------------------------------- ladders ---
+	for zone in scene.get_node("Ladders").get_children():
+		if _script_path(zone) != S_LADDER:
+			continue
+		var r: Rect2i = zone.tile_rect()
+		for y in range(r.position.y, r.position.y + r.size.y):
+			d["lad"][Vector2i(r.position.x, y)] = true
+
+	# ---------------------------------------------------------- entities ---
+	for n in scene.get_node("Entities").get_children():
+		var feet := _to_tile_feet(n.position)
+		match _script_path(n):
+			S_NPC:
+				d["npcs"].append({
+					"type": n.kind, "x": feet[0], "y": feet[1],
+					"patrol": [int(floor(n.patrol_min / 16.0)), int(floor(n.patrol_max / 16.0))],
+				})
+			S_CCTV:
+				var c := _to_tile_centre(n.position)
+				d["cameras"].append({"x": c[0], "y": c[1]})
+			S_PICKUP:
+				var c2 := _to_tile_centre(n.position)
+				d["items"].append({"id": n.id, "x": c2[0], "y": c2[1]})
+			S_HIDE:
+				d["hides"].append({"type": n.kind, "x": feet[0], "y": feet[1]})
+			S_DOOR:
+				d["doors"].append({"x": feet[0], "y": feet[1]})
+			S_BALL:
+				d["balls"].append({"x": feet[0], "y": feet[1]})
+			S_GOAL:
+				d["goal"] = feet
+
+	for n in scene.get_children():
+		match _script_path(n):
+			S_PLAYER:
+				d["spawn"] = _to_tile_feet(n.position)
+			S_CLASSROOM:
+				var box: Vector2 = (n.get_node("Shape").shape as RectangleShape2D).size
+				d["classroom"] = [
+					int(round((n.position.x - box.x / 2.0) / 16.0)),
+					int(round((n.position.y - box.y / 2.0) / 16.0)),
+					int(round(box.x / 16.0)), int(round(box.y / 16.0)),
+				]
+
+	scene.free()
+	return d
+
+## Contiguous runs of one-way ledge, so a stranded one can be reported by
+## where it starts instead of tile by tile.
+func _platform_runs(plat: Dictionary) -> Array:
+	var runs: Array = []
+	var cells: Array = plat.keys()
+	cells.sort_custom(func(a, b): return a.y < b.y if a.y != b.y else a.x < b.x)
+	for c in cells:
+		if runs.size() > 0:
+			var last: Array = runs[-1]
+			if last[1] == c.y and last[0] + last[2] == c.x:
+				last[2] += 1
+				continue
+		runs.append([c.x, c.y, 1])
+	return runs
+
+# ===========================================================================
+#  Checks
+# ===========================================================================
 func _check(d: Dictionary) -> void:
 	print("\n--- ด่าน %d: %s (%dx%d, %.0fs) ---" % [d["num"], d["name"], d["width"], d["height"], d["time"]])
 	var W: int = d["width"]
 	var H: int = d["height"]
+	var solid: Dictionary = d["solid"]
+	var platform: Dictionary = d["plat"]
+	var ladder: Dictionary = d["lad"]
 
-	var solid := {}
-	for r in d["solids"] + d.get("wallblocks", []):
-		if r[0] < 0 or r[1] < 0 or r[0] + r[2] > W or r[1] + r[3] > H:
-			_bad(d, "solid rect %s falls outside the %dx%d map" % [r, W, H])
-		for y in range(r[1], r[1] + r[3]):
-			for x in range(r[0], r[0] + r[2]):
-				solid[Vector2i(x, y)] = true
-
-	var platform := {}
-	for p in d.get("platforms", []):
-		if p[1] < 0 or p[1] >= H or p[0] < 0 or p[0] + p[2] > W:
-			_bad(d, "platform %s falls outside the map" % [p])
-		for x in range(p[0], p[0] + p[2]):
-			platform[Vector2i(x, p[1])] = true
-
-	var ladder := {}
-	for l in d.get("ladders", []):
-		for y in range(l[1], l[1] + l[2]):
-			ladder[Vector2i(l[0], y)] = true
+	for cell in solid:
+		if cell.x < 0 or cell.y < 0 or cell.x >= W or cell.y >= H:
+			_bad(d, "solid tile at %s is painted outside the %dx%d map" % [cell, W, H])
+			break
+	for cell in platform:
+		if cell.x < 0 or cell.y < 0 or cell.x >= W or cell.y >= H:
+			_bad(d, "ledge tile at %s is painted outside the map" % [cell])
+			break
 
 	# --- standing things need clear head room and something under their feet --
 	var standing: Array = []
 	standing.append({"what": "spawn", "x": d["spawn"][0], "y": d["spawn"][1]})
 	standing.append({"what": "goal", "x": d["goal"][0], "y": d["goal"][1]})
-	for n in d.get("npcs", []):
+	for n in d["npcs"]:
 		standing.append({"what": "npc %s" % n["type"], "x": n["x"], "y": n["y"]})
-	for h in d.get("hides", []):
+	for h in d["hides"]:
 		standing.append({"what": "hide %s" % h["type"], "x": h["x"], "y": h["y"]})
-	for dr in d.get("doors", []):
+	for dr in d["doors"]:
 		standing.append({"what": "door", "x": dr["x"], "y": dr["y"]})
-	for b in d.get("balls", []):
+	for b in d["balls"]:
 		standing.append({"what": "ball", "x": b["x"], "y": b["y"]})
 
 	for s in standing:
@@ -68,7 +187,7 @@ func _check(d: Dictionary) -> void:
 				break
 
 	# ------------------------------------------------------- floating items --
-	for it in d.get("items", []):
+	for it in d["items"]:
 		var c := Vector2i(it["x"], it["y"])
 		if solid.has(c):
 			_bad(d, "item %s at (%d,%d) is inside a wall" % [it["id"], c.x, c.y])
@@ -77,13 +196,13 @@ func _check(d: Dictionary) -> void:
 		if not (solid.has(below) or platform.has(below) or ladder.has(c) or ladder.has(below)):
 			_bad(d, "item %s at (%d,%d) floats with nothing to stand on" % [it["id"], c.x, c.y])
 
-	for cam in d.get("cameras", []):
+	for cam in d["cameras"]:
 		var c := Vector2i(cam["x"], cam["y"])
 		if solid.has(c):
 			_bad(d, "camera at (%d,%d) is inside a solid tile" % [c.x, c.y])
 
 	# ------------------------------------------------------- patrol ranges ---
-	for n in d.get("npcs", []):
+	for n in d["npcs"]:
 		var lo: int = n["patrol"][0]
 		var hi: int = n["patrol"][1]
 		if lo >= hi:
@@ -93,11 +212,11 @@ func _check(d: Dictionary) -> void:
 		if n["x"] < lo or n["x"] > hi:
 			_bad(d, "npc %s starts at x=%d, outside its patrol %s" % [n["type"], n["x"], n["patrol"]])
 
-	# ------------------------------------------------------- goal / classroom --
+	# ------------------------------------------------------ goal / classroom --
 	var g := Vector2i(d["goal"][0], d["goal"][1])
 	if g.x < 1 or g.x > W - 2:
 		_bad(d, "goal x=%d is outside the playable columns" % g.x)
-	var cr: Array = d.get("classroom", [])
+	var cr: Array = d["classroom"]
 	if cr.size() == 4:
 		var sx: int = d["spawn"][0]
 		if sx >= cr[0] and sx < cr[0] + cr[2]:
@@ -117,8 +236,8 @@ func _check(d: Dictionary) -> void:
 		_bad(d, "columns with no ground at all: %s" % [gaps])
 	_check_reachable(d)
 	print("    npcs=%d cameras=%d items=%d hides=%d" % [
-		d.get("npcs", []).size(), d.get("cameras", []).size(),
-		d.get("items", []).size(), d.get("hides", []).size()])
+		d["npcs"].size(), d["cameras"].size(), d["items"].size(), d["hides"].size()])
+
 
 # ---------------------------------------------------------------------------
 #  Reachability
@@ -213,21 +332,9 @@ func _reachable_set(d: Dictionary, solid: Dictionary, plat: Dictionary, lad: Dic
 	return seen
 
 func _check_reachable(d: Dictionary) -> void:
-	var W: int = d["width"]
-	var H: int = d["height"]
-	var solid := {}
-	for r in d["solids"] + d.get("wallblocks", []):
-		for y in range(r[1], r[1] + r[3]):
-			for x in range(r[0], r[0] + r[2]):
-				solid[Vector2i(x, y)] = true
-	var plat := {}
-	for p in d.get("platforms", []):
-		for x in range(p[0], p[0] + p[2]):
-			plat[Vector2i(x, p[1])] = true
-	var lad := {}
-	for l in d.get("ladders", []):
-		for y in range(l[1], l[1] + l[2]):
-			lad[Vector2i(l[0], y)] = true
+	var solid: Dictionary = d["solid"]
+	var plat: Dictionary = d["plat"]
+	var lad: Dictionary = d["lad"]
 
 	var seen := _reachable_set(d, solid, plat, lad)
 
@@ -259,15 +366,15 @@ func _check_reachable(d: Dictionary) -> void:
 		if not ok:
 			_bad(d, "item '%s' at (%d,%d) can never be reached" % [it["id"], ix, iy])
 
-	# --- platforms nobody can climb onto -----------------------------------
-	for p in d.get("platforms", []):
+	# --- ledges nobody can climb onto ---------------------------------------
+	for p in _platform_runs(plat):
 		var any := false
 		for x in range(p[0], p[0] + p[2]):
 			if seen.has(Vector2i(x, p[1])):
 				any = true
 				break
 		if not any:
-			_bad(d, "platform [%d,%d,%d] is stranded - no way up to it" % [p[0], p[1], p[2]])
+			_bad(d, "the ledge at (%d,%d), %d wide, is stranded - no way up to it" % [p[0], p[1], p[2]])
 
 	print("    reachable standing tiles: %d" % seen.size())
 	_check_patrols(d, solid, plat)

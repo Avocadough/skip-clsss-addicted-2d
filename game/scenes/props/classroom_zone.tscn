@@ -1,0 +1,14 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/entities/classroom_zone.gd" id="1_saomu"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_y4430"]
+size = Vector2(64, 64)
+
+[node name="Classroom" type="Area2D" unique_id=1579699320]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_saomu")
+
+[node name="Shape" type="CollisionShape2D" parent="." unique_id=1075540738]
+shape = SubResource("RectangleShape2D_y4430")
