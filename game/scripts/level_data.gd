@@ -190,6 +190,11 @@ static func _level3() -> Dictionary:
 			[W - 1, 2, 1, 11],
 			[26, 12, 2, 1],
 		],
+		# The locked door sits in a full-height partition. Without this the door
+		# is only two tiles tall and the player simply jumps over it.
+		"wallblocks": [
+			[58, 2, 1, 9],
+		],
 		"platforms": [
 			[10, 8, 10], [32, 8, 9], [48, 7, 8],
 		],
@@ -197,11 +202,11 @@ static func _level3() -> Dictionary:
 			[9, 8, 5], [31, 8, 5], [47, 7, 6],
 		],
 		"windows": [
-			[16, 4, 2, 2], [40, 4, 2, 2], [58, 4, 2, 2],
+			[16, 4, 2, 2], [40, 4, 2, 2], [61, 4, 2, 2],
 		],
 		"npcs": [
 			{"type": "librarian", "x": 22, "y": 13, "patrol": [12, 38]},
-			{"type": "librarian", "x": 56, "y": 13, "patrol": [52, 63]},
+			{"type": "librarian", "x": 54, "y": 13, "patrol": [50, 56]},
 			{"type": "monitor", "x": 42, "y": 13, "patrol": [40, 50]},
 		],
 		"cameras": [
@@ -266,7 +271,7 @@ static func _level4() -> Dictionary:
 			[14, 8, 8], [36, 9, 8], [58, 8, 9],
 		],
 		"ladders": [
-			[13, 8, 5], [57, 8, 5],
+			[13, 8, 5], [35, 9, 4], [57, 8, 5],
 			[52, 6, 7, "fence"],     # the chain-link fence you must climb
 		],
 		"windows": [],
@@ -333,6 +338,11 @@ static func _level5() -> Dictionary:
 			[19, 11, 1, 1],
 			[40, 12, 2, 1],
 		],
+		# The gate is set into a full-height wall, so the key is the only way
+		# through rather than something you can simply hop over.
+		"wallblocks": [
+			[56, 2, 1, 9],
+		],
 		"platforms": [
 			[10, 8, 8], [28, 8, 9], [48, 9, 8],
 		],
@@ -343,7 +353,7 @@ static func _level5() -> Dictionary:
 		"windows": [],
 		"npcs": [
 			{"type": "guard", "x": 24, "y": 13, "patrol": [14, 34]},
-			{"type": "guard", "x": 58, "y": 13, "patrol": [50, 67]},
+			{"type": "guard", "x": 60, "y": 13, "patrol": [58, 67]},
 			{"type": "monitor", "x": 44, "y": 13, "patrol": [40, 48]},
 		],
 		"cameras": [

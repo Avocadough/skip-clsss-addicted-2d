@@ -25,7 +25,7 @@ func _check(d: Dictionary) -> void:
 	var H: int = d["height"]
 
 	var solid := {}
-	for r in d["solids"]:
+	for r in d["solids"] + d.get("wallblocks", []):
 		if r[0] < 0 or r[1] < 0 or r[0] + r[2] > W or r[1] + r[3] > H:
 			_bad(d, "solid rect %s falls outside the %dx%d map" % [r, W, H])
 		for y in range(r[1], r[1] + r[3]):
@@ -216,7 +216,7 @@ func _check_reachable(d: Dictionary) -> void:
 	var W: int = d["width"]
 	var H: int = d["height"]
 	var solid := {}
-	for r in d["solids"]:
+	for r in d["solids"] + d.get("wallblocks", []):
 		for y in range(r[1], r[1] + r[3]):
 			for x in range(r[0], r[0] + r[2]):
 				solid[Vector2i(x, y)] = true

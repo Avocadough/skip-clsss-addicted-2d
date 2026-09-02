@@ -156,6 +156,14 @@ func _gen_sfx() -> void:
 		_note(b, SFX_RATE, int(i * 0.13 * SFX_RATE), 1046.5, 0.12, "square", 0.13, 16.0)
 	_save(_to_stream(b, SFX_RATE), "sfx_tick")
 
+	# Taking a ball to the head: a deep thump plus the clatter of going down.
+	b = _blank(0.8, SFX_RATE)
+	_note(b, SFX_RATE, 0, 110.0, 0.45, "sine", 0.42, 6.0, 55.0)
+	_note(b, SFX_RATE, 0, 220.0, 0.22, "square", 0.20, 12.0, 90.0)
+	_note(b, SFX_RATE, 0, 1200.0, 0.16, "noise", 0.22, 16.0)
+	_note(b, SFX_RATE, int(0.18 * SFX_RATE), 320.0, 0.30, "noise", 0.10, 9.0)
+	_save(_to_stream(b, SFX_RATE), "sfx_thud")
+
 # ------------------------------------------------------------------ music ---
 func _gen_music() -> void:
 	print("music:")

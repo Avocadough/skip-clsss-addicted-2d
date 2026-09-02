@@ -85,6 +85,8 @@ var _fx_canvas: CanvasLayer
 var _clouds: Array[Sprite2D] = []
 var _motes: Array[Sprite2D] = []
 var _amb_t := 0.0
+var _shake := 0.0
+var _shake_left := 0.0
 var _overlay: CanvasLayer
 var _dialogue_cd := 0.0
 var _bell_played := false
@@ -182,11 +184,23 @@ func _build_tiles() -> void:
 			for x in range(r[0], r[0] + r[2]):
 				_solid_cells[Vector2i(x, y)] = true
 
+	# Wall blocks are solid too, but painted as masonry rather than ground —
+	# they are the partitions a locked door sits in, and a column of turf
+	# hanging in mid-air would look absurd outdoors.
+	var wall_cells := {}
+	for r in data.get("wallblocks", []):
+		for y in range(r[1], r[1] + r[3]):
+			for x in range(r[0], r[0] + r[2]):
+				wall_cells[Vector2i(x, y)] = true
+				_solid_cells[Vector2i(x, y)] = true
+
 	for cell in _solid_cells:
 		var above := Vector2i(cell.x, cell.y - 1)
 		var is_surface := not _solid_cells.has(above)
 		var t: int
-		if outdoor:
+		if wall_cells.has(cell):
+			t = T_WALL_TOP if is_surface else T_WALL
+		elif outdoor:
 			t = T_GRASS if is_surface else T_DIRT
 		else:
 			t = T_FLOOR_TOP if is_surface else T_FLOOR_FILL
@@ -287,6 +301,14 @@ func _update_background(delta: float) -> void:
 		n.position.x = -480 - fmod(cam.x * f, 480.0)
 		n.position.y = float(n.get_meta("base_y")) - (cam.y - 135.0) * f * 0.5
 
+	if _shake_left > 0.0:
+		_shake_left -= delta
+		var k := clampf(_shake_left / 0.35, 0.0, 1.0)
+		camera.offset = Vector2(randf_range(-1.0, 1.0), randf_range(-1.0, 1.0)) * _shake * k
+		if _shake_left <= 0.0:
+			camera.offset = Vector2.ZERO
+			_shake = 0.0
+
 	_amb_t += delta
 	for c in _clouds:
 		c.position.x -= float(c.get_meta("speed")) * delta
@@ -313,7 +335,13 @@ func _spawn_player() -> void:
 	player.noise_made.connect(_on_noise)
 	player.item_used.connect(_on_item_used)
 	player.inventory_changed.connect(func(): hud.update_inventory(player.inventory, player.selected))
+	player.stunned.connect(func(): shake(4.5, 0.35))
 	add_child(player)
+
+## Short camera kick so a hit registers physically, not just as a message.
+func shake(amount: float, duration: float) -> void:
+	_shake = maxf(_shake, amount)
+	_shake_left = maxf(_shake_left, duration)
 
 func _spawn_world() -> void:
 	for cfg in data.get("npcs", []):

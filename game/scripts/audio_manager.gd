@@ -11,7 +11,7 @@ const VOICES := 8
 
 const SFX_NAMES: Array[String] = [
 	"jump", "land", "step", "pickup", "alert", "spotted", "bell", "win",
-	"lose", "click", "move", "unlock", "hide", "blip", "throw", "tick",
+	"lose", "click", "move", "unlock", "hide", "blip", "throw", "tick", "thud",
 ]
 
 var _sfx: Dictionary = {}

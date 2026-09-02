@@ -10,6 +10,7 @@ signal noise_made(pos: Vector2, radius: float)
 signal item_used(id: String)
 signal inventory_changed
 signal hidden_changed(is_hidden: bool)
+signal stunned
 
 const WALK_SPEED := 74.0
 const RUN_SPEED := 132.0
@@ -26,6 +27,7 @@ const JUMP_BUFFER := 0.12
 const NOISE_RUN := 118.0
 const NOISE_WALK := 58.0
 const NOISE_LAND := 96.0
+const NOISE_IMPACT := 230.0     ## being knocked flat: heard right across a stage
 
 var sprite: Sprite2D
 var _shape: CollisionShape2D
@@ -262,13 +264,17 @@ func set_hidden(v: bool) -> void:
 	sprite.visible = not v
 	hidden_changed.emit(v)
 
+
 func stun(duration: float) -> void:
 	if is_hidden or stun_time > 0.0:
 		return
 	stun_time = duration
 	velocity = Vector2(-facing * 60.0, -110.0)
-	emit_noise(NOISE_RUN)
-	Sfx.play("land", 0.7)
+	# Going down in a heap is the loudest thing in the game — far louder than
+	# running — so it carries much further than a footstep.
+	emit_noise(NOISE_IMPACT)
+	Sfx.play("thud")
+	stunned.emit()
 
 func disguise(duration: float) -> void:
 	disguise_time = duration
