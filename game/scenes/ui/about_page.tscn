@@ -1,6 +1,6 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://bhxu8np70ejtv"]
 
-[ext_resource type="FontFile" path="res://assets/fonts/NotoSansThai-VF.ttf" id="1_fg1ut"]
+[ext_resource type="FontFile" uid="uid://1ptyv4806pcm" path="res://assets/fonts/NotoSansThai-VF.ttf" id="1_fg1ut"]
 
 [node name="CreditsPage" type="VBoxContainer" unique_id=73993704]
 theme_override_constants/separation = 3
@@ -81,14 +81,4 @@ theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("1_fg1ut")
 theme_override_font_sizes/font_size = 11
 text = "แนว: 2D Pixel Art Stealth-Puzzle Platformer"
-horizontal_alignment = 1
-
-[node name="@Label@50" type="Label" parent="." unique_id=321324372]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.88, 0.85, 0.93, 1)
-theme_override_colors/font_outline_color = Color(0.14117648, 0.12156863, 0.19215687, 1)
-theme_override_constants/outline_size = 5
-theme_override_fonts/font = ExtResource("1_fg1ut")
-theme_override_font_sizes/font_size = 11
-text = "สร้างด้วย Godot Engine 4.7 · ฟอนต์ Noto Sans Thai (OFL)"
 horizontal_alignment = 1

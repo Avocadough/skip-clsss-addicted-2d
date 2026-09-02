@@ -148,7 +148,7 @@ static func build_how_to() -> Control:
 		h.add_child(UI.label(r[1], 10, Color(0.86, 0.84, 0.9)))
 		v.add_child(h)
 	v.add_child(UI.spacer(4))
-	var note := UI.label("เดินไปโดนไอเทมเพื่อเก็บอัตโนมัติ · กรวยสีเหลืองคือระยะสายตา NPC",
+	var note := UI.label("เดินไปโดนไอเทมเพื่อเก็บอัตโนมัติ  กรวยสีเหลืองคือระยะสายตา NPC",
 		10, UI.PURPLE)
 	note.name = "Note"
 	note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -169,7 +169,6 @@ static func build_credits() -> Control:
 		"3. ณภัตร ช้อยกิ่ง        663380262-3",
 		"",
 		"แนว: 2D Pixel Art Stealth-Puzzle Platformer",
-		"สร้างด้วย Godot Engine 4.7 · ฟอนต์ Noto Sans Thai (OFL)",
 	]:
 		var l := UI.label(line, 11, Color(0.88, 0.85, 0.93))
 		l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER

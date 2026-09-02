@@ -1,6 +1,6 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://es2ug32qrm2c"]
 
-[ext_resource type="FontFile" path="res://assets/fonts/NotoSansThai-VF.ttf" id="1_nimpx"]
+[ext_resource type="FontFile" uid="uid://1ptyv4806pcm" path="res://assets/fonts/NotoSansThai-VF.ttf" id="1_nimpx"]
 
 [sub_resource type="FontVariation" id="FontVariation_jl5jw"]
 base_font = ExtResource("1_nimpx")
@@ -287,5 +287,5 @@ theme_override_colors/font_outline_color = Color(0.14117648, 0.12156863, 0.19215
 theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("1_nimpx")
 theme_override_font_sizes/font_size = 10
-text = "เดินไปโดนไอเทมเพื่อเก็บอัตโนมัติ · กรวยสีเหลืองคือระยะสายตา NPC"
+text = "เดินไปโดนไอเทมเพื่อเก็บอัตโนมัติ  กรวยสีเหลืองคือระยะสายตา NPC"
 autowrap_mode = 3
