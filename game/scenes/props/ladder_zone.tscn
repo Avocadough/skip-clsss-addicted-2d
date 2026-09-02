@@ -5,10 +5,10 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1ltbi"]
 size = Vector2(14, 48)
 
-[node name="LadderZone" type="Area2D" unique_id=264609775]
+[node name="LadderZone" type="Area2D" unique_id=2025101991]
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("1_ppfhx")
 
-[node name="Shape" type="CollisionShape2D" parent="." unique_id=1422951231]
+[node name="Shape" type="CollisionShape2D" parent="." unique_id=1061437168]
 shape = SubResource("RectangleShape2D_1ltbi")

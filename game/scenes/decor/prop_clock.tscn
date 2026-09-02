@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" path="res://assets/sprites/prop_clock.png" id="1_rrr8g"]
 
-[node name="Clock" type="Sprite2D" unique_id=1504074535]
+[node name="Clock" type="Sprite2D" unique_id=476621397]
 z_index = -3
 texture = ExtResource("1_rrr8g")
 centered = false

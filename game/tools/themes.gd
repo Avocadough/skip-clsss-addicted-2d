@@ -75,7 +75,7 @@ const THEMES := {
 
 const TILE_ROLES := [
 	"floor_top", "floor_fill", "wall", "wall_top", "platform", "ladder",
-	"bg_wall", "bg_window", "bg_tilewall", "grass_top", "dirt_fill", "fence",
+	"bg_wall", "bg_tilewall", "grass_top", "dirt_fill", "fence",
 ]
 
 # -------------------------------------------------------------- primitives --
@@ -164,16 +164,6 @@ func draw_tile(img: Image, ox: int, role: String, th: Dictionary) -> void:
 			vline(img, ox, 0, TS, w.darkened(0.12))
 			speckle(img, ox, 0, TS, TS, C(th, "wall_speck"), 44, 6)
 			speckle(img, ox, 0, TS, TS, w.darkened(0.08), 45, 4)
-		"bg_window":
-			rect(img, ox, 0, TS, TS, C(th, "glass"))
-			rect(img, ox, 0, TS, 2, C(th, "frame"))
-			rect(img, ox, 14, TS, 2, C(th, "frame"))
-			vline(img, ox, 0, TS, C(th, "frame"))
-			vline(img, ox + 15, 0, TS, C(th, "frame"))
-			vline(img, ox + 7, 2, 12, C(th, "frame"))
-			hline(img, ox + 1, 8, 14, C(th, "frame"))
-			for k in 5:
-				px(img, ox + 2 + k, 3 + k, Color(1, 1, 1, 0.35))
 		"bg_tilewall":
 			var t := C(th, "wainscot")
 			rect(img, ox, 0, TS, TS, t)

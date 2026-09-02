@@ -32,11 +32,10 @@ const T_WALL_TOP := 3
 const T_PLATFORM := 4
 const T_LADDER := 5
 const T_BG_WALL := 6
-const T_BG_WINDOW := 7
-const T_BG_TILE := 8
-const T_GRASS := 9
-const T_DIRT := 10
-const T_FENCE := 11
+const T_BG_TILE := 7
+const T_GRASS := 8
+const T_DIRT := 9
+const T_FENCE := 10
 
 const SPR := "res://assets/sprites/%s.png"
 
@@ -111,7 +110,7 @@ func _bake_tileset(theme: String) -> void:
 	var src := TileSetAtlasSource.new()
 	src.texture = load(SPR % ("tiles_" + theme))
 	src.texture_region_size = Vector2i(TILE, TILE)
-	for i in 12:
+	for i in T_FENCE + 1:
 		src.create_tile(Vector2i(i, 0))
 	ts.add_source(src, 0)
 
@@ -531,10 +530,6 @@ func _build_tiles(d: Dictionary, outdoor: bool, ts: TileSet) -> Array:
 		for y in range(wainscot, H):
 			for x in range(1, W - 1):
 				bg.set_cell(Vector2i(x, y), 0, Vector2i(T_BG_TILE, 0))
-		for w in d.get("windows", []):
-			for y in range(w[1], w[1] + w[3]):
-				for x in range(w[0], w[0] + w[2]):
-					bg.set_cell(Vector2i(x, y), 0, Vector2i(T_BG_WINDOW, 0))
 
 	# collect every solid cell first so the "is this the surface?" test is cheap
 	var solid_cells := {}

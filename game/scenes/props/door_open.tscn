@@ -9,25 +9,25 @@ size = Vector2(28, 30)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_c0jng"]
 size = Vector2(10, 30)
 
-[node name="Doorway" type="Area2D" unique_id=2113219219]
+[node name="Doorway" type="Area2D" unique_id=1113529947]
 collision_layer = 8
 collision_mask = 2
 script = ExtResource("1_ixl7x")
 locked = false
 
-[node name="Sprite" type="Sprite2D" parent="." unique_id=1326150046]
+[node name="Sprite" type="Sprite2D" parent="." unique_id=982286959]
 texture = ExtResource("2_k5elm")
 centered = false
 offset = Vector2(-9, -30)
 
-[node name="Shape" type="CollisionShape2D" parent="." unique_id=641086063]
+[node name="Shape" type="CollisionShape2D" parent="." unique_id=682820419]
 position = Vector2(0, -15)
 shape = SubResource("RectangleShape2D_uekk0")
 
-[node name="Blocker" type="StaticBody2D" parent="." unique_id=541188867]
+[node name="Blocker" type="StaticBody2D" parent="." unique_id=1639889995]
 collision_layer = 33
 
-[node name="Shape" type="CollisionShape2D" parent="Blocker" unique_id=371215250]
+[node name="Shape" type="CollisionShape2D" parent="Blocker" unique_id=423299539]
 position = Vector2(0, -15)
 shape = SubResource("RectangleShape2D_c0jng")
 disabled = true

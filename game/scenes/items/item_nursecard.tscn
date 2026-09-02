@@ -7,19 +7,19 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_3b10g"]
 radius = 11.0
 
-[node name="ItemNursecard" type="Area2D" unique_id=180567209]
+[node name="ItemNursecard" type="Area2D" unique_id=848050927]
 collision_layer = 8
 collision_mask = 2
 script = ExtResource("1_6lfgv")
 id = "nursecard"
 
-[node name="Shape" type="CollisionShape2D" parent="." unique_id=445914299]
+[node name="Shape" type="CollisionShape2D" parent="." unique_id=1525699280]
 shape = SubResource("CircleShape2D_3b10g")
 
-[node name="Halo" type="Sprite2D" parent="." unique_id=641476940]
+[node name="Halo" type="Sprite2D" parent="." unique_id=1582913226]
 modulate = Color(1, 0.95, 0.6, 0.16)
 z_index = -1
 texture = ExtResource("2_no4ff")
 
-[node name="Sprite" type="Sprite2D" parent="." unique_id=1265965700]
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1683001722]
 texture = ExtResource("3_qiiw7")

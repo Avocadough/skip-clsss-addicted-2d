@@ -141,18 +141,18 @@ border_color = Color(0.9490196, 0.8862745, 0.7137255, 1)
 base_font = ExtResource("4_4nqmc")
 variation_embolden = 0.55
 
-[node name="LevelSelect" type="Control" unique_id=1127851167]
+[node name="LevelSelect" type="Control" unique_id=1495935667]
 layout_mode = 3
 anchors_preset = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource("1_rif6e")
 
-[node name="MenuBackdrop" type="CanvasLayer" parent="." unique_id=1319809745 instance=ExtResource("2_chg43")]
+[node name="MenuBackdrop" type="CanvasLayer" parent="." unique_id=659821510 instance=ExtResource("2_chg43")]
 layer = -10
 script = ExtResource("3_r77uv")
 
-[node name="Column" type="VBoxContainer" parent="." unique_id=2022940712]
+[node name="Column" type="VBoxContainer" parent="." unique_id=1431528716]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -162,7 +162,7 @@ offset_right = -16.0
 offset_bottom = -8.0
 theme_override_constants/separation = 4
 
-[node name="Title" type="Label" parent="Column" unique_id=1268468999]
+[node name="Title" type="Label" parent="Column" unique_id=1358988925]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9490196, 0.8862745, 0.7137255, 1)
 theme_override_colors/font_outline_color = Color(0.14117648, 0.12156863, 0.19215687, 1)
@@ -172,19 +172,19 @@ theme_override_font_sizes/font_size = 22
 text = "เลือกด่าน"
 horizontal_alignment = 1
 
-[node name="Cards" type="HBoxContainer" parent="Column" unique_id=978618867]
+[node name="Cards" type="HBoxContainer" parent="Column" unique_id=1078467005]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 6
 alignment = 1
 
-[node name="Bottom" type="HBoxContainer" parent="Column" unique_id=720660143]
+[node name="Bottom" type="HBoxContainer" parent="Column" unique_id=552463443]
 layout_mode = 2
 theme_override_constants/separation = 8
 alignment = 1
 
-[node name="BackButton" type="Button" parent="Column/Bottom" unique_id=1469738748]
+[node name="BackButton" type="Button" parent="Column/Bottom" unique_id=1428618738]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(170, 27)
 layout_mode = 2
@@ -202,7 +202,7 @@ theme_override_styles/disabled = SubResource("StyleBoxFlat_u4mbh")
 theme_override_styles/focus = SubResource("StyleBoxFlat_rovvv")
 text = "« กลับหน้าแรก"
 
-[node name="ResetButton" type="Button" parent="Column/Bottom" unique_id=254311466]
+[node name="ResetButton" type="Button" parent="Column/Bottom" unique_id=526584174]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(170, 27)
 layout_mode = 2
@@ -220,7 +220,7 @@ theme_override_styles/disabled = SubResource("StyleBoxFlat_thf6c")
 theme_override_styles/focus = SubResource("StyleBoxFlat_f86jd")
 text = "ล้างความคืบหน้า"
 
-[node name="AllClearLabel" type="Label" parent="Column" unique_id=471547232]
+[node name="AllClearLabel" type="Label" parent="Column" unique_id=441308580]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2

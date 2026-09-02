@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" path="res://assets/sprites/prop_exit_sign.png" id="1_uk6wd"]
 
-[node name="ExitSign" type="Sprite2D" unique_id=494419409]
+[node name="ExitSign" type="Sprite2D" unique_id=1364437807]
 z_index = -3
 texture = ExtResource("1_uk6wd")
 centered = false

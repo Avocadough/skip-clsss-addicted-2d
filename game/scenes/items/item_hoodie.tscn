@@ -7,19 +7,19 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_pev7i"]
 radius = 11.0
 
-[node name="ItemHoodie" type="Area2D" unique_id=2131577363]
+[node name="ItemHoodie" type="Area2D" unique_id=124258402]
 collision_layer = 8
 collision_mask = 2
 script = ExtResource("1_lnk0t")
 id = "hoodie"
 
-[node name="Shape" type="CollisionShape2D" parent="." unique_id=1268385550]
+[node name="Shape" type="CollisionShape2D" parent="." unique_id=423141388]
 shape = SubResource("CircleShape2D_pev7i")
 
-[node name="Halo" type="Sprite2D" parent="." unique_id=530983900]
+[node name="Halo" type="Sprite2D" parent="." unique_id=1244211175]
 modulate = Color(1, 0.95, 0.6, 0.16)
 z_index = -1
 texture = ExtResource("2_u8np1")
 
-[node name="Sprite" type="Sprite2D" parent="." unique_id=2023219915]
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1639832407]
 texture = ExtResource("3_g7bwd")

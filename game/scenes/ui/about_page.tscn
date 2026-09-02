@@ -1,11 +1,11 @@
-[gd_scene format=3 uid="uid://bhxu8np70ejtv"]
+[gd_scene format=3]
 
-[ext_resource type="FontFile" uid="uid://1ptyv4806pcm" path="res://assets/fonts/NotoSansThai-VF.ttf" id="1_fg1ut"]
+[ext_resource type="FontFile" path="res://assets/fonts/NotoSansThai-VF.ttf" id="1_fg1ut"]
 
-[node name="CreditsPage" type="VBoxContainer" unique_id=73993704]
+[node name="CreditsPage" type="VBoxContainer" unique_id=238159491]
 theme_override_constants/separation = 3
 
-[node name="@Label@42" type="Label" parent="." unique_id=2028827671]
+[node name="@Label@42" type="Label" parent="." unique_id=333753794]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.88, 0.85, 0.93, 1)
 theme_override_colors/font_outline_color = Color(0.14117648, 0.12156863, 0.19215687, 1)
@@ -15,7 +15,7 @@ theme_override_font_sizes/font_size = 11
 text = "รายวิชา CP410844 Computer Game Development"
 horizontal_alignment = 1
 
-[node name="@Label@43" type="Label" parent="." unique_id=278141564]
+[node name="@Label@43" type="Label" parent="." unique_id=113913673]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.88, 0.85, 0.93, 1)
 theme_override_colors/font_outline_color = Color(0.14117648, 0.12156863, 0.19215687, 1)
@@ -25,7 +25,7 @@ theme_override_font_sizes/font_size = 11
 text = "ภาคการศึกษาต้น ปีการศึกษา 2569 — กลุ่มที่ 19"
 horizontal_alignment = 1
 
-[node name="@Label@44" type="Label" parent="." unique_id=308220727]
+[node name="@Label@44" type="Label" parent="." unique_id=194694581]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.88, 0.85, 0.93, 1)
 theme_override_colors/font_outline_color = Color(0.14117648, 0.12156863, 0.19215687, 1)
@@ -34,7 +34,7 @@ theme_override_fonts/font = ExtResource("1_fg1ut")
 theme_override_font_sizes/font_size = 11
 horizontal_alignment = 1
 
-[node name="@Label@45" type="Label" parent="." unique_id=866983898]
+[node name="@Label@45" type="Label" parent="." unique_id=2030042626]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.88, 0.85, 0.93, 1)
 theme_override_colors/font_outline_color = Color(0.14117648, 0.12156863, 0.19215687, 1)
@@ -44,7 +44,7 @@ theme_override_font_sizes/font_size = 11
 text = "1. กษิเดช สุขศีล        663380252-6"
 horizontal_alignment = 1
 
-[node name="@Label@46" type="Label" parent="." unique_id=1126171735]
+[node name="@Label@46" type="Label" parent="." unique_id=1050818715]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.88, 0.85, 0.93, 1)
 theme_override_colors/font_outline_color = Color(0.14117648, 0.12156863, 0.19215687, 1)
@@ -54,7 +54,7 @@ theme_override_font_sizes/font_size = 11
 text = "2. ภูริณัฐ ศรีไตรรัตน์    663380531-2"
 horizontal_alignment = 1
 
-[node name="@Label@47" type="Label" parent="." unique_id=544664938]
+[node name="@Label@47" type="Label" parent="." unique_id=1017257079]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.88, 0.85, 0.93, 1)
 theme_override_colors/font_outline_color = Color(0.14117648, 0.12156863, 0.19215687, 1)
@@ -64,7 +64,7 @@ theme_override_font_sizes/font_size = 11
 text = "3. ณภัตร ช้อยกิ่ง        663380262-3"
 horizontal_alignment = 1
 
-[node name="@Label@48" type="Label" parent="." unique_id=1009785717]
+[node name="@Label@48" type="Label" parent="." unique_id=19765893]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.88, 0.85, 0.93, 1)
 theme_override_colors/font_outline_color = Color(0.14117648, 0.12156863, 0.19215687, 1)
@@ -73,7 +73,7 @@ theme_override_fonts/font = ExtResource("1_fg1ut")
 theme_override_font_sizes/font_size = 11
 horizontal_alignment = 1
 
-[node name="@Label@49" type="Label" parent="." unique_id=1031763308]
+[node name="@Label@49" type="Label" parent="." unique_id=482831795]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.88, 0.85, 0.93, 1)
 theme_override_colors/font_outline_color = Color(0.14117648, 0.12156863, 0.19215687, 1)

@@ -6,18 +6,18 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mbwn7"]
 size = Vector2(28, 17)
 
-[node name="HideDesk" type="Area2D" unique_id=2137533545]
+[node name="HideDesk" type="Area2D" unique_id=2093330640]
 collision_layer = 8
 collision_mask = 2
 script = ExtResource("1_auuov")
 kind = "desk"
 
-[node name="Sprite" type="Sprite2D" parent="." unique_id=2129256690]
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1949975656]
 z_index = 1
 texture = ExtResource("2_vvl84")
 centered = false
 offset = Vector2(-14, -17)
 
-[node name="Shape" type="CollisionShape2D" parent="." unique_id=958251922]
+[node name="Shape" type="CollisionShape2D" parent="." unique_id=1535865373]
 position = Vector2(0, -8.5)
 shape = SubResource("RectangleShape2D_mbwn7")

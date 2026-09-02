@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" path="res://assets/sprites/prop_whiteboard.png" id="1_ysath"]
 
-[node name="Whiteboard" type="Sprite2D" unique_id=250725031]
+[node name="Whiteboard" type="Sprite2D" unique_id=29909205]
 z_index = -3
 texture = ExtResource("1_ysath")
 centered = false

@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" path="res://assets/sprites/prop_door.png" id="1_afmrv"]
 
-[node name="Door" type="Sprite2D" unique_id=1912653729]
+[node name="Door" type="Sprite2D" unique_id=93741370]
 z_index = -3
 texture = ExtResource("1_afmrv")
 centered = false

@@ -215,34 +215,34 @@ border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0.9490196, 0.8862745, 0.7137255, 1)
 
-[node name="ResultPanel" type="CanvasLayer" unique_id=1075162401]
+[node name="ResultPanel" type="CanvasLayer" unique_id=1173104979]
 process_mode = 3
 layer = 30
 script = ExtResource("1_t27rn")
 
-[node name="Dim" type="ColorRect" parent="." unique_id=738072098]
+[node name="Dim" type="ColorRect" parent="." unique_id=594293889]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color(0.05, 0.04, 0.08, 0.78)
 
-[node name="Center" type="CenterContainer" parent="." unique_id=1339471899]
+[node name="Center" type="CenterContainer" parent="." unique_id=1020785285]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 
-[node name="Box" type="PanelContainer" parent="Center" unique_id=627194027]
+[node name="Box" type="PanelContainer" parent="Center" unique_id=1408003599]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(360, 0)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_hmfc5")
 
-[node name="Column" type="VBoxContainer" parent="Center/Box" unique_id=123636233]
+[node name="Column" type="VBoxContainer" parent="Center/Box" unique_id=982918722]
 layout_mode = 2
 theme_override_constants/separation = 4
 
-[node name="Title" type="Label" parent="Center/Box/Column" unique_id=202305155]
+[node name="Title" type="Label" parent="Center/Box/Column" unique_id=1431006595]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9490196, 0.8862745, 0.7137255, 1)
@@ -252,7 +252,7 @@ theme_override_fonts/font = SubResource("FontVariation_xugo3")
 theme_override_font_sizes/font_size = 24
 horizontal_alignment = 1
 
-[node name="Subtitle" type="Label" parent="Center/Box/Column" unique_id=1654117902]
+[node name="Subtitle" type="Label" parent="Center/Box/Column" unique_id=1487603142]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(330, 0)
 layout_mode = 2
@@ -264,19 +264,19 @@ theme_override_font_sizes/font_size = 14
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="Gap" type="Control" parent="Center/Box/Column" unique_id=623299825]
+[node name="Gap" type="Control" parent="Center/Box/Column" unique_id=796350720]
 custom_minimum_size = Vector2(0, 2)
 layout_mode = 2
 
-[node name="Lines" type="VBoxContainer" parent="Center/Box/Column" unique_id=1842231150]
+[node name="Lines" type="VBoxContainer" parent="Center/Box/Column" unique_id=849247582]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Gap2" type="Control" parent="Center/Box/Column" unique_id=85557696]
+[node name="Gap2" type="Control" parent="Center/Box/Column" unique_id=2036850712]
 custom_minimum_size = Vector2(0, 6)
 layout_mode = 2
 
-[node name="NextButton" type="Button" parent="Center/Box/Column" unique_id=1074458770]
+[node name="NextButton" type="Button" parent="Center/Box/Column" unique_id=1497672661]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 28)
 layout_mode = 2
@@ -294,7 +294,7 @@ theme_override_styles/disabled = SubResource("StyleBoxFlat_3pweg")
 theme_override_styles/focus = SubResource("StyleBoxFlat_kguur")
 text = "ไปด่านต่อไป »"
 
-[node name="RetryButton" type="Button" parent="Center/Box/Column" unique_id=1755722073]
+[node name="RetryButton" type="Button" parent="Center/Box/Column" unique_id=985290781]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 27)
 layout_mode = 2
@@ -312,7 +312,7 @@ theme_override_styles/disabled = SubResource("StyleBoxFlat_pl5un")
 theme_override_styles/focus = SubResource("StyleBoxFlat_gp4fh")
 text = "เล่นด่านนี้ใหม่"
 
-[node name="MenuButton" type="Button" parent="Center/Box/Column" unique_id=1561426907]
+[node name="MenuButton" type="Button" parent="Center/Box/Column" unique_id=858108391]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 27)
 layout_mode = 2

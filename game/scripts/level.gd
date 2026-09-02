@@ -446,14 +446,12 @@ func _on_confront(npc: Npc) -> void:
 			player.consume_item(used)
 		if good:
 			suspicion = maxf(0.0, suspicion - 22.0)
-			npc.awareness = 0.0
-			npc.state = Npc.State.PATROL
-			npc.blocked_until = 0.0
-			Fader.toast("รอดไปได้! หัวหน้าห้องเชื่อแล้ว", UI.GREEN)
+			npc.look_away(Npc.CONVINCED_TIME, true)
+			Fader.toast("รอดไปได้! หัวหน้าห้องเชื่อแล้ว — รีบเดินไปเลย", UI.GREEN)
 		else:
 			suspicion = minf(100.0, suspicion + 34.0)
-			npc.awareness = 1.0
-			Fader.toast("ตอบไม่เนียน — ความสงสัยพุ่ง!", UI.RED)
+			npc.look_away(Npc.BRUSHED_OFF_TIME, false)
+			Fader.toast("ตอบไม่เนียน — ความสงสัยพุ่ง! รีบหนี", UI.RED)
 			if suspicion >= 100.0:
 				_lose("ตอบข้ออ้างผิด ความสงสัยเต็ม — โดนพากลับห้อง"))
 

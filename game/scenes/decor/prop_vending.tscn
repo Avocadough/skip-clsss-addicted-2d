@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" path="res://assets/sprites/prop_vending.png" id="1_38d8m"]
 
-[node name="Vending" type="Sprite2D" unique_id=1517164186]
+[node name="Vending" type="Sprite2D" unique_id=22829960]
 z_index = -3
 texture = ExtResource("1_38d8m")
 centered = false

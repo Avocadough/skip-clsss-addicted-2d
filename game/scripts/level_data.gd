@@ -12,7 +12,7 @@ extends RefCounted
 ##     loads and what you edit; re-running the bake throws hand edits away.
 ##
 ## Layout conventions, all in 16px tile units:
-##   solids/platforms/ladders/windows -> [x, y, w, (h)]
+##   solids / platforms / ladders     -> [x, y, w, (h)]
 ##   npc / hide / door / goal / spawn -> (x, y) is the tile the feet rest on
 ##   item / camera                    -> (x, y) is the tile the sprite centres on
 
@@ -103,9 +103,6 @@ static func _level1() -> Dictionary:
 		"ladders": [
 			[19, 8, 5], [41, 8, 5], [47, 8, 5],
 		],
-		"windows": [
-			[10, 4, 2, 2], [24, 4, 2, 2], [42, 4, 2, 2], [54, 4, 2, 2],
-		],
 		"npcs": [
 			{"type": "teacher", "x": 36, "y": 13, "patrol": [22, 46]},
 			{"type": "monitor", "x": 52, "y": 13, "patrol": [48, 59]},
@@ -171,9 +168,6 @@ static func _level2() -> Dictionary:
 		],
 		"ladders": [
 			[11, 8, 5], [29, 7, 6], [49, 8, 5],
-		],
-		"windows": [
-			[6, 4, 2, 2], [20, 4, 2, 2], [44, 4, 2, 2], [62, 4, 2, 2],
 		],
 		"npcs": [
 			{"type": "teacher", "x": 26, "y": 13, "patrol": [18, 40]},
@@ -247,9 +241,6 @@ static func _level3() -> Dictionary:
 		"ladders": [
 			[9, 8, 5], [31, 8, 5], [47, 7, 6],
 		],
-		"windows": [
-			[16, 4, 2, 2], [40, 4, 2, 2], [61, 4, 2, 2],
-		],
 		"npcs": [
 			{"type": "librarian", "x": 22, "y": 13, "patrol": [12, 38]},
 			{"type": "librarian", "x": 54, "y": 13, "patrol": [50, 56]},
@@ -320,7 +311,6 @@ static func _level4() -> Dictionary:
 			[13, 8, 5], [35, 9, 4], [57, 8, 5],
 			[52, 6, 7, "fence"],     # the chain-link fence you must climb
 		],
-		"windows": [],
 		"npcs": [
 			{"type": "coach", "x": 20, "y": 13, "patrol": [8, 34]},
 			{"type": "coach", "x": 48, "y": 13, "patrol": [42, 56]},
@@ -396,7 +386,6 @@ static func _level5() -> Dictionary:
 			[9, 8, 5], [27, 8, 5], [47, 9, 4],
 			[36, 6, 7, "fence"],
 		],
-		"windows": [],
 		"npcs": [
 			{"type": "guard", "x": 24, "y": 13, "patrol": [14, 34]},
 			{"type": "guard", "x": 60, "y": 13, "patrol": [58, 67]},

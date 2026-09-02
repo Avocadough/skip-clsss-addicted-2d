@@ -6,16 +6,16 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_i372f"]
 radius = 7.0
 
-[node name="Ball" type="Area2D" unique_id=1468736571]
+[node name="Ball" type="Area2D" unique_id=908179873]
 collision_layer = 16
 collision_mask = 2
 script = ExtResource("1_6d8im")
 
-[node name="Shape" type="CollisionShape2D" parent="." unique_id=846645637]
+[node name="Shape" type="CollisionShape2D" parent="." unique_id=797774331]
 position = Vector2(0, -7)
 shape = SubResource("CircleShape2D_i372f")
 
-[node name="Sprite" type="Sprite2D" parent="." unique_id=1453030985]
+[node name="Sprite" type="Sprite2D" parent="." unique_id=237679795]
 modulate = Color(1, 0.55, 0.35, 1)
 position = Vector2(0, -7)
 texture = ExtResource("2_3mkuf")

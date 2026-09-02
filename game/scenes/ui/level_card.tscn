@@ -92,16 +92,16 @@ border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0.9490196, 0.8862745, 0.7137255, 1)
 
-[node name="LevelCard" type="PanelContainer" unique_id=1240760066]
+[node name="LevelCard" type="PanelContainer" unique_id=1993020686]
 custom_minimum_size = Vector2(84, 0)
 theme_override_styles/panel = SubResource("StyleBoxFlat_sqvla")
 script = ExtResource("1_xol0m")
 
-[node name="Column" type="VBoxContainer" parent="." unique_id=881978537]
+[node name="Column" type="VBoxContainer" parent="." unique_id=19328907]
 layout_mode = 2
 theme_override_constants/separation = 1
 
-[node name="NumLabel" type="Label" parent="Column" unique_id=734688760]
+[node name="NumLabel" type="Label" parent="Column" unique_id=447890867]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.7137255, 0.6509804, 0.8784314, 1)
@@ -112,7 +112,7 @@ theme_override_font_sizes/font_size = 14
 text = "ด่าน 1"
 horizontal_alignment = 1
 
-[node name="NameLabel" type="Label" parent="Column" unique_id=66364532]
+[node name="NameLabel" type="Label" parent="Column" unique_id=1274887468]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(70, 26)
 layout_mode = 2
@@ -124,7 +124,7 @@ theme_override_font_sizes/font_size = 10
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="EnLabel" type="Label" parent="Column" unique_id=1379676979]
+[node name="EnLabel" type="Label" parent="Column" unique_id=1548356507]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
@@ -136,7 +136,7 @@ theme_override_font_sizes/font_size = 8
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="TimeLabel" type="Label" parent="Column" unique_id=369965153]
+[node name="TimeLabel" type="Label" parent="Column" unique_id=476495876]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.78, 0.75, 0.85, 1)
@@ -146,11 +146,11 @@ theme_override_fonts/font = ExtResource("2_07o60")
 theme_override_font_sizes/font_size = 9
 horizontal_alignment = 1
 
-[node name="Badge" type="CenterContainer" parent="Column" unique_id=1660389321]
+[node name="Badge" type="CenterContainer" parent="Column" unique_id=1856956482]
 custom_minimum_size = Vector2(0, 26)
 layout_mode = 2
 
-[node name="RankLabel" type="Label" parent="Column/Badge" unique_id=996157909]
+[node name="RankLabel" type="Label" parent="Column/Badge" unique_id=530665787]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
@@ -161,7 +161,7 @@ theme_override_fonts/font = SubResource("FontVariation_15cte")
 theme_override_font_sizes/font_size = 22
 text = "S"
 
-[node name="KeyIcon" type="TextureRect" parent="Column/Badge" unique_id=1366507282]
+[node name="KeyIcon" type="TextureRect" parent="Column/Badge" unique_id=490400398]
 unique_name_in_owner = true
 visible = false
 modulate = Color(0.42, 0.39, 0.5, 1)
@@ -171,7 +171,7 @@ layout_mode = 2
 texture = ExtResource("3_e24jo")
 stretch_mode = 5
 
-[node name="DashLabel" type="Label" parent="Column/Badge" unique_id=1372695806]
+[node name="DashLabel" type="Label" parent="Column/Badge" unique_id=154937123]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.42, 0.39, 0.5, 1)
@@ -181,7 +181,7 @@ theme_override_fonts/font = SubResource("FontVariation_tc0x5")
 theme_override_font_sizes/font_size = 18
 text = "—"
 
-[node name="BestLabel" type="Label" parent="Column" unique_id=367262889]
+[node name="BestLabel" type="Label" parent="Column" unique_id=1764793155]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.72, 0.7, 0.8, 1)
@@ -192,7 +192,7 @@ theme_override_font_sizes/font_size = 8
 text = " "
 horizontal_alignment = 1
 
-[node name="PlayButton" type="Button" parent="Column" unique_id=283364964]
+[node name="PlayButton" type="Button" parent="Column" unique_id=196987170]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 25)
 layout_mode = 2

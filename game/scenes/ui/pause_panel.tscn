@@ -275,18 +275,18 @@ border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0.9490196, 0.8862745, 0.7137255, 1)
 
-[node name="PausePanel" type="CanvasLayer" unique_id=1288669249]
+[node name="PausePanel" type="CanvasLayer" unique_id=702413765]
 process_mode = 3
 layer = 30
 script = ExtResource("1_767ou")
 
-[node name="Dim" type="ColorRect" parent="." unique_id=2119086451]
+[node name="Dim" type="ColorRect" parent="." unique_id=2013072505]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color(0.05, 0.04, 0.08, 0.75)
 
-[node name="Box" type="PanelContainer" parent="." unique_id=709168195]
+[node name="Box" type="PanelContainer" parent="." unique_id=298566421]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -298,11 +298,11 @@ offset_right = 160.0
 offset_bottom = 120.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_sn6ky")
 
-[node name="Column" type="VBoxContainer" parent="Box" unique_id=457129719]
+[node name="Column" type="VBoxContainer" parent="Box" unique_id=1034859438]
 layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="Title" type="Label" parent="Box/Column" unique_id=1232771982]
+[node name="Title" type="Label" parent="Box/Column" unique_id=207538035]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.7137255, 0.6509804, 0.8784314, 1)
 theme_override_colors/font_outline_color = Color(0.14117648, 0.12156863, 0.19215687, 1)
@@ -312,7 +312,7 @@ theme_override_font_sizes/font_size = 22
 text = "หยุดชั่วคราว"
 horizontal_alignment = 1
 
-[node name="GoalLabel" type="Label" parent="Box/Column" unique_id=1985180579]
+[node name="GoalLabel" type="Label" parent="Box/Column" unique_id=2093728575]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(290, 0)
 layout_mode = 2
@@ -324,11 +324,11 @@ theme_override_font_sizes/font_size = 12
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="Gap" type="Control" parent="Box/Column" unique_id=247091761]
+[node name="Gap" type="Control" parent="Box/Column" unique_id=545928708]
 custom_minimum_size = Vector2(0, 4)
 layout_mode = 2
 
-[node name="ResumeButton" type="Button" parent="Box/Column" unique_id=91051157]
+[node name="ResumeButton" type="Button" parent="Box/Column" unique_id=1395244460]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 28)
 layout_mode = 2
@@ -346,7 +346,7 @@ theme_override_styles/disabled = SubResource("StyleBoxFlat_wdri8")
 theme_override_styles/focus = SubResource("StyleBoxFlat_xis4e")
 text = "เล่นต่อ"
 
-[node name="RestartButton" type="Button" parent="Box/Column" unique_id=1844160636]
+[node name="RestartButton" type="Button" parent="Box/Column" unique_id=1161012089]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 27)
 layout_mode = 2
@@ -364,7 +364,7 @@ theme_override_styles/disabled = SubResource("StyleBoxFlat_bogwc")
 theme_override_styles/focus = SubResource("StyleBoxFlat_yufj0")
 text = "เริ่มด่านนี้ใหม่"
 
-[node name="MusicButton" type="Button" parent="Box/Column" unique_id=611704125]
+[node name="MusicButton" type="Button" parent="Box/Column" unique_id=1454623576]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 27)
 layout_mode = 2
@@ -382,7 +382,7 @@ theme_override_styles/disabled = SubResource("StyleBoxFlat_yk7sl")
 theme_override_styles/focus = SubResource("StyleBoxFlat_vfr8j")
 text = "เพลง: เปิด"
 
-[node name="BackButton" type="Button" parent="Box/Column" unique_id=1932885908]
+[node name="BackButton" type="Button" parent="Box/Column" unique_id=727779799]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 27)
 layout_mode = 2

@@ -333,18 +333,18 @@ border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0.9490196, 0.8862745, 0.7137255, 1)
 
-[node name="MainMenu" type="Control" unique_id=100352856]
+[node name="MainMenu" type="Control" unique_id=437324926]
 layout_mode = 3
 anchors_preset = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource("1_wu84c")
 
-[node name="MenuBackdrop" type="CanvasLayer" parent="." unique_id=1319809745 instance=ExtResource("2_8ln24")]
+[node name="MenuBackdrop" type="CanvasLayer" parent="." unique_id=659821510 instance=ExtResource("2_8ln24")]
 layer = -10
 script = ExtResource("3_rtw2f")
 
-[node name="Column" type="VBoxContainer" parent="." unique_id=1622437057]
+[node name="Column" type="VBoxContainer" parent="." unique_id=656353465]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -352,7 +352,7 @@ offset_bottom = -24.0
 theme_override_constants/separation = 1
 alignment = 1
 
-[node name="Title" type="Label" parent="Column" unique_id=1707789211]
+[node name="Title" type="Label" parent="Column" unique_id=225642012]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9490196, 0.8862745, 0.7137255, 1)
 theme_override_colors/font_outline_color = Color(0.14117648, 0.12156863, 0.19215687, 1)
@@ -362,7 +362,7 @@ theme_override_font_sizes/font_size = 28
 text = "เสพติดการโดดเรียน!"
 horizontal_alignment = 1
 
-[node name="Subtitle" type="Label" parent="Column" unique_id=1860384730]
+[node name="Subtitle" type="Label" parent="Column" unique_id=1210940994]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.7137255, 0.6509804, 0.8784314, 1)
 theme_override_colors/font_outline_color = Color(0.14117648, 0.12156863, 0.19215687, 1)
@@ -372,7 +372,7 @@ theme_override_font_sizes/font_size = 13
 text = "S K I P   C L A S S   A D D I C T E D"
 horizontal_alignment = 1
 
-[node name="Tagline" type="Label" parent="Column" unique_id=1882440393]
+[node name="Tagline" type="Label" parent="Column" unique_id=1589395412]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.86, 0.83, 0.92, 1)
 theme_override_colors/font_outline_color = Color(0.14117648, 0.12156863, 0.19215687, 1)
@@ -382,17 +382,17 @@ theme_override_font_sizes/font_size = 12
 text = "\"หนีให้เนียน ซ่อนให้ทัน อย่าให้ใครลากกลับเข้าห้องก่อนกริ่งดัง\""
 horizontal_alignment = 1
 
-[node name="Gap" type="Control" parent="Column" unique_id=236432973]
+[node name="Gap" type="Control" parent="Column" unique_id=1535517129]
 custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
 
-[node name="Buttons" type="VBoxContainer" parent="Column" unique_id=716884988]
+[node name="Buttons" type="VBoxContainer" parent="Column" unique_id=1713298400]
 custom_minimum_size = Vector2(220, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/separation = 4
 
-[node name="PlayButton" type="Button" parent="Column/Buttons" unique_id=566383504]
+[node name="PlayButton" type="Button" parent="Column/Buttons" unique_id=1621258337]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 29)
 layout_mode = 2
@@ -410,7 +410,7 @@ theme_override_styles/disabled = SubResource("StyleBoxFlat_1ajci")
 theme_override_styles/focus = SubResource("StyleBoxFlat_7b55j")
 text = "เริ่มเล่น"
 
-[node name="SelectButton" type="Button" parent="Column/Buttons" unique_id=923458782]
+[node name="SelectButton" type="Button" parent="Column/Buttons" unique_id=1149573160]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 28)
 layout_mode = 2
@@ -428,7 +428,7 @@ theme_override_styles/disabled = SubResource("StyleBoxFlat_8egab")
 theme_override_styles/focus = SubResource("StyleBoxFlat_gw5y6")
 text = "เลือกด่าน"
 
-[node name="HowToButton" type="Button" parent="Column/Buttons" unique_id=1738510492]
+[node name="HowToButton" type="Button" parent="Column/Buttons" unique_id=1553145630]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 28)
 layout_mode = 2
@@ -446,7 +446,7 @@ theme_override_styles/disabled = SubResource("StyleBoxFlat_1acrt")
 theme_override_styles/focus = SubResource("StyleBoxFlat_vr8o3")
 text = "วิธีเล่น"
 
-[node name="CreditsButton" type="Button" parent="Column/Buttons" unique_id=536658704]
+[node name="CreditsButton" type="Button" parent="Column/Buttons" unique_id=1647017199]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 28)
 layout_mode = 2
@@ -464,7 +464,7 @@ theme_override_styles/disabled = SubResource("StyleBoxFlat_dj67d")
 theme_override_styles/focus = SubResource("StyleBoxFlat_6vcge")
 text = "เกี่ยวกับเกม"
 
-[node name="MusicButton" type="Button" parent="Column/Buttons" unique_id=1170946614]
+[node name="MusicButton" type="Button" parent="Column/Buttons" unique_id=774892464]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 27)
 layout_mode = 2
@@ -482,7 +482,7 @@ theme_override_styles/disabled = SubResource("StyleBoxFlat_q13xq")
 theme_override_styles/focus = SubResource("StyleBoxFlat_u43bj")
 text = "เพลง: เปิด"
 
-[node name="Footer" type="Label" parent="." unique_id=1092490709]
+[node name="Footer" type="Label" parent="." unique_id=1718340520]
 layout_mode = 0
 anchor_left = 0.5
 anchor_top = 1.0
@@ -500,7 +500,7 @@ theme_override_font_sizes/font_size = 11
 text = "CP410844 Computer Game Development · กลุ่มที่ 19"
 horizontal_alignment = 1
 
-[node name="ModalHolder" type="Control" parent="." unique_id=1386537993]
+[node name="ModalHolder" type="Control" parent="." unique_id=562854819]
 unique_name_in_owner = true
 anchors_preset = 0
 anchor_right = 1.0

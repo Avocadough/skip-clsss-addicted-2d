@@ -7,19 +7,19 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_fffjk"]
 radius = 11.0
 
-[node name="ItemNotebook" type="Area2D" unique_id=1869025397]
+[node name="ItemNotebook" type="Area2D" unique_id=1077606839]
 collision_layer = 8
 collision_mask = 2
 script = ExtResource("1_e5yf7")
 id = "notebook"
 
-[node name="Shape" type="CollisionShape2D" parent="." unique_id=1571104510]
+[node name="Shape" type="CollisionShape2D" parent="." unique_id=1565058543]
 shape = SubResource("CircleShape2D_fffjk")
 
-[node name="Halo" type="Sprite2D" parent="." unique_id=2101020661]
+[node name="Halo" type="Sprite2D" parent="." unique_id=191221979]
 modulate = Color(1, 0.95, 0.6, 0.16)
 z_index = -1
 texture = ExtResource("2_fh0bc")
 
-[node name="Sprite" type="Sprite2D" parent="." unique_id=1557449613]
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1890498252]
 texture = ExtResource("3_gvg1t")

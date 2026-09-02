@@ -3,10 +3,10 @@
 [ext_resource type="Script" path="res://scripts/ui/item_slot.gd" id="1_obwa2"]
 [ext_resource type="Texture2D" path="res://assets/sprites/item_coin.png" id="2_pdajm"]
 
-[node name="ItemSlot" type="PanelContainer" unique_id=539046218]
+[node name="ItemSlot" type="PanelContainer" unique_id=1760610863]
 script = ExtResource("1_obwa2")
 
-[node name="Icon" type="TextureRect" parent="." unique_id=48266395]
+[node name="Icon" type="TextureRect" parent="." unique_id=947456260]
 texture_filter = 1
 custom_minimum_size = Vector2(18, 18)
 layout_mode = 2

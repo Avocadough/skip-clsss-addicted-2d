@@ -143,6 +143,45 @@ func _run() -> void:
 			_ok(lv.phase == 0, "no loss was triggered while he searched")
 		await _drop(lv)
 
+		# ------------- answering the monitor correctly must actually work ---
+		lv = await _load_level(idx)
+		var mon = null
+		for n in lv.get_tree().get_nodes_in_group("npc"):
+			if n.stats["catch"] == "dialogue" and mon == null:
+				mon = n
+			else:
+				n.queue_free()
+		for c in lv.get_tree().get_nodes_in_group("cctv"):
+			c.queue_free()            # a camera would drive suspicion on its own
+		for z in lv.get_tree().get_nodes_in_group("classroom"):
+			z.queue_free()
+		# Parking the player next to a monitor can drop him on the skip point,
+		# which ends the stage and would make the rest of this pass vacuously.
+		lv.goal.global_position = Vector2(-9000, -9000)
+		await _steps(2)
+		if mon != null:
+			for i in 200:
+				lv.player.global_position = mon.global_position + Vector2(mon.facing * 30.0, 0)
+				if mon.awareness > 0.9:
+					break
+				await physics_frame
+			_ok(mon.awareness > 0.5, "monitor locks on when you stand in front of him")
+
+			# what level.gd does when the excuse lands
+			mon.look_away(mon.CONVINCED_TIME, true)
+			lv.suspicion = 0.0
+			var climbed := 0.0
+			for i in 180:             # three seconds, player still standing there
+				lv.player.global_position = mon.global_position + Vector2(mon.facing * 30.0, 0)
+				await physics_frame
+				climbed = maxf(climbed, lv.suspicion)
+			_ok(lv.phase == 0, "the stage is still running")
+			_ok(climbed < 1.0, "a convinced monitor stops watching (suspicion %.1f%%)" % climbed)
+			_ok(mon.awareness < 0.1, "and stops building any of his own")
+			# 0 PATROL, 1 LOOK — both are the ordinary round; 2 and 3 are not
+			_ok(mon.state <= 1, "and is back on his round, not hunting")
+		await _drop(lv)
+
 		# -------- an NPC parked at either end must turn around and carry on ---
 		# The glance animation used to overwrite the walking direction, so an
 		# NPC that reached the end of its beat could aim straight back at the

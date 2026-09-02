@@ -9,7 +9,7 @@ extends SceneTree
 ## game actually loads — move a teacher in the editor and this sees the move.
 
 ## Tile columns in the atlas that actually stop you.
-const SOLID_TILES := [0, 1, 2, 3, 9, 10]    # floor top/fill, wall, wall top, grass, dirt
+const SOLID_TILES := [0, 1, 2, 3, 8, 9]     # floor top/fill, wall, wall top, grass, dirt
 const PLATFORM_TILE := 4                    # the one-way ledge
 
 const S_NPC := "res://scripts/npc.gd"

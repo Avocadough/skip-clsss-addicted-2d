@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" path="res://assets/sprites/prop_crate.png" id="1_bunfg"]
 
-[node name="Crate" type="Sprite2D" unique_id=1124919413]
+[node name="Crate" type="Sprite2D" unique_id=712063286]
 z_index = -3
 texture = ExtResource("1_bunfg")
 centered = false

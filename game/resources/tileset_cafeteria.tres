@@ -1,6 +1,6 @@
-[gd_resource type="TileSet" format=3 uid="uid://lo0xm32mhuyw"]
+[gd_resource type="TileSet" format=3]
 
-[ext_resource type="Texture2D" uid="uid://sl1wy8evfwgq" path="res://assets/sprites/tiles_cafeteria.png" id="1_xeyw2"]
+[ext_resource type="Texture2D" path="res://assets/sprites/tiles_cafeteria.png" id="1_xeyw2"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_55im1"]
 texture = ExtResource("1_xeyw2")
@@ -19,11 +19,10 @@ texture = ExtResource("1_xeyw2")
 6:0/0 = 0
 7:0/0 = 0
 8:0/0 = 0
+8:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 9:0/0 = 0
 9:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 10:0/0 = 0
-10:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-11:0/0 = 0
 
 [resource]
 physics_layer_0/collision_layer = 1

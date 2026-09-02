@@ -29,6 +29,11 @@ const GIVE_UP_TIME := 6.0
 ## Below this, the NPC considers the matter closed and goes back to its round.
 const CALM_LEVEL := 0.12
 
+## How long a watcher stops paying attention for after being talked to. Long
+## enough to walk off if the excuse landed; barely a breath if it did not.
+const CONVINCED_TIME := 8.0
+const BRUSHED_OFF_TIME := 2.0
+
 ## Which watcher this is. Everything else about them — speed, sight range,
 ## cone width, what happens when they catch you — is looked up from STATS.
 @export_enum("teacher", "monitor", "guard", "librarian", "coach", "student", "student2")
@@ -59,6 +64,7 @@ var _player: Player
 var _look_timer := 0.0
 var _give_up := 0.0
 var _lost_timer := 0.0
+var _grace := 0.0                    ## set by look_away() after a dialogue
 var _anim_t := 0.0
 var _target := Vector2.ZERO
 var _tex_alert: Texture2D
@@ -103,6 +109,17 @@ func _physics_process(delta: float) -> void:
 
 # ------------------------------------------------------------------ senses --
 func _sense(delta: float) -> void:
+	# Just been talked to. Without this the player is still standing in the
+	# cone the instant the dialogue box closes, awareness refills in about a
+	# second, and answering correctly bought nothing at all.
+	if _grace > 0.0:
+		_grace -= delta
+		can_see_player = false
+		# Held just under the level that starts them looking, so a watcher who
+		# was brushed off is back on you the moment the grace runs out.
+		awareness = minf(awareness, 0.34)
+		return
+
 	can_see_player = _check_sight()
 	var gain := 0.0
 	if can_see_player:
@@ -166,6 +183,19 @@ func _go_investigate(pos: Vector2) -> void:
 	_target = Vector2(clampf(pos.x, patrol_min, patrol_max), global_position.y)
 	_look_timer = 2.2
 	_give_up = GIVE_UP_TIME
+
+## Called when an excuse dialogue closes. `calm` is whether the story landed:
+## a convinced watcher drops the matter entirely, one who was brushed off
+## stays uneasy and picks you up again as soon as the grace lapses.
+func look_away(duration: float, calm: bool) -> void:
+	_grace = maxf(_grace, duration)
+	state = State.PATROL
+	awareness = 0.0 if calm else 0.34
+	blocked_until = 0.0
+	_lost_timer = 0.0
+	_give_up = 0.0
+	_look_timer = 0.0
+	_target.x = clampf(global_position.x, patrol_min, patrol_max)
 
 ## Drops all suspicion and returns to the normal back-and-forth round.
 func _resume_patrol() -> void:
