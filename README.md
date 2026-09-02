@@ -8,7 +8,7 @@
 
 ### เล่นเกมออนไลน์
 
-### ▶ https://napat-kku.github.io/MidtermProject_GameDev/
+### ▶ https://avocadough.github.io/skip-clsss-addicted-2d/
 
 เล่นได้เลยบนเบราว์เซอร์ ไม่ต้องติดตั้งอะไร (แนะนำ Chrome / Edge / Firefox บนคอมพิวเตอร์)
 
