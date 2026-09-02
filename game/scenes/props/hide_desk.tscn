@@ -1,0 +1,23 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/entities/hide_spot.gd" id="1_auuov"]
+[ext_resource type="Texture2D" path="res://assets/sprites/prop_desk.png" id="2_vvl84"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mbwn7"]
+size = Vector2(28, 17)
+
+[node name="HideDesk" type="Area2D" unique_id=2137533545]
+collision_layer = 8
+collision_mask = 2
+script = ExtResource("1_auuov")
+kind = "desk"
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=2129256690]
+z_index = 1
+texture = ExtResource("2_vvl84")
+centered = false
+offset = Vector2(-14, -17)
+
+[node name="Shape" type="CollisionShape2D" parent="." unique_id=958251922]
+position = Vector2(0, -8.5)
+shape = SubResource("RectangleShape2D_mbwn7")

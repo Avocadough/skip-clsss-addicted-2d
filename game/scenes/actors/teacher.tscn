@@ -1,0 +1,29 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/npc.gd" id="1_k8tog"]
+[ext_resource type="Texture2D" path="res://assets/sprites/char_teacher.png" id="2_hwpcq"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uwkdc"]
+size = Vector2(10, 20)
+
+[node name="Teacher" type="CharacterBody2D" unique_id=1180273419]
+collision_layer = 4
+script = ExtResource("1_k8tog")
+
+[node name="Shape" type="CollisionShape2D" parent="." unique_id=482431052]
+position = Vector2(0, -10)
+shape = SubResource("RectangleShape2D_uwkdc")
+
+[node name="Cone" type="Polygon2D" parent="." unique_id=1171619767]
+z_index = -1
+color = Color(1, 0.9, 0.45, 0.16)
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1395051233]
+texture = ExtResource("2_hwpcq")
+centered = false
+offset = Vector2(-8, -22)
+hframes = 11
+
+[node name="Bubble" type="Sprite2D" parent="." unique_id=1625395150]
+visible = false
+position = Vector2(0, -32)

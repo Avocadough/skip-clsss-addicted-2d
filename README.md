@@ -125,10 +125,20 @@ game/                     โปรเจกต์ Godot 4.7
   scenes/
     boot / main_menu / level_select     หน้าจอหลัก
     levels/               ด่านทั้ง 5 — level_01.tscn ... level_05.tscn
-    actors/               ตัวละครสำเร็จรูป: player, npc, cctv
-    props/                ของในด่านสำเร็จรูป: ไอเทม ที่ซ่อน ประตู ลูกบอล
+    actors/               1 ไฟล์ต่อ 1 ตัวละคร: player (น็อต), teacher,
+                          monitor, guard, librarian, coach, student,
+                          student2, cctv
+    items/                1 ไฟล์ต่อ 1 ไอเทม: item_key, item_coin,
+                          item_hoodie, item_wetsign, item_nursecard,
+                          item_notebook
+    props/                ที่ซ่อน 7 แบบ (hide_locker ... hide_crate),
+                          ประตู 2 แบบ, ลูกบอล, จุดหมาย, โซนบันได,
+                          โซนห้องเรียน
+    decor/                ของตกแต่ง: กระดานดำ นาฬิกา ถังขยะ ลัง
+                          ชั้นหนังสือ ตู้กดน้ำ ป้ายทางออก ประตู
     ui/                   HUD, ช่องไอเทม, การ์ดเลือกด่าน, กล่องข้อความ,
-                          หน้าจบด่าน, หน้าหยุดชั่วคราว, ฉากหลังเมนู, fader
+                          หน้าจบด่าน, หน้าหยุดชั่วคราว, วิธีเล่น,
+                          เกี่ยวกับเกม (รายชื่อสมาชิก), ฉากหลังเมนู, fader
   scripts/                ระบบเกมทั้งหมด
     game_state.gd         ความคืบหน้า ไอเทม บทสนทนา (autoload)
     audio_manager.gd      โหลดและเล่นไฟล์เสียง (autoload)
@@ -159,9 +169,10 @@ docs/                     เว็บบิลด์ที่ GitHub Pages เ�
 |---|---|
 | เพิ่ม/ลบพื้น | เลือก `SolidTiles` แล้ววาดด้วย TileMap editor |
 | ย้ายครู | ลาก node ในหน้า 2D และตั้ง `patrol_min` / `patrol_max` ใน Inspector |
-| เปลี่ยนครูเป็น รปภ. | เลือก node แล้วเปลี่ยน `kind` — สไปรต์เปลี่ยนตามเอง |
-| เพิ่มที่ซ่อน | ลาก `scenes/props/hide_spot.tscn` เข้ามา แล้วตั้ง `kind` |
-| เพิ่มไอเทม | ลาก `scenes/props/pickup.tscn` เข้ามา แล้วตั้ง `id` |
+| เปลี่ยนครูเป็น รปภ. | ลบ node เดิม แล้วลาก `scenes/actors/guard.tscn` เข้ามาแทน |
+| เพิ่มที่ซ่อน | ลาก `scenes/props/hide_bush.tscn` (หรือแบบอื่น) เข้ามา |
+| เพิ่มไอเทม | ลาก `scenes/items/item_key.tscn` (หรือไอเทมอื่น) เข้ามา |
+| แก้ครูทุกตัวพร้อมกัน | แก้ `scenes/actors/teacher.tscn` ครั้งเดียว ทุกด่านเปลี่ยนตาม |
 
 แก้เสร็จรัน `validate.gd` เพื่อเช็คว่ายังเก็บของครบและครูยังเดินได้ตลอดเส้นทาง
 

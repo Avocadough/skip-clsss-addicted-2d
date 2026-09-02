@@ -1,0 +1,31 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/entities/doorway.gd" id="1_tx40g"]
+[ext_resource type="Texture2D" path="res://assets/sprites/prop_door_locked.png" id="2_nwhs2"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mdyx7"]
+size = Vector2(28, 30)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fgv7b"]
+size = Vector2(10, 30)
+
+[node name="Doorway" type="Area2D" unique_id=1914669084]
+collision_layer = 8
+collision_mask = 2
+script = ExtResource("1_tx40g")
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1939715549]
+texture = ExtResource("2_nwhs2")
+centered = false
+offset = Vector2(-9, -30)
+
+[node name="Shape" type="CollisionShape2D" parent="." unique_id=806614599]
+position = Vector2(0, -15)
+shape = SubResource("RectangleShape2D_mdyx7")
+
+[node name="Blocker" type="StaticBody2D" parent="." unique_id=1106289377]
+collision_layer = 33
+
+[node name="Shape" type="CollisionShape2D" parent="Blocker" unique_id=514876360]
+position = Vector2(0, -15)
+shape = SubResource("RectangleShape2D_fgv7b")

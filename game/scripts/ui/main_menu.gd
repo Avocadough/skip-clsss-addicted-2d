@@ -7,7 +7,7 @@ extends Control
 
 const MODAL := "res://scenes/ui/modal.tscn"
 const HOW_TO_BODY := "res://scenes/ui/howto_page.tscn"
-const CREDITS_BODY := "res://scenes/ui/credits_page.tscn"
+const CREDITS_BODY := "res://scenes/ui/about_page.tscn"
 
 @onready var _play: Button = %PlayButton
 @onready var _select: Button = %SelectButton

@@ -4,17 +4,17 @@
 [ext_resource type="Texture2D" path="res://assets/sprites/prop_cctv.png" id="2_hial4"]
 [ext_resource type="Texture2D" path="res://assets/sprites/fx_alert.png" id="3_3a7v0"]
 
-[node name="Cctv" type="Node2D" unique_id=1460783205]
+[node name="Cctv" type="Node2D" unique_id=39266837]
 script = ExtResource("1_6nvxd")
 
-[node name="Cone" type="Polygon2D" parent="." unique_id=621813183]
+[node name="Cone" type="Polygon2D" parent="." unique_id=1954821088]
 z_index = -1
 color = Color(1, 0.45, 0.45, 0.14)
 
-[node name="Body" type="Sprite2D" parent="." unique_id=1741052112]
+[node name="Body" type="Sprite2D" parent="." unique_id=2112360468]
 texture = ExtResource("2_hial4")
 
-[node name="Lamp" type="Sprite2D" parent="." unique_id=1196308564]
+[node name="Lamp" type="Sprite2D" parent="." unique_id=1255671940]
 visible = false
 position = Vector2(0, -16)
 texture = ExtResource("3_3a7v0")

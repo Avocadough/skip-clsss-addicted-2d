@@ -1,0 +1,23 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/entities/hide_spot.gd" id="1_p7t3k"]
+[ext_resource type="Texture2D" path="res://assets/sprites/prop_bush.png" id="2_y4265"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kkrnc"]
+size = Vector2(22, 15)
+
+[node name="HideBush" type="Area2D" unique_id=18445129]
+collision_layer = 8
+collision_mask = 2
+script = ExtResource("1_p7t3k")
+kind = "bush"
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=246900815]
+z_index = -1
+texture = ExtResource("2_y4265")
+centered = false
+offset = Vector2(-11, -15)
+
+[node name="Shape" type="CollisionShape2D" parent="." unique_id=1191883892]
+position = Vector2(0, -7.5)
+shape = SubResource("RectangleShape2D_kkrnc")

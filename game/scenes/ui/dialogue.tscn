@@ -23,18 +23,18 @@ variation_embolden = 0.55
 base_font = ExtResource("2_umwmw")
 variation_embolden = 0.55
 
-[node name="ExcuseDialogue" type="CanvasLayer" unique_id=776621483]
+[node name="ExcuseDialogue" type="CanvasLayer" unique_id=62544070]
 process_mode = 3
 layer = 40
 script = ExtResource("1_65ue4")
 
-[node name="Dim" type="ColorRect" parent="." unique_id=1781062704]
+[node name="Dim" type="ColorRect" parent="." unique_id=625755094]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color(0.05, 0.04, 0.08, 0.72)
 
-[node name="Box" type="PanelContainer" parent="." unique_id=1580849067]
+[node name="Box" type="PanelContainer" parent="." unique_id=1070226082]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -46,12 +46,12 @@ offset_right = 200.0
 offset_bottom = 104.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_0hdn5")
 
-[node name="Column" type="VBoxContainer" parent="Box" unique_id=28584983]
+[node name="Column" type="VBoxContainer" parent="Box" unique_id=400416980]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 7
 
-[node name="NpcLabel" type="Label" parent="Box/Column" unique_id=1816222045]
+[node name="NpcLabel" type="Label" parent="Box/Column" unique_id=1002989801]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9411765, 0.72156864, 0.78431374, 1)
@@ -60,7 +60,7 @@ theme_override_constants/outline_size = 5
 theme_override_fonts/font = SubResource("FontVariation_lm6d5")
 theme_override_font_sizes/font_size = 13
 
-[node name="QuestionLabel" type="Label" parent="Box/Column" unique_id=324181981]
+[node name="QuestionLabel" type="Label" parent="Box/Column" unique_id=2188087]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(370, 0)
 layout_mode = 2
@@ -71,6 +71,6 @@ theme_override_fonts/font = SubResource("FontVariation_uv07d")
 theme_override_font_sizes/font_size = 16
 autowrap_mode = 3
 
-[node name="Gap" type="Control" parent="Box/Column" unique_id=1761504234]
+[node name="Gap" type="Control" parent="Box/Column" unique_id=466929091]
 custom_minimum_size = Vector2(0, 4)
 layout_mode = 2

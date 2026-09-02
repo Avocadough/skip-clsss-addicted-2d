@@ -16,7 +16,7 @@ variation_embolden = 0.55
 base_font = ExtResource("3_fbohu")
 variation_embolden = 0.55
 
-[node name="Boot" type="Control" unique_id=1340312536]
+[node name="Boot" type="Control" unique_id=1651952951]
 layout_mode = 3
 anchors_preset = 0
 anchor_right = 1.0
@@ -24,21 +24,21 @@ anchor_bottom = 1.0
 mouse_filter = 2
 script = ExtResource("1_r2kcx")
 
-[node name="Background" type="ColorRect" parent="." unique_id=2081487303]
+[node name="Background" type="ColorRect" parent="." unique_id=512168623]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 color = Color(0.078431375, 0.0627451, 0.12156863, 1)
 
-[node name="Column" type="VBoxContainer" parent="." unique_id=1812335994]
+[node name="Column" type="VBoxContainer" parent="." unique_id=1279573917]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme_override_constants/separation = 6
 alignment = 1
 
-[node name="Bell" type="TextureRect" parent="Column" unique_id=1337979485]
+[node name="Bell" type="TextureRect" parent="Column" unique_id=714078293]
 texture_filter = 1
 custom_minimum_size = Vector2(48, 48)
 layout_mode = 2
@@ -46,7 +46,7 @@ size_flags_horizontal = 4
 texture = ExtResource("2_j20pb")
 stretch_mode = 5
 
-[node name="Title" type="Label" parent="Column" unique_id=921370198]
+[node name="Title" type="Label" parent="Column" unique_id=475101042]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9490196, 0.8862745, 0.7137255, 1)
 theme_override_colors/font_outline_color = Color(0.14117648, 0.12156863, 0.19215687, 1)
@@ -56,7 +56,7 @@ theme_override_font_sizes/font_size = 34
 text = "เสพติดการโดดเรียน!"
 horizontal_alignment = 1
 
-[node name="Subtitle" type="Label" parent="Column" unique_id=1232596058]
+[node name="Subtitle" type="Label" parent="Column" unique_id=47381084]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.7137255, 0.6509804, 0.8784314, 1)
 theme_override_colors/font_outline_color = Color(0.14117648, 0.12156863, 0.19215687, 1)
@@ -66,11 +66,11 @@ theme_override_font_sizes/font_size = 13
 text = "Skip Class Addicted"
 horizontal_alignment = 1
 
-[node name="Gap" type="Control" parent="Column" unique_id=1068821252]
+[node name="Gap" type="Control" parent="Column" unique_id=640770859]
 custom_minimum_size = Vector2(0, 18)
 layout_mode = 2
 
-[node name="Hint" type="Label" parent="Column" unique_id=614222944]
+[node name="Hint" type="Label" parent="Column" unique_id=159393090]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9607843, 0.94509804, 0.9019608, 1)

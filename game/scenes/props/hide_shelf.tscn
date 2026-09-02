@@ -1,0 +1,23 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/entities/hide_spot.gd" id="1_pw73e"]
+[ext_resource type="Texture2D" path="res://assets/sprites/prop_bookshelf.png" id="2_fr6yp"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_y3v6k"]
+size = Vector2(32, 32)
+
+[node name="HideShelf" type="Area2D" unique_id=1064959929]
+collision_layer = 8
+collision_mask = 2
+script = ExtResource("1_pw73e")
+kind = "shelf"
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=524143520]
+z_index = -1
+texture = ExtResource("2_fr6yp")
+centered = false
+offset = Vector2(-16, -32)
+
+[node name="Shape" type="CollisionShape2D" parent="." unique_id=467180560]
+position = Vector2(0, -16)
+shape = SubResource("RectangleShape2D_y3v6k")

@@ -1,0 +1,25 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/entities/pickup.gd" id="1_6lfgv"]
+[ext_resource type="Texture2D" path="res://assets/sprites/prop_safe_zone.png" id="2_no4ff"]
+[ext_resource type="Texture2D" path="res://assets/sprites/item_nursecard.png" id="3_qiiw7"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3b10g"]
+radius = 11.0
+
+[node name="ItemNursecard" type="Area2D" unique_id=180567209]
+collision_layer = 8
+collision_mask = 2
+script = ExtResource("1_6lfgv")
+id = "nursecard"
+
+[node name="Shape" type="CollisionShape2D" parent="." unique_id=445914299]
+shape = SubResource("CircleShape2D_3b10g")
+
+[node name="Halo" type="Sprite2D" parent="." unique_id=641476940]
+modulate = Color(1, 0.95, 0.6, 0.16)
+z_index = -1
+texture = ExtResource("2_no4ff")
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1265965700]
+texture = ExtResource("3_qiiw7")

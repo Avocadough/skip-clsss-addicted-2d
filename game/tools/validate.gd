@@ -118,11 +118,11 @@ func _read_scene(num: int) -> Dictionary:
 			S_PLAYER:
 				d["spawn"] = _to_tile_feet(n.position)
 			S_CLASSROOM:
-				var box: Vector2 = (n.get_node("Shape").shape as RectangleShape2D).size
+				var t: Vector2i = n.tiles
 				d["classroom"] = [
-					int(round((n.position.x - box.x / 2.0) / 16.0)),
-					int(round((n.position.y - box.y / 2.0) / 16.0)),
-					int(round(box.x / 16.0)), int(round(box.y / 16.0)),
+					int(round((n.position.x - t.x * 16 / 2.0) / 16.0)),
+					int(round((n.position.y - t.y * 16 / 2.0) / 16.0)),
+					t.x, t.y,
 				]
 
 	scene.free()

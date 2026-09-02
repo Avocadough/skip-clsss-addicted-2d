@@ -1,0 +1,25 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/entities/pickup.gd" id="1_x7vbr"]
+[ext_resource type="Texture2D" path="res://assets/sprites/prop_safe_zone.png" id="2_ginf6"]
+[ext_resource type="Texture2D" path="res://assets/sprites/item_key.png" id="3_g0u8m"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_o15vs"]
+radius = 11.0
+
+[node name="ItemKey" type="Area2D" unique_id=419498718]
+collision_layer = 8
+collision_mask = 2
+script = ExtResource("1_x7vbr")
+id = "key"
+
+[node name="Shape" type="CollisionShape2D" parent="." unique_id=1338926348]
+shape = SubResource("CircleShape2D_o15vs")
+
+[node name="Halo" type="Sprite2D" parent="." unique_id=1213029199]
+modulate = Color(1, 0.95, 0.6, 0.16)
+z_index = -1
+texture = ExtResource("2_ginf6")
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=2095784047]
+texture = ExtResource("3_g0u8m")

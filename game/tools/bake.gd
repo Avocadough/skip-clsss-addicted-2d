@@ -4,17 +4,21 @@ extends SceneTree
 ##
 ## Writes:
 ##   resources/tileset_<theme>.tres   one tile set per setting
-##   scenes/actors/*.tscn             player, npc, cctv — prefabs to drag in
-##   scenes/props/*.tscn              pickup, hiding spot, door, goal, ball
-##   scenes/levels/level_NN.tscn      the five stages, laid out node by node
+##   scenes/actors/*.tscn             น็อต, each watcher by name, the camera
+##   scenes/items/*.tscn              one per item in Game.ITEMS
+##   scenes/props/*.tscn              hiding spots, doors, ball, goal, zones
+##   scenes/decor/*.tscn              scenery: bins, crates, whiteboards
+##   scenes/ui/*.tscn                 HUD, menus, panels, dialogue
+##   scenes/levels/level_NN.tscn      the five stages
 ##
-## The level scenes are what the game loads and what you edit in the 2D view.
-## Entities are written into them as plain nodes rather than as instances of
-## the prefabs: PackedScene.pack() drops property overrides made on the
-## children of an instance, so an instanced hiding spot would lose its art and
-## its hit box on the way to disk. Written out flat, every stage is complete
-## and self-contained — and the prefabs are still there to drag in when you
-## want to add something new.
+## There is one scene per concrete thing rather than one generic scene with a
+## setting on it: teacher.tscn and guard.tscn, item_key.tscn and item_coin.tscn,
+## hide_locker.tscn and hide_bush.tscn. That is what you want to drag into a
+## stage, and it is also what makes the stages instance them properly —
+## PackedScene.pack() drops property overrides made on the children of an
+## instance, so anything whose art differs has to differ in its own scene
+## rather than in an override. Only position and a couple of exported values
+## sit on the instance itself, and those live on the root, where they keep.
 ##
 ## Running this again overwrites all of the above, hand edits included.
 
@@ -35,6 +39,21 @@ const T_DIRT := 10
 const T_FENCE := 11
 
 const SPR := "res://assets/sprites/%s.png"
+
+## Where each kind of thing keeps its scene. Stages instance these, so moving
+## one of these files means updating the path here and re-baking.
+const PLAYER := "res://scenes/actors/player.tscn"
+const CCTV := "res://scenes/actors/cctv.tscn"
+const ACTOR := "res://scenes/actors/%s.tscn"
+const ITEM := "res://scenes/items/item_%s.tscn"
+const HIDE := "res://scenes/props/hide_%s.tscn"
+const DECOR := "res://scenes/decor/%s.tscn"
+const DOOR_LOCKED := "res://scenes/props/door_locked.tscn"
+const DOOR_OPEN := "res://scenes/props/door_open.tscn"
+const BALL := "res://scenes/props/ball.tscn"
+const GOAL := "res://scenes/props/goal_zone.tscn"
+const LADDER := "res://scenes/props/ladder_zone.tscn"
+const CLASSROOM := "res://scenes/props/classroom_zone.tscn"
 
 ## Deferred, not run straight from _initialize: the UI helpers this needs in
 ## order to bake the classroom sign cannot compile until the autoloads they
@@ -330,32 +349,83 @@ func _new_ladder_zone(tiles_high := 3) -> Area2D:
 	a.set_script(load("res://scripts/entities/ladder_zone.gd"))
 	a.collision_layer = 0
 	a.collision_mask = 2
-	a.add_child(_rect_shape("Shape", Vector2(TILE - 2, tiles_high * TILE)))
+	var cs := CollisionShape2D.new()
+	cs.name = "Shape"
+	a.add_child(cs)
+	a.tiles_high = tiles_high        # the setter sizes the trigger
 	return a
 
-func _new_classroom_zone(size := Vector2(64, 64)) -> Area2D:
+func _new_classroom_zone(tiles := Vector2i(4, 4)) -> Area2D:
 	var a := Area2D.new()
 	a.name = "Classroom"
 	a.set_script(load("res://scripts/entities/classroom_zone.gd"))
 	a.collision_layer = 0
 	a.collision_mask = 2
-	a.add_child(_rect_shape("Shape", size))
+	var cs := CollisionShape2D.new()
+	cs.name = "Shape"
+	a.add_child(cs)
+	a.tiles = tiles
 	return a
 
+## A piece of scenery: a bin, a whiteboard, a crate stacked against a wall.
+## No behaviour, but it gets a scene like everything else so it can be dragged
+## into a stage and nudged around.
+func _new_decor(tex_name: String) -> Sprite2D:
+	var tex: Texture2D = load(SPR % tex_name)
+	var s := Sprite2D.new()
+	s.name = _pascal(tex_name.replace("prop_", ""))
+	s.texture = tex
+	s.centered = false
+	s.offset = Vector2(-tex.get_width() / 2.0, -tex.get_height())
+	s.z_index = -3
+	return s
+
 # ----------------------------------------------------------------- prefabs --
-## Standalone copies of each entity, so a new one can be dragged straight into
-## a stage from the FileSystem dock.
+## One scene per concrete thing in the game — this teacher, that item, this
+## hiding spot — rather than one generic scene with a setting on it. Dragging
+## `guard.tscn` into a stage gives you a guard, and because nothing then has
+## to be changed on a child node, the stages can instance these properly
+## instead of carrying flattened copies.
 func _bake_prefabs() -> void:
-	_save_scene(_new_player(), "res://scenes/actors/player.tscn")
-	_save_scene(_new_npc(), "res://scenes/actors/npc.tscn")
-	_save_scene(_new_cctv(), "res://scenes/actors/cctv.tscn")
-	_save_scene(_new_pickup(), "res://scenes/props/pickup.tscn")
-	_save_scene(_new_hide(), "res://scenes/props/hide_spot.tscn")
-	_save_scene(_new_door(), "res://scenes/props/doorway.tscn")
-	_save_scene(_new_goal(), "res://scenes/props/goal_zone.tscn")
-	_save_scene(_new_ball(), "res://scenes/props/ball.tscn")
-	_save_scene(_new_ladder_zone(), "res://scenes/props/ladder_zone.tscn")
-	_save_scene(_new_classroom_zone(), "res://scenes/props/classroom_zone.tscn")
+	_save_scene(_new_player(), PLAYER)
+
+	var npc_stats: Dictionary = load("res://scripts/npc.gd").get_script_constant_map()["STATS"]
+	for kind in npc_stats:
+		var n := _new_npc(kind)
+		n.name = kind.capitalize()
+		_save_scene(n, ACTOR % kind)
+	_save_scene(_new_cctv(), CCTV)
+
+	for id in root.get_node("Game").ITEMS:
+		var p := _new_pickup(id)
+		p.name = "Item" + id.capitalize()
+		_save_scene(p, ITEM % id)
+
+	var hide_art: Dictionary = load("res://scripts/entities/hide_spot.gd").get_script_constant_map()["ART"]
+	for kind in hide_art:
+		var h := _new_hide(kind)
+		h.name = "Hide" + kind.capitalize()
+		_save_scene(h, HIDE % kind)
+
+	_save_scene(_new_door(true), DOOR_LOCKED)
+	_save_scene(_new_door(false), DOOR_OPEN)
+	_save_scene(_new_goal(), GOAL)
+	_save_scene(_new_ball(), BALL)
+	_save_scene(_new_ladder_zone(), LADDER)
+	_save_scene(_new_classroom_zone(), CLASSROOM)
+
+	for name in _decor_names():
+		_save_scene(_new_decor(name), DECOR % name)
+
+## Every piece of scenery any stage asks for, so none is missed.
+func _decor_names() -> Array:
+	var names := {}
+	for i in range(1, LevelData.count() + 1):
+		for cfg in LevelData.get_level(i).get("props", []):
+			names[cfg["name"]] = true
+	var out: Array = names.keys()
+	out.sort()
+	return out
 
 # ===========================================================================
 #  Stage assembly
@@ -383,14 +453,15 @@ func _bake_level(num: int) -> void:
 	root.add_child(_build_ladders(d))
 	root.add_child(_build_entities(d))
 
-	var player := _new_player()
+	var player := _instance(PLAYER)
 	player.position = _tile_pos(d["spawn"])
 	root.add_child(player)
 
 	# The room you are meant to be skipping: walking back in loses the stage.
 	var cr: Array = d.get("classroom", [])
 	if cr.size() == 4:
-		var zone := _new_classroom_zone(Vector2(cr[2] * TILE, cr[3] * TILE))
+		var zone := _instance(CLASSROOM)
+		zone.set("tiles", Vector2i(cr[2], cr[3]))
 		zone.position = Vector2((cr[0] + cr[2] / 2.0) * TILE, (cr[1] + cr[3] / 2.0) * TILE)
 		root.add_child(zone)
 
@@ -509,80 +580,96 @@ func _build_tiles(d: Dictionary, outdoor: bool, ts: TileSet) -> Array:
 	return [bg, solid]
 
 # ---------------------------------------------------------------- ladders --
+func _instance(path: String) -> Node2D:
+	return load(path).instantiate()
+
+# ---------------------------------------------------------------- ladders --
 func _build_ladders(d: Dictionary) -> Node2D:
 	var holder := Node2D.new()
 	holder.name = "Ladders"
 	var i := 1
 	for l in d.get("ladders", []):
 		var is_fence: bool = l.size() > 3 and l[3] == "fence"
-		var zone := _new_ladder_zone(l[2])
+		var zone := _instance(LADDER)
 		zone.name = "%s%d" % ["Fence" if is_fence else "Ladder", i]
+		zone.set("tiles_high", l[2])
 		zone.position = Vector2(l[0] * TILE + TILE / 2.0, (l[1] + l[2] / 2.0) * TILE)
 		holder.add_child(zone)
 		i += 1
 	return holder
 
 # --------------------------------------------------------------- entities --
-## Names are spelled out — HideBush2, ItemKey1 — because the Scene dock is
-## how you find things once a stage is open in the editor.
+## Everything here is an instance of the scene for that exact thing, so the
+## Scene dock reads as a list of what is in the stage and opening one takes
+## you to the scene it came from. Names are spelled out — HideBush2, ItemKey1
+## — because the dock is how you find things once a stage is open.
 func _build_entities(d: Dictionary) -> Node2D:
 	var ents := Node2D.new()
 	ents.name = "Entities"
 	var seen := {}
 
 	for cfg in d.get("npcs", []):
-		var n := _new_npc(cfg["type"],
-			cfg["patrol"][0] * TILE + 8.0, cfg["patrol"][1] * TILE + 8.0)
+		var n := _instance(ACTOR % cfg["type"])
 		n.position = _tile_pos([cfg["x"], cfg["y"]])
+		n.set("patrol_min", cfg["patrol"][0] * TILE + 8.0)
+		n.set("patrol_max", cfg["patrol"][1] * TILE + 8.0)
 		n.name = _uniq(seen, cfg["type"].capitalize())
 		ents.add_child(n)
 
 	for cfg in d.get("cameras", []):
-		var c := _new_cctv(cfg.get("angle", 90.0), cfg.get("sweep", 45.0),
-			cfg.get("range", 92.0), cfg.get("period", 4.5), cfg.get("phase", 0.0))
+		var c := _instance(CCTV)
 		c.position = _center_pos([cfg["x"], cfg["y"]])
+		c.set("base_angle", cfg.get("angle", 90.0))
+		c.set("sweep", cfg.get("sweep", 45.0))
+		c.set("view_range", cfg.get("range", 92.0))
+		c.set("period", cfg.get("period", 4.5))
+		c.set("phase", cfg.get("phase", 0.0))
 		c.name = _uniq(seen, "Cctv")
 		ents.add_child(c)
 
 	for cfg in d.get("items", []):
-		var p := _new_pickup(cfg["id"])
+		var p := _instance(ITEM % cfg["id"])
 		p.position = _center_pos([cfg["x"], cfg["y"]])
 		p.name = _uniq(seen, "Item" + cfg["id"].capitalize())
 		ents.add_child(p)
 
 	for cfg in d.get("hides", []):
-		var h := _new_hide(cfg["type"])
+		var h := _instance(HIDE % cfg["type"])
 		h.position = _tile_pos([cfg["x"], cfg["y"]])
 		h.name = _uniq(seen, "Hide" + cfg["type"].capitalize())
 		ents.add_child(h)
 
 	for cfg in d.get("doors", []):
-		var dr := _new_door(cfg.get("locked", true))
+		var dr := _instance(DOOR_LOCKED if cfg.get("locked", true) else DOOR_OPEN)
 		dr.position = _tile_pos([cfg["x"], cfg["y"]])
 		dr.name = _uniq(seen, "Door")
 		ents.add_child(dr)
 
 	for cfg in d.get("balls", []):
-		var b := _new_ball(cfg["range"][0] * TILE, cfg["range"][1] * TILE, cfg["speed"])
+		var b := _instance(BALL)
 		b.position = _tile_pos([cfg["x"], cfg["y"]])
+		b.set("x_min", cfg["range"][0] * TILE)
+		b.set("x_max", cfg["range"][1] * TILE)
+		b.set("speed", cfg["speed"])
 		b.name = _uniq(seen, "Ball")
 		ents.add_child(b)
 
 	for cfg in d.get("props", []):
-		var tex: Texture2D = load(SPR % cfg["name"])
-		var s := Sprite2D.new()
-		s.texture = tex
-		s.centered = false
-		s.offset = Vector2(-tex.get_width() / 2.0, -tex.get_height())
+		var s := _instance(DECOR % cfg["name"])
 		s.position = _tile_pos([cfg["x"], cfg["y"]])
-		s.z_index = -3
-		s.name = _uniq(seen, cfg["name"].replace("prop_", "").capitalize())
+		s.name = _uniq(seen, _pascal(cfg["name"].replace("prop_", "")))
 		ents.add_child(s)
 
-	var goal := _new_goal()
+	var goal := _instance(GOAL)
+	goal.name = "Goal"
 	goal.position = _tile_pos(d["goal"])
 	ents.add_child(goal)
 	return ents
+
+## snake_case to PascalCase. String.capitalize() would give "Exit Sign", and a
+## node name with a space in it is legal but reads badly in the Scene dock.
+func _pascal(s: String) -> String:
+	return s.capitalize().replace(" ", "")
 
 func _uniq(seen: Dictionary, stem: String) -> String:
 	var n: int = seen.get(stem, 0) + 1
@@ -613,7 +700,7 @@ func _bake_ui() -> void:
 
 	var menu: GDScript = load("res://scripts/ui/main_menu.gd")
 	_save_scene(menu.build_how_to(), "res://scenes/ui/howto_page.tscn")
-	_save_scene(menu.build_credits(), "res://scenes/ui/credits_page.tscn")
+	_save_scene(menu.build_credits(), "res://scenes/ui/about_page.tscn")
 	_save_scene(menu.build(), "res://scenes/main_menu.tscn")
 
 	var card: GDScript = load("res://scripts/ui/level_card.gd")

@@ -1,0 +1,30 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/npc.gd" id="1_q2qji"]
+[ext_resource type="Texture2D" path="res://assets/sprites/char_monitor.png" id="2_4i1bu"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nxe33"]
+size = Vector2(10, 20)
+
+[node name="Monitor" type="CharacterBody2D" unique_id=1986991528]
+collision_layer = 4
+script = ExtResource("1_q2qji")
+kind = "monitor"
+
+[node name="Shape" type="CollisionShape2D" parent="." unique_id=2106361121]
+position = Vector2(0, -10)
+shape = SubResource("RectangleShape2D_nxe33")
+
+[node name="Cone" type="Polygon2D" parent="." unique_id=1606351179]
+z_index = -1
+color = Color(1, 0.9, 0.45, 0.16)
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1643331255]
+texture = ExtResource("2_4i1bu")
+centered = false
+offset = Vector2(-8, -22)
+hframes = 11
+
+[node name="Bubble" type="Sprite2D" parent="." unique_id=550643626]
+visible = false
+position = Vector2(0, -32)

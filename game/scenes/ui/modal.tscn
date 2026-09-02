@@ -83,36 +83,36 @@ border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0.9490196, 0.8862745, 0.7137255, 1)
 
-[node name="Modal" type="Control" unique_id=1679484326]
+[node name="Modal" type="Control" unique_id=1133940261]
 layout_mode = 3
 anchors_preset = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource("1_tjip1")
 
-[node name="Dim" type="ColorRect" parent="." unique_id=1103772090]
+[node name="Dim" type="ColorRect" parent="." unique_id=1308655037]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color(0.05, 0.04, 0.08, 0.8)
 
-[node name="Center" type="CenterContainer" parent="." unique_id=415562975]
+[node name="Center" type="CenterContainer" parent="." unique_id=1416303922]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 
-[node name="Box" type="PanelContainer" parent="Center" unique_id=44823631]
+[node name="Box" type="PanelContainer" parent="Center" unique_id=1737654682]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_vhrbh")
 
-[node name="Column" type="VBoxContainer" parent="Center/Box" unique_id=445329153]
+[node name="Column" type="VBoxContainer" parent="Center/Box" unique_id=2141987861]
 layout_mode = 2
 theme_override_constants/separation = 2
 
-[node name="ModalTitle" type="Label" parent="Center/Box/Column" unique_id=878130189]
+[node name="ModalTitle" type="Label" parent="Center/Box/Column" unique_id=12527638]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9490196, 0.8862745, 0.7137255, 1)
@@ -122,15 +122,15 @@ theme_override_fonts/font = SubResource("FontVariation_y01wt")
 theme_override_font_sizes/font_size = 18
 horizontal_alignment = 1
 
-[node name="Body" type="VBoxContainer" parent="Center/Box/Column" unique_id=1628409880]
+[node name="Body" type="VBoxContainer" parent="Center/Box/Column" unique_id=1378859575]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Gap" type="Control" parent="Center/Box/Column" unique_id=2102684905]
+[node name="Gap" type="Control" parent="Center/Box/Column" unique_id=1633690464]
 custom_minimum_size = Vector2(0, 4)
 layout_mode = 2
 
-[node name="CloseButton" type="Button" parent="Center/Box/Column" unique_id=1410914144]
+[node name="CloseButton" type="Button" parent="Center/Box/Column" unique_id=2078349529]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 27)
 layout_mode = 2

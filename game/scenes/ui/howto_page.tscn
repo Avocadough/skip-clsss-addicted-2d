@@ -42,14 +42,14 @@ variation_embolden = 0.55
 base_font = ExtResource("1_nimpx")
 variation_embolden = 0.55
 
-[node name="HowToPage" type="VBoxContainer" unique_id=41416900]
+[node name="HowToPage" type="VBoxContainer" unique_id=737110162]
 theme_override_constants/separation = 1
 
-[node name="@HBoxContainer@13" type="HBoxContainer" parent="." unique_id=444937587]
+[node name="@HBoxContainer@13" type="HBoxContainer" parent="." unique_id=729617743]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="@Label@11" type="Label" parent="@HBoxContainer@13" unique_id=859685912]
+[node name="@Label@11" type="Label" parent="@HBoxContainer@13" unique_id=2018806140]
 custom_minimum_size = Vector2(158, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9490196, 0.8156863, 0.41960785, 1)
@@ -59,7 +59,7 @@ theme_override_fonts/font = SubResource("FontVariation_jl5jw")
 theme_override_font_sizes/font_size = 10
 text = "A / D หรือ ลูกศร ซ้าย-ขวา"
 
-[node name="@Label@12" type="Label" parent="@HBoxContainer@13" unique_id=262143731]
+[node name="@Label@12" type="Label" parent="@HBoxContainer@13" unique_id=49776482]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.86, 0.84, 0.9, 1)
 theme_override_colors/font_outline_color = Color(0.14117648, 0.12156863, 0.19215687, 1)
@@ -68,11 +68,11 @@ theme_override_fonts/font = ExtResource("1_nimpx")
 theme_override_font_sizes/font_size = 10
 text = "เดินซ้าย-ขวา"
 
-[node name="@HBoxContainer@16" type="HBoxContainer" parent="." unique_id=340631717]
+[node name="@HBoxContainer@16" type="HBoxContainer" parent="." unique_id=485796246]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="@Label@14" type="Label" parent="@HBoxContainer@16" unique_id=1578622126]
+[node name="@Label@14" type="Label" parent="@HBoxContainer@16" unique_id=1277454854]
 custom_minimum_size = Vector2(158, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9490196, 0.8156863, 0.41960785, 1)
@@ -82,7 +82,7 @@ theme_override_fonts/font = SubResource("FontVariation_coric")
 theme_override_font_sizes/font_size = 10
 text = "Shift (ค้าง)"
 
-[node name="@Label@15" type="Label" parent="@HBoxContainer@16" unique_id=398640198]
+[node name="@Label@15" type="Label" parent="@HBoxContainer@16" unique_id=752142174]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.86, 0.84, 0.9, 1)
 theme_override_colors/font_outline_color = Color(0.14117648, 0.12156863, 0.19215687, 1)
@@ -91,11 +91,11 @@ theme_override_fonts/font = ExtResource("1_nimpx")
 theme_override_font_sizes/font_size = 10
 text = "วิ่ง — เร็วขึ้นแต่เสียงดังมาก"
 
-[node name="@HBoxContainer@19" type="HBoxContainer" parent="." unique_id=1854915371]
+[node name="@HBoxContainer@19" type="HBoxContainer" parent="." unique_id=1638730765]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="@Label@17" type="Label" parent="@HBoxContainer@19" unique_id=2092673109]
+[node name="@Label@17" type="Label" parent="@HBoxContainer@19" unique_id=428774568]
 custom_minimum_size = Vector2(158, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9490196, 0.8156863, 0.41960785, 1)
@@ -105,7 +105,7 @@ theme_override_fonts/font = SubResource("FontVariation_jcij7")
 theme_override_font_sizes/font_size = 10
 text = "Space / W"
 
-[node name="@Label@18" type="Label" parent="@HBoxContainer@19" unique_id=502449572]
+[node name="@Label@18" type="Label" parent="@HBoxContainer@19" unique_id=384436970]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.86, 0.84, 0.9, 1)
 theme_override_colors/font_outline_color = Color(0.14117648, 0.12156863, 0.19215687, 1)
@@ -114,11 +114,11 @@ theme_override_fonts/font = ExtResource("1_nimpx")
 theme_override_font_sizes/font_size = 10
 text = "กระโดด"
 
-[node name="@HBoxContainer@22" type="HBoxContainer" parent="." unique_id=1540456880]
+[node name="@HBoxContainer@22" type="HBoxContainer" parent="." unique_id=1511137863]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="@Label@20" type="Label" parent="@HBoxContainer@22" unique_id=1306223160]
+[node name="@Label@20" type="Label" parent="@HBoxContainer@22" unique_id=1314475723]
 custom_minimum_size = Vector2(158, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9490196, 0.8156863, 0.41960785, 1)
@@ -128,7 +128,7 @@ theme_override_fonts/font = SubResource("FontVariation_32m8e")
 theme_override_font_sizes/font_size = 10
 text = "S หรือ ลูกศรลง"
 
-[node name="@Label@21" type="Label" parent="@HBoxContainer@22" unique_id=787603002]
+[node name="@Label@21" type="Label" parent="@HBoxContainer@22" unique_id=614574387]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.86, 0.84, 0.9, 1)
 theme_override_colors/font_outline_color = Color(0.14117648, 0.12156863, 0.19215687, 1)
@@ -137,11 +137,11 @@ theme_override_fonts/font = ExtResource("1_nimpx")
 theme_override_font_sizes/font_size = 10
 text = "ก้มหมอบ — ช้าแต่เงียบและถูกเห็นยากขึ้น"
 
-[node name="@HBoxContainer@25" type="HBoxContainer" parent="." unique_id=730184299]
+[node name="@HBoxContainer@25" type="HBoxContainer" parent="." unique_id=1792708852]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="@Label@23" type="Label" parent="@HBoxContainer@25" unique_id=1581423810]
+[node name="@Label@23" type="Label" parent="@HBoxContainer@25" unique_id=8963575]
 custom_minimum_size = Vector2(158, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9490196, 0.8156863, 0.41960785, 1)
@@ -151,7 +151,7 @@ theme_override_fonts/font = SubResource("FontVariation_788mq")
 theme_override_font_sizes/font_size = 10
 text = "W หรือ ลูกศรขึ้น (ที่บันได/รั้ว)"
 
-[node name="@Label@24" type="Label" parent="@HBoxContainer@25" unique_id=1788980417]
+[node name="@Label@24" type="Label" parent="@HBoxContainer@25" unique_id=1764168963]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.86, 0.84, 0.9, 1)
 theme_override_colors/font_outline_color = Color(0.14117648, 0.12156863, 0.19215687, 1)
@@ -160,11 +160,11 @@ theme_override_fonts/font = ExtResource("1_nimpx")
 theme_override_font_sizes/font_size = 10
 text = "ปีนขึ้น-ลง"
 
-[node name="@HBoxContainer@28" type="HBoxContainer" parent="." unique_id=1897787760]
+[node name="@HBoxContainer@28" type="HBoxContainer" parent="." unique_id=1434276098]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="@Label@26" type="Label" parent="@HBoxContainer@28" unique_id=793686196]
+[node name="@Label@26" type="Label" parent="@HBoxContainer@28" unique_id=973339656]
 custom_minimum_size = Vector2(158, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9490196, 0.8156863, 0.41960785, 1)
@@ -174,7 +174,7 @@ theme_override_fonts/font = SubResource("FontVariation_w4kn1")
 theme_override_font_sizes/font_size = 10
 text = "E"
 
-[node name="@Label@27" type="Label" parent="@HBoxContainer@28" unique_id=708661662]
+[node name="@Label@27" type="Label" parent="@HBoxContainer@28" unique_id=948383475]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.86, 0.84, 0.9, 1)
 theme_override_colors/font_outline_color = Color(0.14117648, 0.12156863, 0.19215687, 1)
@@ -183,11 +183,11 @@ theme_override_fonts/font = ExtResource("1_nimpx")
 theme_override_font_sizes/font_size = 10
 text = "ซ่อนตัว / ออกจากที่ซ่อน / เปิดประตูด้วยกุญแจ"
 
-[node name="@HBoxContainer@31" type="HBoxContainer" parent="." unique_id=1554121447]
+[node name="@HBoxContainer@31" type="HBoxContainer" parent="." unique_id=110895420]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="@Label@29" type="Label" parent="@HBoxContainer@31" unique_id=964472456]
+[node name="@Label@29" type="Label" parent="@HBoxContainer@31" unique_id=1646657838]
 custom_minimum_size = Vector2(158, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9490196, 0.8156863, 0.41960785, 1)
@@ -197,7 +197,7 @@ theme_override_fonts/font = SubResource("FontVariation_rm6x7")
 theme_override_font_sizes/font_size = 10
 text = "Q"
 
-[node name="@Label@30" type="Label" parent="@HBoxContainer@31" unique_id=956597374]
+[node name="@Label@30" type="Label" parent="@HBoxContainer@31" unique_id=408131671]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.86, 0.84, 0.9, 1)
 theme_override_colors/font_outline_color = Color(0.14117648, 0.12156863, 0.19215687, 1)
@@ -206,11 +206,11 @@ theme_override_fonts/font = ExtResource("1_nimpx")
 theme_override_font_sizes/font_size = 10
 text = "ใช้ไอเทมที่เลือกอยู่"
 
-[node name="@HBoxContainer@34" type="HBoxContainer" parent="." unique_id=1659895781]
+[node name="@HBoxContainer@34" type="HBoxContainer" parent="." unique_id=635425441]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="@Label@32" type="Label" parent="@HBoxContainer@34" unique_id=386707274]
+[node name="@Label@32" type="Label" parent="@HBoxContainer@34" unique_id=1945308480]
 custom_minimum_size = Vector2(158, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9490196, 0.8156863, 0.41960785, 1)
@@ -220,7 +220,7 @@ theme_override_fonts/font = SubResource("FontVariation_gme2a")
 theme_override_font_sizes/font_size = 10
 text = "F"
 
-[node name="@Label@33" type="Label" parent="@HBoxContainer@34" unique_id=2076870660]
+[node name="@Label@33" type="Label" parent="@HBoxContainer@34" unique_id=762903093]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.86, 0.84, 0.9, 1)
 theme_override_colors/font_outline_color = Color(0.14117648, 0.12156863, 0.19215687, 1)
@@ -229,11 +229,11 @@ theme_override_fonts/font = ExtResource("1_nimpx")
 theme_override_font_sizes/font_size = 10
 text = "สลับไอเทมในกระเป๋า"
 
-[node name="@HBoxContainer@37" type="HBoxContainer" parent="." unique_id=9440369]
+[node name="@HBoxContainer@37" type="HBoxContainer" parent="." unique_id=488561511]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="@Label@35" type="Label" parent="@HBoxContainer@37" unique_id=1278583613]
+[node name="@Label@35" type="Label" parent="@HBoxContainer@37" unique_id=1318498737]
 custom_minimum_size = Vector2(158, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9490196, 0.8156863, 0.41960785, 1)
@@ -243,7 +243,7 @@ theme_override_fonts/font = SubResource("FontVariation_a3pcn")
 theme_override_font_sizes/font_size = 10
 text = "R"
 
-[node name="@Label@36" type="Label" parent="@HBoxContainer@37" unique_id=616513855]
+[node name="@Label@36" type="Label" parent="@HBoxContainer@37" unique_id=1502638899]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.86, 0.84, 0.9, 1)
 theme_override_colors/font_outline_color = Color(0.14117648, 0.12156863, 0.19215687, 1)
@@ -252,11 +252,11 @@ theme_override_fonts/font = ExtResource("1_nimpx")
 theme_override_font_sizes/font_size = 10
 text = "เริ่มด่านใหม่"
 
-[node name="@HBoxContainer@40" type="HBoxContainer" parent="." unique_id=516568787]
+[node name="@HBoxContainer@40" type="HBoxContainer" parent="." unique_id=104201563]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="@Label@38" type="Label" parent="@HBoxContainer@40" unique_id=1329149769]
+[node name="@Label@38" type="Label" parent="@HBoxContainer@40" unique_id=678885526]
 custom_minimum_size = Vector2(158, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9490196, 0.8156863, 0.41960785, 1)
@@ -266,7 +266,7 @@ theme_override_fonts/font = SubResource("FontVariation_wfxll")
 theme_override_font_sizes/font_size = 10
 text = "Esc"
 
-[node name="@Label@39" type="Label" parent="@HBoxContainer@40" unique_id=597449707]
+[node name="@Label@39" type="Label" parent="@HBoxContainer@40" unique_id=899376017]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.86, 0.84, 0.9, 1)
 theme_override_colors/font_outline_color = Color(0.14117648, 0.12156863, 0.19215687, 1)
@@ -275,11 +275,11 @@ theme_override_fonts/font = ExtResource("1_nimpx")
 theme_override_font_sizes/font_size = 10
 text = "หยุดชั่วคราว"
 
-[node name="@Control@41" type="Control" parent="." unique_id=1322729834]
+[node name="@Control@41" type="Control" parent="." unique_id=210281300]
 custom_minimum_size = Vector2(0, 4)
 layout_mode = 2
 
-[node name="Note" type="Label" parent="." unique_id=1358621217]
+[node name="Note" type="Label" parent="." unique_id=1505792793]
 custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.7137255, 0.6509804, 0.8784314, 1)

@@ -74,18 +74,18 @@ border_color = Color(0.9490196, 0.8862745, 0.7137255, 1)
 base_font = ExtResource("3_gss2c")
 variation_embolden = 0.55
 
-[node name="Hud" type="CanvasLayer" unique_id=1324467083]
+[node name="Hud" type="CanvasLayer" unique_id=1708457635]
 layer = 10
 script = ExtResource("1_136eg")
 
-[node name="Root" type="Control" parent="." unique_id=128436037]
+[node name="Root" type="Control" parent="." unique_id=126132951]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 
-[node name="ClockPanel" type="PanelContainer" parent="Root" unique_id=363081835]
+[node name="ClockPanel" type="PanelContainer" parent="Root" unique_id=409583676]
 layout_mode = 0
 offset_left = 8.0
 offset_top = 6.0
@@ -93,11 +93,11 @@ offset_right = 8.0
 offset_bottom = 6.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_kicr4")
 
-[node name="Row" type="HBoxContainer" parent="Root/ClockPanel" unique_id=1198350096]
+[node name="Row" type="HBoxContainer" parent="Root/ClockPanel" unique_id=441474270]
 layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="ClockIcon" type="TextureRect" parent="Root/ClockPanel/Row" unique_id=1355307822]
+[node name="ClockIcon" type="TextureRect" parent="Root/ClockPanel/Row" unique_id=583252116]
 unique_name_in_owner = true
 texture_filter = 1
 custom_minimum_size = Vector2(16, 16)
@@ -105,7 +105,7 @@ layout_mode = 2
 texture = ExtResource("2_oj5la")
 stretch_mode = 5
 
-[node name="TimeLabel" type="Label" parent="Root/ClockPanel/Row" unique_id=1082396560]
+[node name="TimeLabel" type="Label" parent="Root/ClockPanel/Row" unique_id=1143953459]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9490196, 0.8862745, 0.7137255, 1)
@@ -115,7 +115,7 @@ theme_override_fonts/font = SubResource("FontVariation_mj13f")
 theme_override_font_sizes/font_size = 18
 text = "01:00"
 
-[node name="Divider" type="Label" parent="Root/ClockPanel/Row" unique_id=817699626]
+[node name="Divider" type="Label" parent="Root/ClockPanel/Row" unique_id=207210277]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.45, 0.41, 0.55, 1)
 theme_override_colors/font_outline_color = Color(0.14117648, 0.12156863, 0.19215687, 1)
@@ -124,7 +124,7 @@ theme_override_fonts/font = ExtResource("3_gss2c")
 theme_override_font_sizes/font_size = 15
 text = "|"
 
-[node name="NameLabel" type="Label" parent="Root/ClockPanel/Row" unique_id=362117692]
+[node name="NameLabel" type="Label" parent="Root/ClockPanel/Row" unique_id=1820622790]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9607843, 0.94509804, 0.9019608, 1)
@@ -133,7 +133,7 @@ theme_override_constants/outline_size = 5
 theme_override_fonts/font = SubResource("FontVariation_0h1do")
 theme_override_font_sizes/font_size = 13
 
-[node name="SuspicionPanel" type="PanelContainer" parent="Root" unique_id=1730101595]
+[node name="SuspicionPanel" type="PanelContainer" parent="Root" unique_id=258078900]
 unique_name_in_owner = true
 layout_mode = 0
 anchor_left = 1.0
@@ -143,34 +143,34 @@ offset_top = 6.0
 offset_right = -8.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_4d46k")
 
-[node name="Row" type="HBoxContainer" parent="Root/SuspicionPanel" unique_id=1048619416]
+[node name="Row" type="HBoxContainer" parent="Root/SuspicionPanel" unique_id=1200116081]
 layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="EyeIcon" type="TextureRect" parent="Root/SuspicionPanel/Row" unique_id=335483700]
+[node name="EyeIcon" type="TextureRect" parent="Root/SuspicionPanel/Row" unique_id=743762601]
 texture_filter = 1
 custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 texture = ExtResource("4_h022r")
 stretch_mode = 5
 
-[node name="BarHolder" type="Control" parent="Root/SuspicionPanel/Row" unique_id=1056164601]
+[node name="BarHolder" type="Control" parent="Root/SuspicionPanel/Row" unique_id=320291119]
 custom_minimum_size = Vector2(96, 12)
 layout_mode = 2
 
-[node name="BarBg" type="ColorRect" parent="Root/SuspicionPanel/Row/BarHolder" unique_id=82693233]
+[node name="BarBg" type="ColorRect" parent="Root/SuspicionPanel/Row/BarHolder" unique_id=615666708]
 layout_mode = 0
 offset_right = 96.0
 offset_bottom = 12.0
 color = Color(0.18, 0.15, 0.24, 1)
 
-[node name="BarFill" type="ColorRect" parent="Root/SuspicionPanel/Row/BarHolder" unique_id=1518691518]
+[node name="BarFill" type="ColorRect" parent="Root/SuspicionPanel/Row/BarHolder" unique_id=516347136]
 unique_name_in_owner = true
 layout_mode = 0
 offset_bottom = 12.0
 color = Color(0.56078434, 0.7882353, 0.6039216, 1)
 
-[node name="SuspicionLabel" type="Label" parent="Root/SuspicionPanel/Row" unique_id=7732393]
+[node name="SuspicionLabel" type="Label" parent="Root/SuspicionPanel/Row" unique_id=343480907]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(34, 0)
 layout_mode = 2
@@ -182,7 +182,7 @@ theme_override_font_sizes/font_size = 13
 text = "0%"
 horizontal_alignment = 2
 
-[node name="Bag" type="HBoxContainer" parent="Root" unique_id=262800635]
+[node name="Bag" type="HBoxContainer" parent="Root" unique_id=1159444720]
 layout_mode = 0
 anchor_top = 1.0
 anchor_bottom = 1.0
@@ -191,19 +191,19 @@ offset_top = -46.0
 offset_bottom = -8.0
 theme_override_constants/separation = 4
 
-[node name="BagIcon" type="TextureRect" parent="Root/Bag" unique_id=799349921]
+[node name="BagIcon" type="TextureRect" parent="Root/Bag" unique_id=905165146]
 texture_filter = 1
 custom_minimum_size = Vector2(18, 18)
 layout_mode = 2
 texture = ExtResource("5_4jqwt")
 stretch_mode = 5
 
-[node name="Slots" type="HBoxContainer" parent="Root/Bag" unique_id=618834460]
+[node name="Slots" type="HBoxContainer" parent="Root/Bag" unique_id=1005931722]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 4
 
-[node name="ItemName" type="Label" parent="Root" unique_id=653386814]
+[node name="ItemName" type="Label" parent="Root" unique_id=1712197616]
 unique_name_in_owner = true
 layout_mode = 0
 anchor_top = 1.0
@@ -218,7 +218,7 @@ theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("3_gss2c")
 theme_override_font_sizes/font_size = 12
 
-[node name="PromptBox" type="PanelContainer" parent="Root" unique_id=693154603]
+[node name="PromptBox" type="PanelContainer" parent="Root" unique_id=473540266]
 unique_name_in_owner = true
 visible = false
 layout_mode = 0
@@ -232,7 +232,7 @@ offset_right = 150.0
 offset_bottom = -12.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_gonto")
 
-[node name="PromptLabel" type="Label" parent="Root/PromptBox" unique_id=86950328]
+[node name="PromptLabel" type="Label" parent="Root/PromptBox" unique_id=1594931518]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9490196, 0.8862745, 0.7137255, 1)
@@ -242,7 +242,7 @@ theme_override_fonts/font = SubResource("FontVariation_cwdlq")
 theme_override_font_sizes/font_size = 14
 horizontal_alignment = 1
 
-[node name="ObjectiveBox" type="PanelContainer" parent="Root" unique_id=407565157]
+[node name="ObjectiveBox" type="PanelContainer" parent="Root" unique_id=1439934691]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0)
 layout_mode = 0
@@ -256,11 +256,11 @@ offset_right = 190.0
 offset_bottom = 50.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_o6xly")
 
-[node name="Column" type="VBoxContainer" parent="Root/ObjectiveBox" unique_id=800161987]
+[node name="Column" type="VBoxContainer" parent="Root/ObjectiveBox" unique_id=885013832]
 layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="ObjectiveLabel" type="Label" parent="Root/ObjectiveBox/Column" unique_id=799192537]
+[node name="ObjectiveLabel" type="Label" parent="Root/ObjectiveBox/Column" unique_id=938478301]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(350, 0)
 layout_mode = 2
@@ -272,7 +272,7 @@ theme_override_font_sizes/font_size = 15
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="Flash" type="ColorRect" parent="Root" unique_id=307565321]
+[node name="Flash" type="ColorRect" parent="Root" unique_id=1424716092]
 unique_name_in_owner = true
 layout_mode = 0
 anchor_right = 1.0
