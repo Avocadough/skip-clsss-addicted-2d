@@ -1,0 +1,62 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/backdrop.gd" id="1_okino"]
+[ext_resource type="Texture2D" path="res://assets/sprites/bg_sky.png" id="2_pg5fu"]
+[ext_resource type="Texture2D" path="res://assets/sprites/bg_school.png" id="3_jlp5u"]
+[ext_resource type="Texture2D" path="res://assets/sprites/bg_trees.png" id="4_31tlu"]
+[ext_resource type="Texture2D" path="res://assets/sprites/char_not.png" id="5_43767"]
+
+[node name="MenuBackdrop" type="CanvasLayer" unique_id=2013469382]
+layer = -10
+script = ExtResource("1_okino")
+
+[node name="Sky" type="TextureRect" parent="." unique_id=1691800354]
+texture_filter = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("2_pg5fu")
+
+[node name="Strip1" type="TextureRect" parent="." unique_id=1147384983]
+modulate = Color(0.75, 0.72, 0.9, 1)
+texture_filter = 1
+offset_left = -480.0
+offset_top = 62.0
+offset_right = 960.0
+offset_bottom = 202.0
+texture = ExtResource("3_jlp5u")
+stretch_mode = 1
+metadata/speed = 5.0
+
+[node name="Strip2" type="TextureRect" parent="." unique_id=853153399]
+modulate = Color(0.85, 0.9, 0.85, 1)
+texture_filter = 1
+offset_left = -480.0
+offset_top = 176.0
+offset_right = 960.0
+offset_bottom = 246.0
+texture = ExtResource("4_31tlu")
+stretch_mode = 1
+metadata/speed = 12.0
+
+[node name="Ground" type="ColorRect" parent="." unique_id=2126326476]
+offset_top = 238.0
+offset_right = 480.0
+offset_bottom = 278.0
+color = Color(0.16862746, 0.14117648, 0.2509804, 1)
+
+[node name="Runner" type="Sprite2D" parent="." unique_id=757002414]
+unique_name_in_owner = true
+position = Vector2(-30, 246)
+scale = Vector2(1.6, 1.6)
+texture = ExtResource("5_43767")
+centered = false
+offset = Vector2(-8, -22)
+hframes = 11
+
+[node name="Scrim" type="ColorRect" parent="." unique_id=1075548160]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color(0.06, 0.05, 0.1, 0.55)

@@ -48,6 +48,8 @@ func _run() -> void:
 		_bake_tileset(theme)
 	print("--- prefabs ---")
 	_bake_prefabs()
+	print("--- interface ---")
+	_bake_ui()
 	print("--- levels ---")
 	for i in range(1, LevelData.count() + 1):
 		_bake_level(i)
@@ -60,7 +62,10 @@ func _run() -> void:
 func _own(root: Node, n: Node) -> void:
 	for c in n.get_children():
 		c.owner = root
-		_own(root, c)
+		# Do not walk into an instanced scene. Its children belong to it, and
+		# claiming them here writes them out a second time as loose nodes.
+		if c.scene_file_path == "":
+			_own(root, c)
 
 func _save_scene(root: Node, path: String) -> void:
 	_own(root, root)
@@ -583,3 +588,49 @@ func _uniq(seen: Dictionary, stem: String) -> String:
 	var n: int = seen.get(stem, 0) + 1
 	seen[stem] = n
 	return "%s%d" % [stem, n]
+
+# ===========================================================================
+#  Interface
+#
+#  Each screen keeps its own layout in a static build() next to the script
+#  that drives it, so the two never drift apart. They are loaded by path
+#  rather than by class name: naming them here would drag them, and the
+#  autoloads they refer to, into the compile pass of this tool.
+# ===========================================================================
+func _bake_ui() -> void:
+	var hud: GDScript = load("res://scripts/ui/hud.gd")
+	_save_scene(hud.build(), "res://scenes/ui/hud.tscn")
+	_save_scene(hud.build_slot(), "res://scenes/ui/item_slot.tscn")
+
+	var backdrop: GDScript = load("res://scripts/ui/backdrop.gd")
+	_save_scene(backdrop.build(), "res://scenes/ui/backdrop.tscn")
+
+	var boot: GDScript = load("res://scripts/ui/boot.gd")
+	_save_scene(boot.build(), "res://scenes/boot.tscn")
+
+	var modal: GDScript = load("res://scripts/ui/modal.gd")
+	_save_scene(modal.build(), "res://scenes/ui/modal.tscn")
+
+	var menu: GDScript = load("res://scripts/ui/main_menu.gd")
+	_save_scene(menu.build_how_to(), "res://scenes/ui/howto_page.tscn")
+	_save_scene(menu.build_credits(), "res://scenes/ui/credits_page.tscn")
+	_save_scene(menu.build(), "res://scenes/main_menu.tscn")
+
+	var card: GDScript = load("res://scripts/ui/level_card.gd")
+	_save_scene(card.build(), "res://scenes/ui/level_card.tscn")
+
+	var select: GDScript = load("res://scripts/ui/level_select.gd")
+	_save_scene(select.build(), "res://scenes/level_select.tscn")
+
+	var dialogue: GDScript = load("res://scripts/ui/dialogue.gd")
+	_save_scene(dialogue.build_answer(), "res://scenes/ui/answer_button.tscn")
+	_save_scene(dialogue.build(), "res://scenes/ui/dialogue.tscn")
+
+	var result: GDScript = load("res://scripts/ui/result_panel.gd")
+	_save_scene(result.build(), "res://scenes/ui/result_panel.tscn")
+
+	var pause: GDScript = load("res://scripts/ui/pause_panel.gd")
+	_save_scene(pause.build(), "res://scenes/ui/pause_panel.tscn")
+
+	var fader: GDScript = load("res://scripts/fader.gd")
+	_save_scene(fader.build(), "res://scenes/ui/fader.tscn")

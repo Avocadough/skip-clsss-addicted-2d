@@ -1,0 +1,211 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/level_card.gd" id="1_xol0m"]
+[ext_resource type="FontFile" path="res://assets/fonts/NotoSansThai-VF.ttf" id="2_07o60"]
+[ext_resource type="Texture2D" path="res://assets/sprites/item_key.png" id="3_e24jo"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sqvla"]
+content_margin_left = 6.0
+content_margin_top = 5.0
+content_margin_right = 6.0
+content_margin_bottom = 5.0
+bg_color = Color(0.1, 0.085, 0.15, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.9490196, 0.8862745, 0.7137255, 1)
+
+[sub_resource type="FontVariation" id="FontVariation_1bf6v"]
+base_font = ExtResource("2_07o60")
+variation_embolden = 0.55
+
+[sub_resource type="FontVariation" id="FontVariation_15cte"]
+base_font = ExtResource("2_07o60")
+variation_embolden = 0.55
+
+[sub_resource type="FontVariation" id="FontVariation_tc0x5"]
+base_font = ExtResource("2_07o60")
+variation_embolden = 0.55
+
+[sub_resource type="FontVariation" id="FontVariation_ieac6"]
+base_font = ExtResource("2_07o60")
+variation_embolden = 0.55
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ux27p"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 3.0
+bg_color = Color(0.13, 0.11, 0.19, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.45, 0.4, 0.58, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bh0xo"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 3.0
+bg_color = Color(0.1, 0.09, 0.15, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.7137255, 0.6509804, 0.8784314, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0lw3h"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 3.0
+bg_color = Color(0.22, 0.18, 0.31, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.9490196, 0.8862745, 0.7137255, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_in0s6"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 3.0
+bg_color = Color(0.11, 0.1, 0.14, 0.8)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.3, 0.28, 0.35, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5h81i"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 3.0
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.9490196, 0.8862745, 0.7137255, 1)
+
+[node name="LevelCard" type="PanelContainer" unique_id=1858464498]
+custom_minimum_size = Vector2(84, 0)
+theme_override_styles/panel = SubResource("StyleBoxFlat_sqvla")
+script = ExtResource("1_xol0m")
+
+[node name="Column" type="VBoxContainer" parent="." unique_id=1223877039]
+layout_mode = 2
+theme_override_constants/separation = 1
+
+[node name="NumLabel" type="Label" parent="Column" unique_id=66690293]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7137255, 0.6509804, 0.8784314, 1)
+theme_override_colors/font_outline_color = Color(0.14117648, 0.12156863, 0.19215687, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = SubResource("FontVariation_1bf6v")
+theme_override_font_sizes/font_size = 14
+text = "ด่าน 1"
+horizontal_alignment = 1
+
+[node name="NameLabel" type="Label" parent="Column" unique_id=576759923]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(70, 26)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9607843, 0.94509804, 0.9019608, 1)
+theme_override_colors/font_outline_color = Color(0.14117648, 0.12156863, 0.19215687, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("2_07o60")
+theme_override_font_sizes/font_size = 10
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="EnLabel" type="Label" parent="Column" unique_id=351329963]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.66, 0.63, 0.75, 1)
+theme_override_colors/font_outline_color = Color(0.14117648, 0.12156863, 0.19215687, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("2_07o60")
+theme_override_font_sizes/font_size = 8
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="TimeLabel" type="Label" parent="Column" unique_id=602664268]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.78, 0.75, 0.85, 1)
+theme_override_colors/font_outline_color = Color(0.14117648, 0.12156863, 0.19215687, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("2_07o60")
+theme_override_font_sizes/font_size = 9
+horizontal_alignment = 1
+
+[node name="Badge" type="CenterContainer" parent="Column" unique_id=1177777007]
+custom_minimum_size = Vector2(0, 26)
+layout_mode = 2
+
+[node name="RankLabel" type="Label" parent="Column/Badge" unique_id=1290759035]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9490196, 0.8156863, 0.41960785, 1)
+theme_override_colors/font_outline_color = Color(0.14117648, 0.12156863, 0.19215687, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = SubResource("FontVariation_15cte")
+theme_override_font_sizes/font_size = 22
+text = "S"
+
+[node name="KeyIcon" type="TextureRect" parent="Column/Badge" unique_id=900105191]
+unique_name_in_owner = true
+visible = false
+modulate = Color(0.42, 0.39, 0.5, 1)
+texture_filter = 1
+custom_minimum_size = Vector2(18, 18)
+layout_mode = 2
+texture = ExtResource("3_e24jo")
+stretch_mode = 5
+
+[node name="DashLabel" type="Label" parent="Column/Badge" unique_id=405518495]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.42, 0.39, 0.5, 1)
+theme_override_colors/font_outline_color = Color(0.14117648, 0.12156863, 0.19215687, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = SubResource("FontVariation_tc0x5")
+theme_override_font_sizes/font_size = 18
+text = "—"
+
+[node name="BestLabel" type="Label" parent="Column" unique_id=1706804928]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.7, 0.8, 1)
+theme_override_colors/font_outline_color = Color(0.14117648, 0.12156863, 0.19215687, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("2_07o60")
+theme_override_font_sizes/font_size = 8
+text = " "
+horizontal_alignment = 1
+
+[node name="PlayButton" type="Button" parent="Column" unique_id=2032931303]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9490196, 0.8862745, 0.7137255, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(0.7137255, 0.6509804, 0.8784314, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_disabled_color = Color(0.45, 0.42, 0.52, 1)
+theme_override_fonts/font = SubResource("FontVariation_ieac6")
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = SubResource("StyleBoxFlat_ux27p")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_bh0xo")
+theme_override_styles/hover = SubResource("StyleBoxFlat_0lw3h")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_in0s6")
+theme_override_styles/focus = SubResource("StyleBoxFlat_5h81i")
+text = "เล่น"

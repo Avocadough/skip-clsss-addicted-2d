@@ -1,0 +1,39 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/fader.gd" id="1_dmaen"]
+[ext_resource type="FontFile" path="res://assets/fonts/NotoSansThai-VF.ttf" id="2_gd732"]
+
+[sub_resource type="FontVariation" id="FontVariation_dmaen"]
+base_font = ExtResource("2_gd732")
+variation_embolden = 0.55
+
+[node name="Fader" type="CanvasLayer" unique_id=1043106895]
+process_mode = 3
+layer = 128
+script = ExtResource("1_dmaen")
+
+[node name="Veil" type="ColorRect" parent="." unique_id=203659708]
+unique_name_in_owner = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color(0.06, 0.05, 0.09, 1)
+
+[node name="Toast" type="Label" parent="." unique_id=818608351]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -220.0
+offset_top = -92.0
+offset_right = 220.0
+offset_bottom = -68.0
+theme_override_colors/font_outline_color = Color(0.06, 0.05, 0.09, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = SubResource("FontVariation_dmaen")
+theme_override_font_sizes/font_size = 15
+horizontal_alignment = 1

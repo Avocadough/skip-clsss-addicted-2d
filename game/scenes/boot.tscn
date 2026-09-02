@@ -1,12 +1,82 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3]
 
-[ext_resource type="Script" path="res://scripts/ui/boot.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/ui/boot.gd" id="1_r2kcx"]
+[ext_resource type="Texture2D" path="res://assets/sprites/prop_bell.png" id="2_j20pb"]
+[ext_resource type="FontFile" path="res://assets/fonts/NotoSansThai-VF.ttf" id="3_fbohu"]
 
-[node name="Boot" type="Control"]
+[sub_resource type="FontVariation" id="FontVariation_jo0fb"]
+base_font = ExtResource("3_fbohu")
+variation_embolden = 0.55
+
+[sub_resource type="FontVariation" id="FontVariation_ok243"]
+base_font = ExtResource("3_fbohu")
+variation_embolden = 0.55
+
+[sub_resource type="FontVariation" id="FontVariation_0pljo"]
+base_font = ExtResource("3_fbohu")
+variation_embolden = 0.55
+
+[node name="Boot" type="Control" unique_id=1340312536]
 layout_mode = 3
-anchors_preset = 15
+anchors_preset = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("1")
+mouse_filter = 2
+script = ExtResource("1_r2kcx")
+
+[node name="Background" type="ColorRect" parent="." unique_id=2081487303]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color(0.078431375, 0.0627451, 0.12156863, 1)
+
+[node name="Column" type="VBoxContainer" parent="." unique_id=1812335994]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="Bell" type="TextureRect" parent="Column" unique_id=1337979485]
+texture_filter = 1
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("2_j20pb")
+stretch_mode = 5
+
+[node name="Title" type="Label" parent="Column" unique_id=921370198]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9490196, 0.8862745, 0.7137255, 1)
+theme_override_colors/font_outline_color = Color(0.14117648, 0.12156863, 0.19215687, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = SubResource("FontVariation_jo0fb")
+theme_override_font_sizes/font_size = 34
+text = "เสพติดการโดดเรียน!"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="Column" unique_id=1232596058]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7137255, 0.6509804, 0.8784314, 1)
+theme_override_colors/font_outline_color = Color(0.14117648, 0.12156863, 0.19215687, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = SubResource("FontVariation_ok243")
+theme_override_font_sizes/font_size = 13
+text = "Skip Class Addicted"
+horizontal_alignment = 1
+
+[node name="Gap" type="Control" parent="Column" unique_id=1068821252]
+custom_minimum_size = Vector2(0, 18)
+layout_mode = 2
+
+[node name="Hint" type="Label" parent="Column" unique_id=614222944]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9607843, 0.94509804, 0.9019608, 1)
+theme_override_colors/font_outline_color = Color(0.14117648, 0.12156863, 0.19215687, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = SubResource("FontVariation_0pljo")
+theme_override_font_sizes/font_size = 16
+text = "คลิกหรือกดปุ่มใดก็ได้เพื่อเริ่ม"
+horizontal_alignment = 1

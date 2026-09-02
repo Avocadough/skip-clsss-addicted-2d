@@ -1,12 +1,508 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3]
 
-[ext_resource type="Script" path="res://scripts/ui/main_menu.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/ui/main_menu.gd" id="1_wu84c"]
+[ext_resource type="PackedScene" path="res://scenes/ui/backdrop.tscn" id="2_8ln24"]
+[ext_resource type="Script" path="res://scripts/ui/backdrop.gd" id="3_rtw2f"]
+[ext_resource type="FontFile" path="res://assets/fonts/NotoSansThai-VF.ttf" id="4_oa1go"]
 
-[node name="MainMenu" type="Control"]
+[sub_resource type="FontVariation" id="FontVariation_tbmy8"]
+base_font = ExtResource("4_oa1go")
+variation_embolden = 0.55
+
+[sub_resource type="FontVariation" id="FontVariation_jk1qb"]
+base_font = ExtResource("4_oa1go")
+variation_embolden = 0.55
+
+[sub_resource type="FontVariation" id="FontVariation_5dd4i"]
+base_font = ExtResource("4_oa1go")
+variation_embolden = 0.55
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lgwnu"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 3.0
+bg_color = Color(0.13, 0.11, 0.19, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.45, 0.4, 0.58, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_flqon"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 3.0
+bg_color = Color(0.1, 0.09, 0.15, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.7137255, 0.6509804, 0.8784314, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rcqid"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 3.0
+bg_color = Color(0.22, 0.18, 0.31, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.9490196, 0.8862745, 0.7137255, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1ajci"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 3.0
+bg_color = Color(0.11, 0.1, 0.14, 0.8)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.3, 0.28, 0.35, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7b55j"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 3.0
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.9490196, 0.8862745, 0.7137255, 1)
+
+[sub_resource type="FontVariation" id="FontVariation_5pajh"]
+base_font = ExtResource("4_oa1go")
+variation_embolden = 0.55
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j7ex8"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 3.0
+bg_color = Color(0.13, 0.11, 0.19, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.45, 0.4, 0.58, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a8gd2"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 3.0
+bg_color = Color(0.1, 0.09, 0.15, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.7137255, 0.6509804, 0.8784314, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hstxw"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 3.0
+bg_color = Color(0.22, 0.18, 0.31, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.9490196, 0.8862745, 0.7137255, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8egab"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 3.0
+bg_color = Color(0.11, 0.1, 0.14, 0.8)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.3, 0.28, 0.35, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gw5y6"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 3.0
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.9490196, 0.8862745, 0.7137255, 1)
+
+[sub_resource type="FontVariation" id="FontVariation_svtp6"]
+base_font = ExtResource("4_oa1go")
+variation_embolden = 0.55
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1dfpl"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 3.0
+bg_color = Color(0.13, 0.11, 0.19, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.45, 0.4, 0.58, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qywvv"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 3.0
+bg_color = Color(0.1, 0.09, 0.15, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.7137255, 0.6509804, 0.8784314, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3wgol"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 3.0
+bg_color = Color(0.22, 0.18, 0.31, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.9490196, 0.8862745, 0.7137255, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1acrt"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 3.0
+bg_color = Color(0.11, 0.1, 0.14, 0.8)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.3, 0.28, 0.35, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vr8o3"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 3.0
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.9490196, 0.8862745, 0.7137255, 1)
+
+[sub_resource type="FontVariation" id="FontVariation_1a85y"]
+base_font = ExtResource("4_oa1go")
+variation_embolden = 0.55
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hl5e0"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 3.0
+bg_color = Color(0.13, 0.11, 0.19, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.45, 0.4, 0.58, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_engjn"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 3.0
+bg_color = Color(0.1, 0.09, 0.15, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.7137255, 0.6509804, 0.8784314, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6h3lr"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 3.0
+bg_color = Color(0.22, 0.18, 0.31, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.9490196, 0.8862745, 0.7137255, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dj67d"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 3.0
+bg_color = Color(0.11, 0.1, 0.14, 0.8)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.3, 0.28, 0.35, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6vcge"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 3.0
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.9490196, 0.8862745, 0.7137255, 1)
+
+[sub_resource type="FontVariation" id="FontVariation_ip0br"]
+base_font = ExtResource("4_oa1go")
+variation_embolden = 0.55
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xyero"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 3.0
+bg_color = Color(0.13, 0.11, 0.19, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.45, 0.4, 0.58, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tcusk"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 3.0
+bg_color = Color(0.1, 0.09, 0.15, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.7137255, 0.6509804, 0.8784314, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4puye"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 3.0
+bg_color = Color(0.22, 0.18, 0.31, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.9490196, 0.8862745, 0.7137255, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q13xq"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 3.0
+bg_color = Color(0.11, 0.1, 0.14, 0.8)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.3, 0.28, 0.35, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u43bj"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 3.0
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.9490196, 0.8862745, 0.7137255, 1)
+
+[node name="MainMenu" type="Control" unique_id=821951264]
 layout_mode = 3
-anchors_preset = 15
+anchors_preset = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("1")
+script = ExtResource("1_wu84c")
+
+[node name="MenuBackdrop" type="CanvasLayer" parent="." unique_id=2013469382 instance=ExtResource("2_8ln24")]
+layer = -10
+script = ExtResource("3_rtw2f")
+
+[node name="Column" type="VBoxContainer" parent="." unique_id=81874554]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -24.0
+theme_override_constants/separation = 1
+alignment = 1
+
+[node name="Title" type="Label" parent="Column" unique_id=862223013]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9490196, 0.8862745, 0.7137255, 1)
+theme_override_colors/font_outline_color = Color(0.14117648, 0.12156863, 0.19215687, 1)
+theme_override_constants/outline_size = 9
+theme_override_fonts/font = SubResource("FontVariation_tbmy8")
+theme_override_font_sizes/font_size = 28
+text = "เสพติดการโดดเรียน!"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="Column" unique_id=1032176935]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7137255, 0.6509804, 0.8784314, 1)
+theme_override_colors/font_outline_color = Color(0.14117648, 0.12156863, 0.19215687, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = SubResource("FontVariation_jk1qb")
+theme_override_font_sizes/font_size = 13
+text = "S K I P   C L A S S   A D D I C T E D"
+horizontal_alignment = 1
+
+[node name="Tagline" type="Label" parent="Column" unique_id=2138774353]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.86, 0.83, 0.92, 1)
+theme_override_colors/font_outline_color = Color(0.14117648, 0.12156863, 0.19215687, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("4_oa1go")
+theme_override_font_sizes/font_size = 12
+text = "\"หนีให้เนียน ซ่อนให้ทัน อย่าให้ใครลากกลับเข้าห้องก่อนกริ่งดัง\""
+horizontal_alignment = 1
+
+[node name="Gap" type="Control" parent="Column" unique_id=974556362]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="Buttons" type="VBoxContainer" parent="Column" unique_id=2132731302]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 4
+
+[node name="PlayButton" type="Button" parent="Column/Buttons" unique_id=625403339]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 29)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9490196, 0.8862745, 0.7137255, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(0.7137255, 0.6509804, 0.8784314, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_disabled_color = Color(0.45, 0.42, 0.52, 1)
+theme_override_fonts/font = SubResource("FontVariation_5dd4i")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_lgwnu")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_flqon")
+theme_override_styles/hover = SubResource("StyleBoxFlat_rcqid")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_1ajci")
+theme_override_styles/focus = SubResource("StyleBoxFlat_7b55j")
+text = "เริ่มเล่น"
+
+[node name="SelectButton" type="Button" parent="Column/Buttons" unique_id=2120264702]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 28)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9490196, 0.8862745, 0.7137255, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(0.7137255, 0.6509804, 0.8784314, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_disabled_color = Color(0.45, 0.42, 0.52, 1)
+theme_override_fonts/font = SubResource("FontVariation_5pajh")
+theme_override_font_sizes/font_size = 15
+theme_override_styles/normal = SubResource("StyleBoxFlat_j7ex8")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_a8gd2")
+theme_override_styles/hover = SubResource("StyleBoxFlat_hstxw")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_8egab")
+theme_override_styles/focus = SubResource("StyleBoxFlat_gw5y6")
+text = "เลือกด่าน"
+
+[node name="HowToButton" type="Button" parent="Column/Buttons" unique_id=1299746185]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 28)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9490196, 0.8862745, 0.7137255, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(0.7137255, 0.6509804, 0.8784314, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_disabled_color = Color(0.45, 0.42, 0.52, 1)
+theme_override_fonts/font = SubResource("FontVariation_svtp6")
+theme_override_font_sizes/font_size = 15
+theme_override_styles/normal = SubResource("StyleBoxFlat_1dfpl")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_qywvv")
+theme_override_styles/hover = SubResource("StyleBoxFlat_3wgol")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_1acrt")
+theme_override_styles/focus = SubResource("StyleBoxFlat_vr8o3")
+text = "วิธีเล่น"
+
+[node name="CreditsButton" type="Button" parent="Column/Buttons" unique_id=1021392931]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 28)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9490196, 0.8862745, 0.7137255, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(0.7137255, 0.6509804, 0.8784314, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_disabled_color = Color(0.45, 0.42, 0.52, 1)
+theme_override_fonts/font = SubResource("FontVariation_1a85y")
+theme_override_font_sizes/font_size = 15
+theme_override_styles/normal = SubResource("StyleBoxFlat_hl5e0")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_engjn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_6h3lr")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_dj67d")
+theme_override_styles/focus = SubResource("StyleBoxFlat_6vcge")
+text = "เกี่ยวกับเกม"
+
+[node name="MusicButton" type="Button" parent="Column/Buttons" unique_id=1200636635]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 27)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9490196, 0.8862745, 0.7137255, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(0.7137255, 0.6509804, 0.8784314, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_disabled_color = Color(0.45, 0.42, 0.52, 1)
+theme_override_fonts/font = SubResource("FontVariation_ip0br")
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_xyero")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_tcusk")
+theme_override_styles/hover = SubResource("StyleBoxFlat_4puye")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_q13xq")
+theme_override_styles/focus = SubResource("StyleBoxFlat_u43bj")
+text = "เพลง: เปิด"
+
+[node name="Footer" type="Label" parent="." unique_id=1836156018]
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -220.0
+offset_top = -20.0
+offset_right = 220.0
+offset_bottom = -4.0
+theme_override_colors/font_color = Color(0.72, 0.69, 0.8, 1)
+theme_override_colors/font_outline_color = Color(0.14117648, 0.12156863, 0.19215687, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("4_oa1go")
+theme_override_font_sizes/font_size = 11
+text = "CP410844 Computer Game Development · กลุ่มที่ 19"
+horizontal_alignment = 1
+
+[node name="ModalHolder" type="Control" parent="." unique_id=1020582210]
+unique_name_in_owner = true
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2

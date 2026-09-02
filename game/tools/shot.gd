@@ -24,6 +24,15 @@ func _initialize() -> void:
 		{"scene": LevelData.scene_path(5), "out": "shot_lv5_gate.png", "wait": 5.0, "hold": false, "level": 5, "at": 53, "peace": true},
 		{"scene": LevelData.scene_path(4), "out": "shot_lv4.png", "wait": 6.0, "hold": true, "level": 4},
 		{"scene": LevelData.scene_path(5), "out": "shot_lv5.png", "wait": 6.0, "hold": true, "level": 5},
+		# The two in-level panels. _show_overlay is driven directly rather than
+		# by winning, so taking a screenshot does not write to the save file.
+		{"scene": LevelData.scene_path(1), "out": "shot_pause.png", "wait": 1.2,
+			"hold": false, "level": 1, "peace": true, "call": "_show_pause"},
+		{"scene": LevelData.scene_path(1), "out": "shot_result.png", "wait": 1.2,
+			"hold": false, "level": 1, "peace": true,
+			"callv": ["_show_overlay", ["โดดเรียนสำเร็จ!", "เกรดความเนียน: S",
+				["เวลาที่เหลือ: 31.4 วินาที", "โดนเห็น: 0 ครั้ง", "ความสงสัยสูงสุด: 12%"],
+				Color("f2d06b"), true]]},
 	]
 	_next()
 
@@ -33,6 +42,7 @@ func _next() -> void:
 			Input.action_release("move_right")
 		_current.queue_free()
 		_current = null
+	paused = false      # a pause panel must not freeze the rest of the run
 	if _queue.is_empty():
 		print("captured %d screenshots" % _shots)
 		quit()
@@ -44,6 +54,8 @@ func _next() -> void:
 	root.add_child(_current)
 	if job.has("call"):
 		_current.call(job["call"])
+	if job.has("callv"):
+		_current.callv(job["callv"][0], job["callv"][1])
 	if job.get("peace", false):
 		# Clear the watchers so a framing shot can sit still without the stage
 		# ending in an arrest before the capture.

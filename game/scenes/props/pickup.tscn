@@ -7,18 +7,18 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_0mxus"]
 radius = 11.0
 
-[node name="Pickup" type="Area2D" unique_id=1146090118]
+[node name="Pickup" type="Area2D" unique_id=4718206]
 collision_layer = 8
 collision_mask = 2
 script = ExtResource("1_r1no4")
 
-[node name="Shape" type="CollisionShape2D" parent="." unique_id=1822901192]
+[node name="Shape" type="CollisionShape2D" parent="." unique_id=951478874]
 shape = SubResource("CircleShape2D_0mxus")
 
-[node name="Halo" type="Sprite2D" parent="." unique_id=1878063426]
+[node name="Halo" type="Sprite2D" parent="." unique_id=88283635]
 modulate = Color(1, 0.95, 0.6, 0.16)
 z_index = -1
 texture = ExtResource("2_b6ond")
 
-[node name="Sprite" type="Sprite2D" parent="." unique_id=465895845]
+[node name="Sprite" type="Sprite2D" parent="." unique_id=846149852]
 texture = ExtResource("3_70aa7")

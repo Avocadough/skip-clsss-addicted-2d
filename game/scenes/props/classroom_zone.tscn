@@ -5,10 +5,10 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_y4430"]
 size = Vector2(64, 64)
 
-[node name="Classroom" type="Area2D" unique_id=1579699320]
+[node name="Classroom" type="Area2D" unique_id=56527238]
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("1_saomu")
 
-[node name="Shape" type="CollisionShape2D" parent="." unique_id=1075540738]
+[node name="Shape" type="CollisionShape2D" parent="." unique_id=1771035549]
 shape = SubResource("RectangleShape2D_y4430")

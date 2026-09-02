@@ -1,0 +1,83 @@
+[gd_scene format=3]
+
+[ext_resource type="FontFile" path="res://assets/fonts/NotoSansThai-VF.ttf" id="1_rmphh"]
+
+[sub_resource type="FontVariation" id="FontVariation_402n4"]
+base_font = ExtResource("1_rmphh")
+variation_embolden = 0.55
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_egq43"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 3.0
+bg_color = Color(0.13, 0.11, 0.19, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.45, 0.4, 0.58, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r3l3c"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 3.0
+bg_color = Color(0.1, 0.09, 0.15, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.7137255, 0.6509804, 0.8784314, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7ou7w"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 3.0
+bg_color = Color(0.22, 0.18, 0.31, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.9490196, 0.8862745, 0.7137255, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kv020"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 3.0
+bg_color = Color(0.11, 0.1, 0.14, 0.8)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.3, 0.28, 0.35, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p87q7"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 3.0
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.9490196, 0.8862745, 0.7137255, 1)
+
+[node name="AnswerButton" type="Button" unique_id=138450527]
+custom_minimum_size = Vector2(0, 27)
+theme_override_colors/font_color = Color(0.9490196, 0.8862745, 0.7137255, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(0.7137255, 0.6509804, 0.8784314, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_disabled_color = Color(0.45, 0.42, 0.52, 1)
+theme_override_fonts/font = SubResource("FontVariation_402n4")
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_egq43")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_r3l3c")
+theme_override_styles/hover = SubResource("StyleBoxFlat_7ou7w")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_kv020")
+theme_override_styles/focus = SubResource("StyleBoxFlat_p87q7")
+alignment = 0

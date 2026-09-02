@@ -1,44 +1,13 @@
 extends Control
 ## Splash gate. Browsers refuse to start audio until the player interacts with
 ## the page, so the web build needs one click before the music can begin.
+##
+## Laid out in scenes/boot.tscn; `build()` is what generated it.
 
-var _hint: Label
+@onready var _hint: Label = %Hint
+
 var _t := 0.0
 var _went := false
-
-func _ready() -> void:
-	set_anchors_preset(Control.PRESET_FULL_RECT)
-	# let clicks fall through to _unhandled_input so tapping anywhere starts the game
-	mouse_filter = Control.MOUSE_FILTER_IGNORE
-
-	var bg := ColorRect.new()
-	bg.color = Color("14101f")
-	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
-	bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(bg)
-
-	var v := VBoxContainer.new()
-	v.set_anchors_preset(Control.PRESET_FULL_RECT)
-	v.alignment = BoxContainer.ALIGNMENT_CENTER
-	v.add_theme_constant_override("separation", 6)
-	add_child(v)
-
-	var bell := UI.icon("prop_bell", 48)
-	bell.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	v.add_child(bell)
-
-	var t := UI.label("เสพติดการโดดเรียน!", 34, UI.CREAM, true)
-	t.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	v.add_child(t)
-
-	var s := UI.label("Skip Class Addicted", 13, UI.PURPLE, true)
-	s.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	v.add_child(s)
-	v.add_child(UI.spacer(18))
-
-	_hint = UI.label("คลิกหรือกดปุ่มใดก็ได้เพื่อเริ่ม", 16, UI.WHITE, true)
-	_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	v.add_child(_hint)
 
 func _process(delta: float) -> void:
 	_t += delta
@@ -56,3 +25,50 @@ func _unhandled_input(event: InputEvent) -> void:
 	Sfx.play("click")
 	Sfx.play_music()
 	Fader.goto("res://scenes/main_menu.tscn")
+
+# ===========================================================================
+static func build() -> Control:
+	var boot := Control.new()
+	boot.name = "Boot"
+	boot.set_script(load("res://scripts/ui/boot.gd"))
+	boot.set_anchors_preset(Control.PRESET_FULL_RECT)
+	# let clicks fall through to _unhandled_input so tapping anywhere starts it
+	boot.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+	var bg := ColorRect.new()
+	bg.name = "Background"
+	bg.color = Color("14101f")
+	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
+	bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	boot.add_child(bg)
+
+	var v := VBoxContainer.new()
+	v.name = "Column"
+	v.set_anchors_preset(Control.PRESET_FULL_RECT)
+	v.alignment = BoxContainer.ALIGNMENT_CENTER
+	v.add_theme_constant_override("separation", 6)
+	boot.add_child(v)
+
+	var bell := UI.icon("prop_bell", 48)
+	bell.name = "Bell"
+	bell.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	v.add_child(bell)
+
+	var t := UI.label("เสพติดการโดดเรียน!", 34, UI.CREAM, true)
+	t.name = "Title"
+	t.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	v.add_child(t)
+
+	var s := UI.label("Skip Class Addicted", 13, UI.PURPLE, true)
+	s.name = "Subtitle"
+	s.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	v.add_child(s)
+	var gap := UI.spacer(18)
+	gap.name = "Gap"
+	v.add_child(gap)
+
+	var hint := UI.label("คลิกหรือกดปุ่มใดก็ได้เพื่อเริ่ม", 16, UI.WHITE, true)
+	UI.key(hint, "Hint")
+	hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	v.add_child(hint)
+	return boot

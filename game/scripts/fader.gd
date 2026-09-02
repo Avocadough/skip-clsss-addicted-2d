@@ -1,40 +1,16 @@
 extends CanvasLayer
 ## Full-screen wipe used for every scene change, plus a small "toast" line for
 ## in-level feedback ("เก็บบัตรห้องพยาบาลแล้ว!").
+##
+## Autoloaded from scenes/ui/fader.tscn; `build()` is what generated it.
 
-var _veil: ColorRect
-var _toast: Label
+@onready var _veil: ColorRect = %Veil
+@onready var _toast: Label = %Toast
+
 var _busy := false
 var _toast_tween: Tween
 
 func _ready() -> void:
-	layer = 128
-	process_mode = Node.PROCESS_MODE_ALWAYS
-
-	_veil = ColorRect.new()
-	_veil.color = Color(0.06, 0.05, 0.09, 1.0)
-	_veil.set_anchors_preset(Control.PRESET_FULL_RECT)
-	_veil.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(_veil)
-
-	_toast = Label.new()
-	_toast.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
-	_toast.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_toast.offset_left = -220
-	_toast.offset_right = 220
-	# Sits above the bag row so it never lands on the selected-item caption.
-	_toast.offset_top = -92
-	_toast.offset_bottom = -68
-	_toast.modulate.a = 0.0
-	_toast.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	# Without this the toast falls back to Godot's built-in font, which has no
-	# Thai glyphs, so every message came out as boxes.
-	_toast.add_theme_font_override("font", UI.font_bold())
-	_toast.add_theme_font_size_override("font_size", 15)
-	_toast.add_theme_color_override("font_outline_color", Color(0.06, 0.05, 0.09))
-	_toast.add_theme_constant_override("outline_size", 5)
-	add_child(_toast)
-
 	fade_in(0.45)
 
 func fade_in(dur: float = 0.35) -> void:
@@ -75,3 +51,38 @@ func clear_toast() -> void:
 	if _toast_tween != null and _toast_tween.is_valid():
 		_toast_tween.kill()
 	_toast.modulate.a = 0.0
+
+# ===========================================================================
+static func build() -> CanvasLayer:
+	var f := CanvasLayer.new()
+	f.name = "Fader"
+	f.set_script(load("res://scripts/fader.gd"))
+	f.layer = 128
+	f.process_mode = Node.PROCESS_MODE_ALWAYS
+
+	var veil := ColorRect.new()
+	UI.key(veil, "Veil")
+	veil.color = Color(0.06, 0.05, 0.09, 1.0)
+	veil.set_anchors_preset(Control.PRESET_FULL_RECT)
+	veil.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	f.add_child(veil)
+
+	var toast := Label.new()
+	UI.key(toast, "Toast")
+	toast.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
+	toast.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	toast.offset_left = -220
+	toast.offset_right = 220
+	# Sits above the bag row so it never lands on the selected-item caption.
+	toast.offset_top = -92
+	toast.offset_bottom = -68
+	toast.modulate.a = 0.0
+	toast.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	# Without this the toast falls back to the built-in font of Godot, which
+	# has no Thai glyphs, so every message came out as boxes.
+	toast.add_theme_font_override("font", UI.font_bold())
+	toast.add_theme_font_size_override("font_size", 15)
+	toast.add_theme_color_override("font_outline_color", Color(0.06, 0.05, 0.09))
+	toast.add_theme_constant_override("outline_size", 5)
+	f.add_child(toast)
+	return f

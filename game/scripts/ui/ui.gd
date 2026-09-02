@@ -95,3 +95,10 @@ static func rank_color(rank: String) -> Color:
 		"A": return GREEN
 		"B": return BLUEGRAY
 		_:   return Color(0.72, 0.68, 0.78)
+
+## Names a node and marks it reachable as %Name from the scene root, so a
+## script can still find it after someone moves it about in the editor.
+static func key(node: Node, node_name: String) -> Node:
+	node.name = node_name
+	node.unique_name_in_owner = true
+	return node

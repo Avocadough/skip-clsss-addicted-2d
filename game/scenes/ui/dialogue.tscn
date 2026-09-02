@@ -1,0 +1,76 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/dialogue.gd" id="1_65ue4"]
+[ext_resource type="FontFile" path="res://assets/fonts/NotoSansThai-VF.ttf" id="2_umwmw"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0hdn5"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.1, 0.085, 0.15, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.9411765, 0.72156864, 0.78431374, 1)
+
+[sub_resource type="FontVariation" id="FontVariation_lm6d5"]
+base_font = ExtResource("2_umwmw")
+variation_embolden = 0.55
+
+[sub_resource type="FontVariation" id="FontVariation_uv07d"]
+base_font = ExtResource("2_umwmw")
+variation_embolden = 0.55
+
+[node name="ExcuseDialogue" type="CanvasLayer" unique_id=776621483]
+process_mode = 3
+layer = 40
+script = ExtResource("1_65ue4")
+
+[node name="Dim" type="ColorRect" parent="." unique_id=1781062704]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.05, 0.04, 0.08, 0.72)
+
+[node name="Box" type="PanelContainer" parent="." unique_id=1580849067]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -104.0
+offset_right = 200.0
+offset_bottom = 104.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_0hdn5")
+
+[node name="Column" type="VBoxContainer" parent="Box" unique_id=28584983]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 7
+
+[node name="NpcLabel" type="Label" parent="Box/Column" unique_id=1816222045]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9411765, 0.72156864, 0.78431374, 1)
+theme_override_colors/font_outline_color = Color(0.14117648, 0.12156863, 0.19215687, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = SubResource("FontVariation_lm6d5")
+theme_override_font_sizes/font_size = 13
+
+[node name="QuestionLabel" type="Label" parent="Box/Column" unique_id=324181981]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(370, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9607843, 0.94509804, 0.9019608, 1)
+theme_override_colors/font_outline_color = Color(0.14117648, 0.12156863, 0.19215687, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = SubResource("FontVariation_uv07d")
+theme_override_font_sizes/font_size = 16
+autowrap_mode = 3
+
+[node name="Gap" type="Control" parent="Box/Column" unique_id=1761504234]
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2

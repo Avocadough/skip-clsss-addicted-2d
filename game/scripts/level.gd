@@ -126,7 +126,7 @@ func _setup_camera() -> void:
 	camera.make_current()
 
 func _build_hud() -> void:
-	hud = Hud.new()
+	hud = load("res://scenes/ui/hud.tscn").instantiate()
 	add_child(hud)
 	hud.set_level_info(data["num"], data["name"])
 	hud.show_objective(data["goal_text"], data["hint"])
@@ -436,7 +436,7 @@ func _on_confront(npc: Npc) -> void:
 		return
 	in_dialogue = true
 	Game.run_times_seen += 1
-	var dlg := ExcuseDialogue.new()
+	var dlg: ExcuseDialogue = load("res://scenes/ui/dialogue.tscn").instantiate()
 	add_child(dlg)
 	dlg.open(npc.stats["label"], Game.EXCUSES.pick_random(), player.inventory)
 	dlg.resolved.connect(func(good: bool, used: String):
@@ -503,124 +503,32 @@ func _clear_overlay() -> void:
 		_overlay.queue_free()
 		_overlay = null
 
+## Both end-of-stage cards and the pause menu are scenes; the level only says
+## what goes in them and what the buttons should do.
 func _show_overlay(title: String, subtitle: String, lines: Array,
 		accent: Color, show_next: bool) -> void:
 	_clear_overlay()
-	_overlay = CanvasLayer.new()
-	_overlay.layer = 30
-	_overlay.process_mode = Node.PROCESS_MODE_ALWAYS
-	add_child(_overlay)
-
-	var dim := ColorRect.new()
-	dim.color = Color(0.05, 0.04, 0.08, 0.78)
-	dim.set_anchors_preset(Control.PRESET_FULL_RECT)
-	_overlay.add_child(dim)
-
-	var box := UI.panel(Color(0.10, 0.085, 0.15, 0.98), accent)
-	box.set_anchors_preset(Control.PRESET_CENTER)
-	box.offset_left = -180
-	box.offset_right = 180
-	box.offset_top = -118
-	box.offset_bottom = 118
-	_overlay.add_child(box)
-
-	var v := VBoxContainer.new()
-	v.add_theme_constant_override("separation", 6)
-	box.add_child(v)
-
-	var t := UI.label(title, 24, accent, true)
-	t.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	v.add_child(t)
-
-	var st := UI.label(subtitle, 14, UI.WHITE, true)
-	st.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	st.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	st.custom_minimum_size.x = 330
-	v.add_child(st)
-	v.add_child(UI.spacer(2))
-
-	for line in lines:
-		var l := UI.label(line, 13, Color(0.82, 0.79, 0.88))
-		l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		v.add_child(l)
-	v.add_child(UI.spacer(6))
-
-	if show_next:
-		var nb := UI.button("ไปด่านต่อไป »", 15)
-		nb.pressed.connect(func():
-			Fader.goto(LevelData.scene_path(level_num + 1)))
-		v.add_child(nb)
-
-	var rb := UI.button("เล่นด่านนี้ใหม่", 14)
-	rb.pressed.connect(func(): Fader.goto(LevelData.scene_path(level_num)))
-	v.add_child(rb)
-
-	var mb := UI.button("กลับไปเลือกด่าน", 14)
-	mb.pressed.connect(func(): Fader.goto("res://scenes/level_select.tscn"))
-	v.add_child(mb)
-
-	for c in v.get_children():
-		if c is Button:
-			(c as Button).call_deferred("grab_focus")
-			break
+	var panel: ResultPanel = load("res://scenes/ui/result_panel.tscn").instantiate()
+	_overlay = panel
+	add_child(panel)
+	panel.show_result(title, subtitle, lines, accent, show_next)
+	panel.next_pressed.connect(func(): Fader.goto(LevelData.scene_path(level_num + 1)))
+	panel.retry_pressed.connect(func(): Fader.goto(LevelData.scene_path(level_num)))
+	panel.menu_pressed.connect(func(): Fader.goto("res://scenes/level_select.tscn"))
 
 func _show_pause() -> void:
 	get_tree().paused = true
 	_clear_overlay()
-	_overlay = CanvasLayer.new()
-	_overlay.layer = 30
-	_overlay.process_mode = Node.PROCESS_MODE_ALWAYS
-	add_child(_overlay)
-
-	var dim := ColorRect.new()
-	dim.color = Color(0.05, 0.04, 0.08, 0.75)
-	dim.set_anchors_preset(Control.PRESET_FULL_RECT)
-	_overlay.add_child(dim)
-
-	var box := UI.panel(Color(0.10, 0.085, 0.15, 0.98), UI.PURPLE)
-	box.set_anchors_preset(Control.PRESET_CENTER)
-	box.offset_left = -160
-	box.offset_right = 160
-	box.offset_top = -120
-	box.offset_bottom = 120
-	_overlay.add_child(box)
-
-	var v := VBoxContainer.new()
-	v.add_theme_constant_override("separation", 6)
-	box.add_child(v)
-
-	var t := UI.label("หยุดชั่วคราว", 22, UI.PURPLE, true)
-	t.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	v.add_child(t)
-	var g := UI.label(data["goal_text"], 12, Color(0.82, 0.79, 0.88))
-	g.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	g.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	g.custom_minimum_size.x = 290
-	v.add_child(g)
-	v.add_child(UI.spacer(4))
-
-	var resume := UI.button("เล่นต่อ", 15)
-	resume.pressed.connect(func():
+	var panel: PausePanel = load("res://scenes/ui/pause_panel.tscn").instantiate()
+	_overlay = panel
+	add_child(panel)
+	panel.setup(data["goal_text"])
+	panel.resume_pressed.connect(func():
 		get_tree().paused = false
 		_clear_overlay())
-	v.add_child(resume)
-
-	var restart := UI.button("เริ่มด่านนี้ใหม่", 14)
-	restart.pressed.connect(func():
+	panel.restart_pressed.connect(func():
 		get_tree().paused = false
 		Fader.goto(LevelData.scene_path(level_num)))
-	v.add_child(restart)
-
-	var music := UI.button("เพลง: %s" % ("เปิด" if Game.music_on else "ปิด"), 14)
-	music.pressed.connect(func():
-		Sfx.set_music_enabled(not Game.music_on)
-		music.text = "เพลง: %s" % ("เปิด" if Game.music_on else "ปิด"))
-	v.add_child(music)
-
-	var back := UI.button("กลับไปเลือกด่าน", 14)
-	back.pressed.connect(func():
+	panel.menu_pressed.connect(func():
 		get_tree().paused = false
 		Fader.goto("res://scenes/level_select.tscn"))
-	v.add_child(back)
-
-	resume.call_deferred("grab_focus")

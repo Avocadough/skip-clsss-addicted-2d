@@ -22,7 +22,7 @@ config/icon="res://icon.svg"
 
 Game="*res://scripts/game_state.gd"
 Sfx="*res://scripts/audio_manager.gd"
-Fader="*res://scripts/fader.gd"
+Fader="*res://scenes/ui/fader.tscn"
 
 [display]
 
