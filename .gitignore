@@ -20,3 +20,6 @@ game/preview.png
 
 # Dev screenshots
 game/shots/
+
+# itch.io upload package (rebuild with tools/cover.gd + the Web export)
+dist/
