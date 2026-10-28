@@ -1,8 +1,15 @@
-# Skip Class Addicted — Five-Level Project | เสพติดการโดดเรียน!
+<div align="center">
+  <h1>Skip Class Addicted — Five-Level Project | เสพติดการโดดเรียน!</h1>
+  <p>A five-level 2D stealth-puzzle platformer.</p>
+  <p>
+    <img src="https://img.shields.io/badge/Godot-4.7-478CBF" alt="Godot 4.7">
+    <img src="https://img.shields.io/badge/Language-GDScript-478CBF" alt="GDScript">
+  </p>
+  <p><a href="https://avocadough.github.io/skip-clsss-addicted-2d/">Play the browser demo</a> &nbsp;·&nbsp; <a href="https://github.com/Avocadough/skip-class-addicted">Three-level project</a></p>
+</div>
 
 A five-level 2D stealth-puzzle platformer set in a Thai school, created for **CP410844 by Group 19** with Godot.
 
-[Play the browser demo](https://avocadough.github.io/skip-clsss-addicted-2d/) · [Three-level project](https://github.com/Avocadough/skip-class-addicted)
 
 Avoid teachers, guards and cameras while managing sight, noise, suspicion and items. Use a desktop keyboard; the controls, levels and team credits are documented below.
 
